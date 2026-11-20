@@ -53,9 +53,19 @@ les réparer.
 Double-clic sur un livre de la liste : revoir son rapport et l'ouvrir
 dans l'Explorateur.
 
-Le livre arrive sur la Kindle en quelques minutes (Wi-Fi activé). La
-1re fois, Amazon peut envoyer un mail « Vérifiez votre demande » :
-clique sur le lien.
+Kwindle regroupe les livres dans un seul e-mail (jusqu'à 25 livres,
+dans la limite de taille de ta messagerie). C'est important : Amazon
+peut demander une vérification (mail « Vérifiez votre demande de
+document Send to Kindle ») POUR CHAQUE e-mail reçu, et tant qu'on ne
+clique pas sur le lien, les livres n'arrivent pas. Gmail range toutes
+ces demandes dans une seule conversation : s'il y en a plusieurs,
+ouvre-les toutes et clique sur chaque lien (valable 48 h).
+Pour ne plus avoir ces vérifications, Amazon conseille de changer
+ton adresse @kindle.com dans les Paramètres des documents personnels
+(puis de mettre la nouvelle dans les réglages de Kwindle).
+
+Les livres arrivent ensuite sur la Kindle en quelques minutes (Wi-Fi
+activé).
 
 
 TORRENTS
