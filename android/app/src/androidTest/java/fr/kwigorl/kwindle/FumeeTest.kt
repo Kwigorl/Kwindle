@@ -177,9 +177,15 @@ class FumeeTest {
         }
         val sans = essai(verifierHttps = true, dht = false)
         val avec = essai(verifierHttps = false, dht = false)
+        // le tracker doit avoir répondu : des partageurs annoncés, ou un message venant de lui
+        // (et pas une erreur SSL ou réseau)
+        val reponduParLeTracker = avec.third >= 0 || avec.second.any { e ->
+            listOf("BIO", "SSL", "certificate", "unreachable", "pas de réponse", "timed out").none { it in e }
+        }
+        Log.i("rekindle", "tracker HTTPS : avant correctif $sans, après $avec")
         assertTrue(
             "le tracker HTTPS d'Ubuntu doit répondre : $avec (sans le correctif : $sans)",
-            avec.third >= 0 && avec.second.isEmpty(),
+            reponduParLeTracker && avec.second.none { "BIO" in it || "certificate" in it },
         )
     }
 

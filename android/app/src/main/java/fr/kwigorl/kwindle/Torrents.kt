@@ -120,15 +120,25 @@ object Torrents {
         val liste = try { h.trackers() } catch (e: Throwable) { emptyList() }
         for (t in liste) {
             val hote = runCatching { URI(t.url()).host }.getOrNull() ?: t.url()
+            // un tracker est en erreur seulement si toutes ses annonces (IPv4, IPv6…) échouent
+            var marche = false
+            val messages = mutableListOf<String>()
             for (ep in t.endpoints()) {
                 for (ih in listOf(ep.infohashV1(), ep.infohashV2())) {
                     val brut = ih.swig()
                     partageurs = maxOf(partageurs, brut.getScrape_complete())
                     if (ih.fails() > 0) {
-                        val m = ih.message().ifBlank { runCatching { brut.getLast_error().message() }.getOrDefault("") }
-                        erreurs += "$hote (${m.ifBlank { "pas de réponse" }})"
+                        messages += ih.message().ifBlank { runCatching { brut.getLast_error().message() }.getOrDefault("") }
+                    } else if (brut.getStart_sent() || brut.getScrape_complete() >= 0) {
+                        marche = true
                     }
                 }
+            }
+            if (!marche && messages.isNotEmpty()) {
+                // le message le plus parlant : celui du tracker plutôt qu'un « réseau injoignable »
+                val m = messages.filter { it.isNotBlank() }
+                    .sortedBy { if ("unreachable" in it.lowercase()) 1 else 0 }.firstOrNull()
+                erreurs += "$hote (${m ?: "pas de réponse"})"
             }
         }
         return Triple(liste.size, erreurs.distinct(), partageurs)
