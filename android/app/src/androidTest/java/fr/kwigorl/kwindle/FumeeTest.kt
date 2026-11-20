@@ -15,7 +15,9 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.libtorrent4j.AlertListener
 import org.libtorrent4j.Priority
+import org.libtorrent4j.alerts.Alert
 import org.libtorrent4j.SessionManager
 import org.libtorrent4j.SessionParams
 import org.libtorrent4j.SettingsPack
@@ -24,6 +26,7 @@ import org.libtorrent4j.TorrentInfo
 import org.libtorrent4j.swig.torrent_flags_t
 import java.io.File
 import java.net.URL
+import java.util.Collections
 
 /** Tests « de fumée » lancés sur un émulateur par GitHub Actions. */
 @RunWith(AndroidJUnit4::class)
@@ -127,29 +130,55 @@ class FumeeTest {
         assertTrue("le torrent d'Ubuntu n'a plus de tracker HTTPS",
             String(torrent.readBytes(), Charsets.ISO_8859_1).contains("https://"))
 
-        fun essai(certificats: Boolean): Triple<Int, List<String>, Int> {
-            val s = Torrents.nouvelleSession(dossier, dht = false, certificats = certificats)
+        fun essai(certificats: Boolean, dht: Boolean): Triple<Int, List<String>, Int> {
+            val nomEssai = "certificats=$certificats dht=$dht"
+            val journal = Collections.synchronizedList(mutableListOf<String>())
+            val garder = listOf("TRACKER", "LISTEN", "ADD_TORRENT", "ERROR", "DHT_BOOTSTRAP", "EXTERNAL_IP",
+                "PORTMAP", "SCRAPE", "STATE_CHANGED", "PEER_CONNECT", "TORRENT_RESUMED", "TORRENT_PAUSED")
+            val ecoute = object : AlertListener {
+                override fun types(): IntArray? = null
+                override fun alert(alert: Alert<*>) {
+                    val t = alert.type().name
+                    if (garder.any { it in t } && journal.size < 120) journal += "$t: ${alert.message()}"
+                }
+            }
+            val s = Torrents.nouvelleSession(dossier, dht = dht, certificats = certificats, ecoute = ecoute)
             try {
                 s.download(ti, File(dossier, "dl"), null, Array(ti.numFiles()) { Priority.IGNORE }, emptyList(), torrent_flags_t())
-                val limite = System.currentTimeMillis() + 45_000
-                var r = Triple(0, emptyList<String>(), -1)
-                while (System.currentTimeMillis() < limite) {
+                val debut = System.currentTimeMillis()
+                var r = Triple(-1, emptyList<String>(), -1)
+                var dernierLog = 0L
+                while (System.currentTimeMillis() - debut < 40_000) {
                     val h = s.find(ti.infoHash())
-                    if (h != null && h.isValid) {
-                        r = Torrents.etatTrackers(h)
-                        if (r.third >= 0 || r.second.isNotEmpty()) break
+                    val ok = h != null && h.isValid
+                    if (ok) r = Torrents.etatTrackers(h!!)
+                    val t = System.currentTimeMillis()
+                    if (t - dernierLog > 5000) {
+                        dernierLog = t
+                        val st = if (ok) h!!.status() else null
+                        val trk = if (ok) h!!.trackers().joinToString(" | ") { a ->
+                            a.url() + " ep=" + a.endpoints().size + " " + a.endpoints().joinToString(",") { ep ->
+                                val v = ep.infohashV1().swig()
+                                "[fails=${v.getFails()} upd=${v.getUpdating()} msg=${v.getMessage()} err=${v.getLast_error().message()} seeds=${v.getScrape_complete()}]"
+                            }
+                        } else "-"
+                        Log.i("rekindle", "[$nomEssai] ${(t - debut) / 1000}s handle=$ok etat=${st?.state()} " +
+                            "pairs=${st?.numPeers()} connus=${st?.listPeers()} dht=${s.dhtNodes()} " +
+                            "ecoute=${s.listenEndpoints()} trackers=$trk")
                     }
                     Thread.sleep(500)
                 }
-                Log.i("rekindle", "tracker HTTPS (certificats=$certificats) : $r")
+                Log.i("rekindle", "[$nomEssai] résultat : $r")
+                synchronized(journal) { for (l in journal) Log.i("rekindle", "[$nomEssai] alerte $l") }
                 return r
             } finally {
                 s.stop()
             }
         }
         Os.unsetenv("SSL_CERT_FILE")
-        val sans = essai(false)
-        val avec = essai(true)
+        val sans = essai(certificats = false, dht = false)
+        val avec = essai(certificats = true, dht = false)
+        essai(certificats = true, dht = true)
         assertTrue(
             "le tracker HTTPS d'Ubuntu doit répondre : $avec (sans le correctif : $sans)",
             avec.third >= 0 && avec.second.isEmpty(),

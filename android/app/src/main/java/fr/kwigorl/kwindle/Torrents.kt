@@ -1,6 +1,7 @@
 package fr.kwigorl.kwindle
 
 import android.system.Os
+import org.libtorrent4j.AlertListener
 import org.libtorrent4j.Priority
 import org.libtorrent4j.SessionManager
 import org.libtorrent4j.SessionParams
@@ -66,7 +67,12 @@ object Torrents {
      * trackers en HTTPS échouent. On lui donne donc celles du téléphone (SSL_CERT_FILE).
      * [certificats] = false : comportement d'origine (pour les tests).
      */
-    fun nouvelleSession(dossierCerts: File, dht: Boolean = true, certificats: Boolean = true): SessionManager {
+    fun nouvelleSession(
+        dossierCerts: File,
+        dht: Boolean = true,
+        certificats: Boolean = true,
+        ecoute: AlertListener? = null,
+    ): SessionManager {
         val sp = SettingsPack()
         if (certificats) {
             val pem = exporterCertificats(dossierCerts)
@@ -78,6 +84,7 @@ object Torrents {
         }
         if (!dht) sp.setBoolean(settings_pack.bool_types.enable_dht.swigValue(), false)
         val s = SessionManager(false)
+        if (ecoute != null) s.addListener(ecoute)
         s.start(SessionParams(sp))
         return s
     }
