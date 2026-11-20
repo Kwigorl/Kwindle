@@ -51,7 +51,7 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           working-directory: android
-          script: ./gradlew connectedDebugAndroidTest -Pabis=x86_64 > ../tests.log 2>&1 ; R=$? ; adb logcat -d > ../logcat.txt ; exit $R
+          script: ./gradlew connectedDebugAndroidTest -Pabis=x86_64 > ../tests.log 2>&1 ; R=$? ; sh ci/captures.sh > ../captures.log 2>&1 ; adb logcat -d > ../logcat.txt ; exit $R
 
       # Les journaux de GitHub ne sont pas lisibles depuis l'environnement de Claude :
       # on publie le rapport sur la branche « rapport-tests ».
@@ -63,6 +63,7 @@ jobs:
           cp "$GITHUB_WORKSPACE"/compilation.log "$GITHUB_WORKSPACE"/tests.log . 2>/dev/null || true
           [ -f "$GITHUB_WORKSPACE/logcat.txt" ] && grep -E "kwindle|chaquopy|python|AndroidRuntime|TestRunner|libtorrent" "$GITHUB_WORKSPACE/logcat.txt" | tail -n 3000 > logcat.txt || true
           cp -r "$GITHUB_WORKSPACE"/android/app/build/outputs/androidTest-results . 2>/dev/null || true
+          cp -r "$GITHUB_WORKSPACE"/captures "$GITHUB_WORKSPACE"/captures.log . 2>/dev/null || true
           echo "run ${{ github.run_number }} — ${{ github.sha }} — ${{ job.status }}" > RESULTAT.txt
           git init -q && git checkout -q -b rapport-tests && git add -A
           git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" commit -qm "Rapport des tests ${{ github.run_number }}"
