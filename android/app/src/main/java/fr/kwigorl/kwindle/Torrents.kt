@@ -1,6 +1,5 @@
 package fr.kwigorl.kwindle
 
-import android.system.Os
 import org.libtorrent4j.AddTorrentParams
 import org.libtorrent4j.AlertListener
 import org.libtorrent4j.Priority
@@ -17,9 +16,6 @@ import org.libtorrent4j.swig.libtorrent
 import org.libtorrent4j.swig.load_torrent_limits
 import java.io.File
 import java.net.URI
-import java.security.KeyStore
-import java.security.cert.X509Certificate
-import java.util.Base64
 
 /** Récupère uniquement les livres d'un fichier .torrent (libtorrent4j). */
 object Torrents {
@@ -57,60 +53,28 @@ object Torrents {
     private var session: SessionManager? = null
 
     @Synchronized
-    private fun session(dossierCerts: File): SessionManager {
+    private fun session(): SessionManager {
         session?.let { if (it.isRunning) return it }
-        val s = nouvelleSession(dossierCerts)
+        val s = nouvelleSession()
         session = s
         return s
     }
 
     /**
-     * Session libtorrent adaptée à Android. libtorrent cherche les autorités de certification
-     * aux emplacements de Linux, qui n'existent pas sur un téléphone : sans elles, tous les
-     * trackers en HTTPS échouent. On lui donne donc celles du téléphone (SSL_CERT_FILE).
-     * [certificats] = false : comportement d'origine (pour les tests).
+     * Session libtorrent adaptée à Android. L'OpenSSL embarqué par libtorrent4j est compilé
+     * sans accès aux fichiers (no-stdio) : il ne peut lire aucune autorité de certification,
+     * et la vérification des trackers HTTPS échoue toujours (« init fail (BIO routines) »).
+     * On ne vérifie donc pas leur certificat (la connexion reste chiffrée).
+     * [verifierHttps] = true : comportement d'origine de la bibliothèque (pour les tests).
      */
-    fun nouvelleSession(
-        dossierCerts: File,
-        dht: Boolean = true,
-        certificats: Boolean = true,
-        ecoute: AlertListener? = null,
-    ): SessionManager {
+    fun nouvelleSession(dht: Boolean = true, verifierHttps: Boolean = false, ecoute: AlertListener? = null): SessionManager {
         val sp = SettingsPack()
-        if (certificats) {
-            val pem = exporterCertificats(dossierCerts)
-            val ok = pem != null && runCatching { Os.setenv("SSL_CERT_FILE", pem.absolutePath, true) }.isSuccess
-            if (!ok) {
-                // pas d'autorités utilisables : mieux vaut un tracker non vérifié que pas de tracker
-                sp.setBoolean(settings_pack.bool_types.validate_https_trackers.swigValue(), false)
-            }
-        }
+        sp.setBoolean(settings_pack.bool_types.validate_https_trackers.swigValue(), verifierHttps)
         if (!dht) sp.setBoolean(settings_pack.bool_types.enable_dht.swigValue(), false)
         val s = SessionManager(false)
         if (ecoute != null) s.addListener(ecoute)
         s.start(SessionParams(sp))
         return s
-    }
-
-    /** Écrit les autorités de certification du téléphone dans un fichier PEM (pour OpenSSL). */
-    private fun exporterCertificats(dossier: File): File? = try {
-        val ks = KeyStore.getInstance("AndroidCAStore")
-        ks.load(null)
-        val enc = Base64.getMimeEncoder(64, "\n".toByteArray())
-        val sb = StringBuilder()
-        var n = 0
-        for (alias in ks.aliases().toList()) {
-            val c = ks.getCertificate(alias) as? X509Certificate ?: continue
-            sb.append("-----BEGIN CERTIFICATE-----\n").append(enc.encodeToString(c.encoded))
-                .append("\n-----END CERTIFICATE-----\n")
-            n++
-        }
-        if (n == 0) null else {
-            dossier.mkdirs()
-            File(dossier, "autorites.pem").also { it.writeText(sb.toString()) }
-        }
-    } catch (e: Exception) {
-        null
     }
 
     /**
@@ -200,7 +164,7 @@ object Torrents {
         if (voulus.isEmpty()) throw ErreurTorrent("ce torrent ne contient aucun livre (EPUB, MOBI, AZW3 ou PDF)")
         dossier.mkdirs()
 
-        val s = session(dossier.absoluteFile.parentFile ?: dossier)
+        val s = session()
         ajouter(s, params, ti, dossier, priorites, pairs)
 
         val debut = System.currentTimeMillis()

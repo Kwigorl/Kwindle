@@ -1,7 +1,6 @@
 package fr.kwigorl.kwindle
 
 import android.content.Context
-import android.system.Os
 import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
@@ -130,8 +129,8 @@ class FumeeTest {
         assertTrue("le torrent d'Ubuntu n'a plus de tracker HTTPS",
             String(torrent.readBytes(), Charsets.ISO_8859_1).contains("https://"))
 
-        fun essai(certificats: Boolean, dht: Boolean): Triple<Int, List<String>, Int> {
-            val nomEssai = "certificats=$certificats dht=$dht"
+        fun essai(verifierHttps: Boolean, dht: Boolean): Triple<Int, List<String>, Int> {
+            val nomEssai = "verifierHttps=$verifierHttps dht=$dht"
             val journal = Collections.synchronizedList(mutableListOf<String>())
             val garder = listOf("TRACKER", "LISTEN", "ADD_TORRENT", "ERROR", "DHT_BOOTSTRAP", "EXTERNAL_IP",
                 "PORTMAP", "SCRAPE", "STATE_CHANGED", "PEER_CONNECT", "TORRENT_RESUMED", "TORRENT_PAUSED")
@@ -142,7 +141,7 @@ class FumeeTest {
                     if (garder.any { it in t } && journal.size < 120) journal += "$t: ${alert.message()}"
                 }
             }
-            val s = Torrents.nouvelleSession(dossier, dht = dht, certificats = certificats, ecoute = ecoute)
+            val s = Torrents.nouvelleSession(dht = dht, verifierHttps = verifierHttps, ecoute = ecoute)
             try {
                 val p = Torrents.charger(torrent)
                 Torrents.ajouter(s, p, p.torrentInfo!!, File(dossier, "dl"), Array(ti.numFiles()) { Priority.IGNORE }, emptyList())
@@ -176,10 +175,8 @@ class FumeeTest {
                 s.stop()
             }
         }
-        Os.unsetenv("SSL_CERT_FILE")
-        val sans = essai(certificats = false, dht = false)
-        val avec = essai(certificats = true, dht = false)
-        essai(certificats = true, dht = true)
+        val sans = essai(verifierHttps = true, dht = false)
+        val avec = essai(verifierHttps = false, dht = false)
         assertTrue(
             "le tracker HTTPS d'Ubuntu doit répondre : $avec (sans le correctif : $sans)",
             avec.third >= 0 && avec.second.isEmpty(),
