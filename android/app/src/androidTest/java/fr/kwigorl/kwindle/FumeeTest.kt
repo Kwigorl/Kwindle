@@ -1,6 +1,8 @@
 package fr.kwigorl.kwindle
 
 import android.content.Context
+import android.system.Os
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.test.core.app.ActivityScenario
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -21,6 +23,7 @@ import org.libtorrent4j.TcpEndpoint
 import org.libtorrent4j.TorrentInfo
 import org.libtorrent4j.swig.torrent_flags_t
 import java.io.File
+import java.net.URL
 
 /** Tests « de fumée » lancés sur un émulateur par GitHub Actions. */
 @RunWith(AndroidJUnit4::class)
@@ -97,7 +100,7 @@ class FumeeTest {
             // … et Rekindle ne doit récupérer que les livres
             val dl = File(ctx.cacheDir, "test/recu")
             dl.deleteRecursively()
-            val recus = Torrents.telecharger(torrent, dl, { false }, listOf(TcpEndpoint("127.0.0.1", 43000))) { _, _, _, _ -> }
+            val recus = Torrents.telecharger(torrent, dl, { false }, listOf(TcpEndpoint("127.0.0.1", 43000))) { _ -> }
             assertEquals(setOf("Livret.pdf", "Scenario.epub"), recus.map { it.name }.toSet())
             for (f in recus) {
                 assertArrayEquals(File(base, "Pack JDR test/${f.name}").readBytes(), f.readBytes())
@@ -106,6 +109,50 @@ class FumeeTest {
         } finally {
             partageur.stop()
         }
+    }
+
+    /**
+     * Les trackers en HTTPS (très courants) doivent répondre : sur Android, libtorrent ne trouve
+     * pas tout seul les autorités de certification. Essai réel avec le tracker HTTPS d'Ubuntu.
+     */
+    @Test
+    fun trackerHttps() {
+        val dossier = File(ctx.cacheDir, "test/ubuntu").apply { deleteRecursively(); mkdirs() }
+        val liste = URL("https://releases.ubuntu.com/noble/").readText()
+        val nom = Regex("""href="([^"/]*desktop-amd64\.iso\.torrent)"""").find(liste)?.groupValues?.get(1)
+        assertTrue("torrent Ubuntu introuvable", nom != null)
+        val torrent = File(dossier, "ubuntu.torrent")
+        URL("https://releases.ubuntu.com/noble/$nom").openStream().use { i -> torrent.outputStream().use { i.copyTo(it) } }
+        val ti = TorrentInfo(torrent)
+        assertTrue("le torrent d'Ubuntu n'a plus de tracker HTTPS", ti.trackers().any { it.url().startsWith("https://") })
+
+        fun essai(certificats: Boolean): Triple<Int, List<String>, Int> {
+            val s = Torrents.nouvelleSession(dossier, dht = false, certificats = certificats)
+            try {
+                s.download(ti, File(dossier, "dl"), null, Array(ti.numFiles()) { Priority.IGNORE }, emptyList(), torrent_flags_t())
+                val limite = System.currentTimeMillis() + 45_000
+                var r = Triple(0, emptyList<String>(), -1)
+                while (System.currentTimeMillis() < limite) {
+                    val h = s.find(ti.infoHash())
+                    if (h != null && h.isValid) {
+                        r = Torrents.etatTrackers(h)
+                        if (r.third >= 0 || r.second.isNotEmpty()) break
+                    }
+                    Thread.sleep(500)
+                }
+                Log.i("rekindle", "tracker HTTPS (certificats=$certificats) : $r")
+                return r
+            } finally {
+                s.stop()
+            }
+        }
+        Os.unsetenv("SSL_CERT_FILE")
+        val sans = essai(false)
+        val avec = essai(true)
+        assertTrue(
+            "le tracker HTTPS d'Ubuntu doit répondre : $avec (sans le correctif : $sans)",
+            avec.third >= 0 && avec.second.isEmpty(),
+        )
     }
 
     @Test

@@ -197,19 +197,25 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
         TravailService.maj(ctx, "Torrent : recherche de sources…")
         var dernier = 0L
         val recus = try {
-            Torrents.telecharger(el.fichier, File(dossierTorrents, el.id.toString()), { arret.get() }) { frac, sources, _, verif ->
+            Torrents.telecharger(el.fichier, File(dossierTorrents, el.id.toString()), { arret.get() }) { e ->
                 val t = System.currentTimeMillis()
                 if (t - dernier > 400) {
                     dernier = t
-                    val pc = (frac * 100).toInt()
+                    val pc = (e.fraction * 100).toInt()
+                    val min = if (e.secondes >= 60) " (${e.secondes / 60} min)" else ""
                     val txt = when {
-                        verif -> "Vérification…"
-                        sources == 0 && frac == 0f -> "Recherche de sources…"
-                        else -> "⇣ $pc %  ·  $sources source${if (sources > 1) "s" else ""}"
+                        e.verification -> "Vérification…"
+                        e.sources > 0 || e.fraction > 0f ->
+                            "⇣ $pc %  ·  ${e.sources} source${if (e.sources > 1) "s" else ""}"
+                        e.connues > 0 -> "Connexion à ${e.connues} source${if (e.connues > 1) "s" else ""}…$min"
+                        e.secondes >= 20 && e.trackers > 0 && e.erreursTrackers.size >= e.trackers ->
+                            "Tracker injoignable, recherche…$min"
+                        else -> "Recherche de sources…$min"
                     }
+                    val lignes = e.details().map { "info" to it }
                     viewModelScope.launch(Dispatchers.Main) {
                         val i = elements.indexOfFirst { it.id == el.id }
-                        if (i >= 0) elements[i] = elements[i].copy(statut = txt, progression = frac)
+                        if (i >= 0) elements[i] = elements[i].copy(statut = txt, progression = e.fraction, lignes = lignes)
                     }
                     TravailService.maj(ctx, "Torrent : $pc %")
                 }
@@ -219,7 +225,8 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
             maj(el.id) {
                 it.copy(
                     phase = Phase.ERREUR, statut = if (arrete) "■ Arrêté" else "✗ Échec", ton = Ton.KO, progression = null,
-                    lignes = if (arrete) it.lignes else listOf("erreur" to "Torrent : ${e.message}"),
+                    lignes = if (arrete) it.lignes
+                    else listOf("erreur" to "Torrent : ${e.message}") + e.details.map { d -> "info" to d },
                 )
             }
             return emptyList()
