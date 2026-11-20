@@ -9,7 +9,7 @@ import java.io.File
 
 /** Appels au moteur Python (le même que la version PC). */
 object Moteur {
-    private val module: PyObject by lazy { Python.getInstance().getModule("kwindle_android") }
+    private val module: PyObject by lazy { Python.getInstance().getModule("rekindle_android") }
 
     @Volatile
     private var pret = false

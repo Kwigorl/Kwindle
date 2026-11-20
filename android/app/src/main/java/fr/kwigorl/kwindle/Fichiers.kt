@@ -62,13 +62,13 @@ object Fichiers {
         else -> "application/octet-stream"
     }
 
-    /** Range une copie dans Téléchargements/Kwindle (visible dans l'appli Fichiers). */
+    /** Range une copie dans Téléchargements/Rekindle (visible dans l'appli Fichiers). */
     fun enregistrer(context: Context, f: File): Boolean {
         return try {
             val valeurs = ContentValues().apply {
                 put(MediaStore.Downloads.DISPLAY_NAME, f.name)
                 put(MediaStore.Downloads.MIME_TYPE, mime(f.name))
-                put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/Kwindle")
+                put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/Rekindle")
             }
             val uri = context.contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, valeurs)
                 ?: return false

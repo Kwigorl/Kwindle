@@ -10,12 +10,12 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
-        android:name=".KwindleApp"
+        android:name=".RekindleApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher"
-        android:label="Kwindle"
-        android:theme="@style/Theme.Kwindle">
+        android:label="Rekindle"
+        android:theme="@style/Theme.Rekindle">
 
         <activity
             android:name=".MainActivity"

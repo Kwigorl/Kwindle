@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Kwindle — réglages et envoi vers l'adresse Send to Kindle."""
+"""Rekindle — réglages et envoi vers l'adresse Send to Kindle."""
 
 import json
 import os
@@ -11,14 +11,15 @@ from collections import OrderedDict
 from email.message import EmailMessage
 from email.utils import formatdate, make_msgid
 
-from kwindle_moteur import nom_fichier_sur
+from rekindle_moteur import nom_fichier_sur
 
 try:
     import keyring
 except Exception:
     keyring = None
 
-SERVICE = "Kwindle"
+SERVICE = "Rekindle"
+ANCIENS_NOMS = ("Kwindle", "Kindlixo")
 
 FOURNISSEURS = OrderedDict([
     ("Gmail", dict(serveur="smtp.gmail.com", port=465, securite="SSL",
@@ -56,14 +57,14 @@ def dossier_config():
         base = os.environ.get("APPDATA") or os.path.expanduser("~")
     else:
         base = os.environ.get("XDG_CONFIG_HOME") or os.path.expanduser("~/.config")
-    d = os.path.join(base, "Kwindle")
+    d = os.path.join(base, "Rekindle")
     os.makedirs(d, exist_ok=True)
     return d
 
 
 def dossier_documents():
     docs = os.path.join(os.path.expanduser("~"), "Documents")
-    return os.path.join(docs if os.path.isdir(docs) else os.path.expanduser("~"), "Kwindle")
+    return os.path.join(docs if os.path.isdir(docs) else os.path.expanduser("~"), "Rekindle")
 
 
 DEFAUTS = {
@@ -86,17 +87,19 @@ class Reglages(dict):
         self.chemin = os.path.join(dossier_config(), "reglages.json")
         source = self.chemin
         if not os.path.exists(source):
-            # l'appli s'appelait Kindlixo : on reprend ses réglages s'il y en a
-            ancien = os.path.join(os.path.dirname(dossier_config()), "Kindlixo", "reglages.json")
-            if os.path.exists(ancien):
-                source = ancien
+            # l'appli s'appelait Kwindle, et Kindlixo avant : on reprend leurs réglages s'il y en a
+            for ancien_nom in ANCIENS_NOMS:
+                ancien = os.path.join(os.path.dirname(dossier_config()), ancien_nom, "reglages.json")
+                if os.path.exists(ancien):
+                    source = ancien
+                    break
         try:
             with open(source, encoding="utf-8") as f:
                 self.update(json.load(f))
         except (OSError, ValueError):
             pass
-        ancien_defaut = os.path.join(os.path.dirname(dossier_documents()), "Kindlixo")
-        if not self.get("dossier_sortie") or self.get("dossier_sortie") == ancien_defaut:
+        anciens_defauts = [os.path.join(os.path.dirname(dossier_documents()), n) for n in ANCIENS_NOMS]
+        if not self.get("dossier_sortie") or self.get("dossier_sortie") in anciens_defauts:
             self["dossier_sortie"] = dossier_documents()
 
     def enregistrer(self):
@@ -109,7 +112,7 @@ class Reglages(dict):
 
     def mot_de_passe(self):
         if keyring and self.login:
-            for service in (SERVICE, "Kindlixo"):     # ancien nom de l'appli
+            for service in (SERVICE,) + ANCIENS_NOMS:     # anciens noms de l'appli
                 try:
                     mdp = keyring.get_password(service, self.login)
                     if mdp:
@@ -269,8 +272,8 @@ def envoyer_lot(cfg, livres):
     if len(livres) == 1:
         msg["Subject"] = livres[0][1] or "Livre"
     else:
-        msg["Subject"] = "Kwindle : %d livres" % len(livres)
-    msg.set_content("Livres envoyés par Kwindle :\n" + "\n".join(
+        msg["Subject"] = "Rekindle : %d livres" % len(livres)
+    msg.set_content("Livres envoyés par Rekindle :\n" + "\n".join(
         "- %s%s" % (titre or os.path.basename(chemin), " (%s)" % auteur if auteur else "")
         for chemin, titre, auteur in livres) + "\n")
     noms = set()

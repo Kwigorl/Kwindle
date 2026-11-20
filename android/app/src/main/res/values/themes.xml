@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.Kwindle" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="Theme.Rekindle" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowBackground">@color/fond</item>
+        <item name="android:statusBarColor">@color/marine</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 </resources>

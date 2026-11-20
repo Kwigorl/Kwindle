@@ -52,7 +52,7 @@ adb shell input keyevent KEYCODE_BACK
 sleep 1
 
 # réglages
-toucher 'text="⚙"'
+toucher 'content-desc="Réglages"'
 sleep 2
 adb exec-out screencap -p > $D/5_reglages.png
 ls -la $D

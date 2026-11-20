@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Kwindle — moteur de réparation / conversion.
+Rekindle — moteur de réparation / conversion.
 
 Prend un livre (EPUB, ou MOBI/AZW3 même renommé en .epub), corrige tout ce qui
 fait refuser un fichier par Send to Kindle, et produit un EPUB propre.
@@ -1597,12 +1597,12 @@ class Reparateur:
         if self.epub3 and nav is None:
             entrees = self.entrees_depuis_ncx(ncx) if ncx else []
             entrees = entrees or self.entrees_depuis_spine()
-            chemin_nav = posixpath.join(self.dossier_opf, "nav_kwindle.xhtml")
+            chemin_nav = posixpath.join(self.dossier_opf, "nav_rekindle.xhtml")
             self.f[chemin_nav] = fabriquer_nav(entrees, self.titre, chemin_nav, self.langue)
-            item = etree.SubElement(self.manifest, q(OPF, "item"), id="nav_kwindle",
+            item = etree.SubElement(self.manifest, q(OPF, "item"), id="nav_rekindle",
                                     href=self.href_item(chemin_nav), properties="nav",
                                     **{"media-type": "application/xhtml+xml"})
-            self.items["nav_kwindle"] = (item, chemin_nav)
+            self.items["nav_rekindle"] = (item, chemin_nav)
             self.docs[chemin_nav] = parser_xml_strict(self.f[chemin_nav].decode("utf-8").split("\n", 2)[2])
             self.doctypes[chemin_nav] = DOCTYPE_EPUB3
             self.r.corrige("Sommaire EPUB 3 (nav) absent : créé.")
@@ -1613,12 +1613,12 @@ class Reparateur:
                 chemin_ncx = chemin_ncx.replace(".ncx", "_k.ncx")
             uid = self.identifiants()[0] if self.identifiants() else "inconnu"
             self.f[chemin_ncx] = fabriquer_ncx(entrees, uid, self.titre, chemin_ncx)
-            etree.SubElement(self.manifest, q(OPF, "item"), id="ncx_kwindle",
+            etree.SubElement(self.manifest, q(OPF, "item"), id="ncx_rekindle",
                              href=self.href_item(chemin_ncx), **{"media-type": "application/x-dtbncx+xml"})
-            self.items["ncx_kwindle"] = (self.manifest[-1], chemin_ncx)
-            self.spine.set("toc", "ncx_kwindle")
+            self.items["ncx_rekindle"] = (self.manifest[-1], chemin_ncx)
+            self.spine.set("toc", "ncx_rekindle")
             self.r.corrige("Sommaire (toc.ncx) absent : créé à partir des chapitres.")
-        self.chemin_ncx = ncx if ncx else (self.items.get("ncx_kwindle", (None, None))[1])
+        self.chemin_ncx = ncx if ncx else (self.items.get("ncx_rekindle", (None, None))[1])
         self.rebuild_lower()
 
     # --------------------------------------------- images (format / poids)

@@ -8,48 +8,51 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -59,30 +62,47 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.coerceIn
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -90,20 +110,96 @@ import androidx.core.content.IntentCompat
 import org.json.JSONObject
 import java.io.File
 
-private val Encre = Color(0xFF1F3B4D)
-private val Orange = Color(0xFFE6781E)
+// ====================================================================== couleurs et polices
+
+val Marine = Color(0xFF0A2E4A)
+private val MarineClair = Color(0xFF123E5F)
+private val Ocean = Color(0xFF127C9E)
+private val Corail = Color(0xFFFF6B57)
+private val CorailClair = Color(0xFFFF8A78)
+private val Creme = Color(0xFFF4F1E8)
+private val Brume = Color(0xFFA9C7DA)
 private val Vert = Color(0xFF1D7A3A)
+private val Orange = Color(0xFFB35C00)
 private val Rouge = Color(0xFFC0262D)
-private val Bleu = Color(0xFF2459A6)
+private val Bleu = Color(0xFF0E6A86)
+
+data class Palette(
+    val fond: Color,
+    val carte: Color,
+    val bordure: Color,
+    val bordureKo: Color,
+    val texte: Color,
+    val texteDoux: Color,
+    val vagueVide: Color,
+    val bouton: Color,
+    val texteBouton: Color,
+    val puces: Map<String, Pair<Color, Color>>,   // fond, texte
+)
+
+private val PaletteClaire = Palette(
+    fond = Color(0xFFE9F6FA), carte = Color.White, bordure = Color(0xFFCFE6EE), bordureKo = Color(0xFFF3D3D3),
+    texte = Marine, texteDoux = Color(0xFF3F5566), vagueVide = Color(0xFFCFE6EE),
+    bouton = Marine, texteBouton = Creme,
+    puces = mapOf(
+        "envoye" to (Color(0xFFD7F0F6) to Color(0xFF0B5A70)),
+        "repare" to (Color(0xFFFFE2DC) to Color(0xFFA8321F)),
+        "ko" to (Color(0xFFFCE4E4) to Color(0xFF9B1C1C)),
+        "encours" to (Color(0xFFDCEFF5) to Color(0xFF0E6A86)),
+        "neutre" to (Color(0xFFE4ECF1) to Color(0xFF34495A)),
+        "torrent" to (Color(0xFFF6E7C8) to Color(0xFF6E4A00)),
+    ),
+)
+
+private val PaletteSombre = Palette(
+    fond = Color(0xFF06213A), carte = Color(0xFF0D3050), bordure = Color(0xFF1B4868), bordureKo = Color(0xFF6B2A2A),
+    texte = Color(0xFFE8F1F6), texteDoux = Brume, vagueVide = Color(0xFF1B4868),
+    bouton = Ocean, texteBouton = Color.White,
+    puces = mapOf(
+        "envoye" to (Color(0xFF0F4B5E) to Color(0xFFBDEBF7)),
+        "repare" to (Color(0xFF5A2A22) to Color(0xFFFFC9BE)),
+        "ko" to (Color(0xFF5A1F1F) to Color(0xFFFFC4C4)),
+        "encours" to (Color(0xFF123F5C) to Color(0xFFA9DDEE)),
+        "neutre" to (Color(0xFF1E3D55) to Color(0xFFC9D8E3)),
+        "torrent" to (Color(0xFF4A3A14) to Color(0xFFF6DFA8)),
+    ),
+)
+
+val LocalPalette = staticCompositionLocalOf { PaletteClaire }
+
+val Nunito = FontFamily(
+    Font(R.font.nunito_medium, FontWeight.Normal),
+    Font(R.font.nunito_medium, FontWeight.Medium),
+    Font(R.font.nunito_bold, FontWeight.SemiBold),
+    Font(R.font.nunito_bold, FontWeight.Bold),
+    Font(R.font.nunito_extrabold, FontWeight.ExtraBold),
+)
+val Lilita = FontFamily(Font(R.font.lilita_one))
+
+private fun typographie(): Typography {
+    val t = Typography()
+    fun TextStyle.n() = copy(fontFamily = Nunito)
+    return Typography(
+        displayLarge = t.displayLarge.n(), displayMedium = t.displayMedium.n(), displaySmall = t.displaySmall.n(),
+        headlineLarge = t.headlineLarge.n(), headlineMedium = t.headlineMedium.n(), headlineSmall = t.headlineSmall.n(),
+        titleLarge = t.titleLarge.n().copy(fontWeight = FontWeight.ExtraBold),
+        titleMedium = t.titleMedium.n().copy(fontWeight = FontWeight.ExtraBold),
+        titleSmall = t.titleSmall.n().copy(fontWeight = FontWeight.Bold),
+        bodyLarge = t.bodyLarge.n(), bodyMedium = t.bodyMedium.n(), bodySmall = t.bodySmall.n(),
+        labelLarge = t.labelLarge.n().copy(fontWeight = FontWeight.Bold),
+        labelMedium = t.labelMedium.n(), labelSmall = t.labelSmall.n(),
+    )
+}
 
 class MainActivity : ComponentActivity() {
-    private val vm: KwindleVM by viewModels()
+    private val vm: RekindleVM by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        // barre d'état claire sur l'en-tête bleu marine
+        enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT))
         if (savedInstanceState == null) recevoir(intent)
-        setContent { ThemeKwindle { Racine(vm) } }
+        setContent { ThemeRekindle { Racine(vm) } }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -127,20 +223,31 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ThemeKwindle(contenu: @Composable () -> Unit) {
-    val couleurs = if (isSystemInDarkTheme()) {
-        darkColorScheme(primary = Color(0xFF9CC3DA), secondary = Orange, tertiary = Orange)
+fun ThemeRekindle(contenu: @Composable () -> Unit) {
+    val sombre = isSystemInDarkTheme()
+    val pal = if (sombre) PaletteSombre else PaletteClaire
+    val couleurs = if (sombre) {
+        darkColorScheme(
+            primary = Color(0xFF8FD0E6), onPrimary = Marine, secondary = Corail, onSecondary = Marine,
+            tertiary = Corail, background = pal.fond, surface = pal.fond, onSurface = pal.texte,
+            surfaceVariant = pal.carte, onSurfaceVariant = pal.texteDoux, surfaceContainerHigh = pal.carte,
+            outline = Color(0xFF5B7488), error = Color(0xFFFFB4AB),
+        )
     } else {
         lightColorScheme(
-            primary = Encre, secondary = Orange, tertiary = Orange,
-            background = Color(0xFFF7F4EE), surface = Color(0xFFF7F4EE),
+            primary = Marine, onPrimary = Creme, secondary = Corail, onSecondary = Marine,
+            tertiary = Corail, background = pal.fond, surface = pal.fond, onSurface = pal.texte,
+            surfaceVariant = Color(0xFFDCEFF5), onSurfaceVariant = pal.texteDoux,
+            surfaceContainerHigh = Color.White, outline = Color(0xFF8AA4B8), error = Rouge,
         )
     }
-    MaterialTheme(colorScheme = couleurs, content = contenu)
+    CompositionLocalProvider(LocalPalette provides pal) {
+        MaterialTheme(colorScheme = couleurs, typography = typographie(), content = contenu)
+    }
 }
 
 @Composable
-fun Racine(vm: KwindleVM) {
+fun Racine(vm: RekindleVM) {
     var reglagesOuverts by rememberSaveable { mutableStateOf(false) }
     if (reglagesOuverts) {
         BackHandler { reglagesOuverts = false }
@@ -173,12 +280,26 @@ fun ouvrirLien(context: Context, lien: String) {
 private fun titreAffiche(el: Element): String =
     if (el.titre != null) el.titre + (el.auteur?.let { "  —  $it" } ?: "") else el.nom
 
+private fun pluriel(n: Int, mot: String) = "$n $mot" + if (n > 1) "s" else ""
+
+/** « Rekin » en corail, « dle » dans la couleur du texte. */
+@Composable
+fun MotRekindle(taille: TextUnit, couleur: Color, modifier: Modifier = Modifier) {
+    Text(
+        buildAnnotatedString {
+            withStyle(SpanStyle(color = Corail)) { append("Rekin") }
+            append("dle")
+        },
+        fontFamily = Lilita, fontSize = taille, color = couleur, modifier = modifier,
+    )
+}
+
 // ====================================================================== écran principal
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EcranPrincipal(vm: KwindleVM, ouvrirReglages: () -> Unit) {
+fun EcranPrincipal(vm: RekindleVM, ouvrirReglages: () -> Unit) {
     val ctx = LocalContext.current
+    val pal = LocalPalette.current
     val choisir = rememberLauncherForActivityResult(ActivityResultContracts.OpenMultipleDocuments()) { uris ->
         vm.ajouter(uris)
     }
@@ -205,47 +326,61 @@ fun EcranPrincipal(vm: KwindleVM, ouvrirReglages: () -> Unit) {
     }
     var detail by remember { mutableStateOf<Long?>(null) }
 
+    // ce que l'en-tête raconte
+    val hauts = vm.elements.filter { it.parent == null }
+    val aFaire = hauts.filter { it.phase in setOf(Phase.ATTENTE, Phase.ERREUR, Phase.ECHEC_ENVOI) ||
+        (vm.envoyer && it.phase == Phase.PRET) }
+    val nLivres = aFaire.count { it.type == Type.LIVRE }
+    val nTorrents = aFaire.count { it.type == Type.TORRENT }
+    val enAttente = listOfNotNull(
+        if (nLivres > 0) pluriel(nLivres, "livre") else null,
+        if (nTorrents > 0) pluriel(nTorrents, "torrent") else null,
+    ).joinToString(" et ")
+    val (surTitre, titre) = when {
+        vm.enCours -> "Au travail" to (if (vm.envoyer) "Réparation et envoi…" else "Réparation…")
+        hauts.isEmpty() -> "Bienvenue" to "Aucun livre pour l'instant"
+        aFaire.isNotEmpty() -> (if (vm.envoyer) "Prêt à envoyer" else "Prêt à réparer") to "$enAttente en attente"
+        else -> "Tout est fait" to (pluriel(hauts.size, "élément") + " traité" + if (hauts.size > 1) "s" else "")
+    }
+    val kindle = vm.reglages.kindle
+    val sousTitre = if (kindle.isNotBlank()) "vers $kindle" else "Adresse Kindle à régler ›"
+
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text("Kwindle", fontWeight = FontWeight.Bold)
-                        Text(
-                            "Récupère, répare et envoie tes livres",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = ouvrirReglages) { Text("⚙", fontSize = 24.sp) }
-                },
-            )
-        },
-        floatingActionButton = {
-            if (!vm.enCours) {
-                ExtendedFloatingActionButton(
-                    onClick = { choisir.launch(arrayOf("*/*")) },
-                    icon = { Icon(painterResource(R.drawable.ic_ajouter), contentDescription = null) },
-                    text = { Text("Ajouter") },
-                    containerColor = Orange,
-                    contentColor = Color.White,
-                )
-            }
-        },
-        bottomBar = { BarreBas(vm, lancer) },
+        containerColor = pal.fond,
+        bottomBar = { BarreBas(vm, lancer) { choisir.launch(arrayOf("*/*")) } },
         snackbarHost = { SnackbarHost(snack) },
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
     ) { marges ->
-        if (vm.elements.isEmpty()) {
-            Vide(Modifier.padding(marges))
-        } else {
-            LazyColumn(
-                modifier = Modifier.padding(marges).fillMaxSize(),
-                contentPadding = PaddingValues(start = 12.dp, top = 8.dp, end = 12.dp, bottom = 96.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-            ) {
-                items(vm.elements, key = { it.id }) { el -> CarteElement(el) { detail = el.id } }
+        Column(Modifier.padding(marges).fillMaxSize()) {
+            EnTete(surTitre, titre, sousTitre, if (kindle.isBlank()) ouvrirReglages else null, ouvrirReglages)
+            if (vm.elements.isEmpty()) {
+                Vide(Modifier.weight(1f))
+            } else {
+                Row(
+                    Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp, top = 4.dp, bottom = 10.dp),
+                    verticalAlignment = Alignment.Bottom,
+                ) {
+                    Text(
+                        "MES LIVRES", fontWeight = FontWeight.ExtraBold, fontSize = 14.sp, letterSpacing = 1.5.sp,
+                        color = pal.texte, modifier = Modifier.weight(1f),
+                    )
+                    val nl = hauts.count { it.type == Type.LIVRE } + vm.elements.count { it.parent != null }
+                    val nt = hauts.count { it.type == Type.TORRENT }
+                    Text(
+                        listOfNotNull(
+                            if (nl > 0) pluriel(nl, "livre") else null,
+                            if (nt > 0) pluriel(nt, "torrent") else null,
+                        ).joinToString(" · "),
+                        fontSize = 13.sp, color = pal.texteDoux,
+                    )
+                }
+                LazyColumn(
+                    modifier = Modifier.weight(1f).fillMaxWidth(),
+                    contentPadding = PaddingValues(start = 20.dp, top = 0.dp, end = 20.dp, bottom = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
+                    items(vm.elements, key = { it.id }) { el -> CarteElement(el) { detail = el.id } }
+                }
             }
         }
     }
@@ -263,87 +398,261 @@ fun EcranPrincipal(vm: KwindleVM, ouvrirReglages: () -> Unit) {
 }
 
 @Composable
+fun EnTete(surTitre: String, titre: String, sousTitre: String, onSousTitre: (() -> Unit)?, ouvrirReglages: () -> Unit) {
+    val pal = LocalPalette.current
+    Box(Modifier.fillMaxWidth().background(Marine)) {
+        Column(
+            Modifier.fillMaxWidth().statusBarsPadding()
+                .padding(start = 20.dp, end = 16.dp, top = 12.dp, bottom = 40.dp),
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    Modifier.size(42.dp).clip(RoundedCornerShape(12.dp)).background(MarineClair),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Image(painterResource(R.drawable.tete), contentDescription = null, modifier = Modifier.size(32.dp, 36.dp))
+                }
+                Spacer(Modifier.width(10.dp))
+                MotRekindle(30.sp, Creme, Modifier.weight(1f))
+                IconButton(
+                    onClick = ouvrirReglages,
+                    modifier = Modifier.size(44.dp).clip(RoundedCornerShape(14.dp)).background(MarineClair),
+                ) {
+                    Icon(
+                        painterResource(R.drawable.ic_reglages), contentDescription = "Réglages",
+                        tint = Creme, modifier = Modifier.size(22.dp),
+                    )
+                }
+            }
+            Spacer(Modifier.height(18.dp))
+            Text(
+                surTitre.uppercase(), color = CorailClair, fontSize = 12.sp,
+                fontWeight = FontWeight.ExtraBold, letterSpacing = 1.5.sp,
+            )
+            Text(
+                titre, color = Color.White, fontSize = 26.sp, lineHeight = 30.sp, fontWeight = FontWeight.ExtraBold,
+                maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(end = 56.dp),
+            )
+            Text(
+                sousTitre, color = if (onSousTitre != null) CorailClair else Brume, fontSize = 13.sp,
+                maxLines = 1, overflow = TextOverflow.Ellipsis,
+                modifier = if (onSousTitre != null) Modifier.clickable(onClick = onSousTitre) else Modifier,
+            )
+        }
+        Image(
+            painterResource(R.drawable.aileron), contentDescription = null,
+            modifier = Modifier.align(Alignment.BottomEnd).padding(end = 34.dp, bottom = 12.dp).size(40.dp, 34.dp),
+        )
+        Vague(pal.fond, Modifier.align(Alignment.BottomStart).fillMaxWidth().height(26.dp))
+    }
+}
+
+/** Bord inférieur en vagues. */
+@Composable
+fun Vague(couleur: Color, modifier: Modifier) {
+    Canvas(modifier) {
+        val periode = 48.dp.toPx()
+        val milieu = size.height * 0.5f
+        val chemin = Path().apply {
+            moveTo(0f, milieu)
+            var x = 0f
+            var haut = true
+            while (x < size.width) {
+                quadraticTo(x + periode / 4, if (haut) 0f else size.height, x + periode / 2, milieu)
+                x += periode / 2
+                haut = !haut
+            }
+            lineTo(x, size.height + 1)
+            lineTo(0f, size.height + 1)
+            close()
+        }
+        drawPath(chemin, couleur)
+    }
+}
+
+@Composable
 fun Vide(modifier: Modifier) {
+    val pal = LocalPalette.current
     Column(
-        modifier = modifier.fillMaxSize().padding(32.dp),
+        modifier = modifier.fillMaxWidth().padding(horizontal = 32.dp, vertical = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
-        Image(painterResource(R.drawable.logo), contentDescription = null, modifier = Modifier.size(120.dp))
-        Spacer(Modifier.height(20.dp))
+        Image(
+            painterResource(R.drawable.mascotte), contentDescription = "Le requin lecteur de Rekindle",
+            modifier = Modifier.size(150.dp, 158.dp),
+        )
+        Spacer(Modifier.height(18.dp))
         Text(
             "Ajoute un livre ou un fichier .torrent",
-            style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleMedium, color = pal.texte, textAlign = TextAlign.Center,
         )
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(6.dp))
         Text(
-            "Bouton « Ajouter », ou depuis une autre appli : Partager › Kwindle.\n" +
-                "EPUB, MOBI, AZW3, PDF et .torrent.",
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
+            "Bouton +, ou depuis une autre appli : Partager › Rekindle.\nEPUB, MOBI, AZW3, PDF et .torrent.",
+            style = MaterialTheme.typography.bodyMedium, color = pal.texteDoux, textAlign = TextAlign.Center,
         )
     }
+}
+
+private fun cleDePuce(el: Element): String = when {
+    el.ton == Ton.EN_COURS -> "encours"
+    el.ton == Ton.KO -> "ko"
+    el.phase == Phase.ENVOYE -> "envoye"
+    el.phase == Phase.PRET || el.phase == Phase.TELECHARGE -> "repare"
+    else -> "neutre"
+}
+
+private fun texteDePuce(el: Element): String {
+    var t = el.statut.trimStart('✓', '✗', '■', ' ')
+    if (el.phase == Phase.PRET) {
+        val n = el.lignes.count { it.first == "corrige" }
+        if (n > 0) t += " · " + pluriel(n, "correction")
+    }
+    return t
+}
+
+@Composable
+fun Puce(texte: String, cle: String, modifier: Modifier = Modifier) {
+    val (fond, encre) = LocalPalette.current.puces.getValue(cle)
+    Text(
+        texte, color = encre, fontSize = 12.sp, fontWeight = FontWeight.Bold, maxLines = 1,
+        modifier = modifier.clip(RoundedCornerShape(50)).background(fond).padding(horizontal = 10.dp, vertical = 4.dp),
+    )
 }
 
 @Composable
 fun CarteElement(el: Element, onClick: () -> Unit) {
-    val couleur = when (el.ton) {
-        Ton.OK -> Vert
-        Ton.KO -> Rouge
-        Ton.EN_COURS -> Bleu
-        Ton.NEUTRE -> MaterialTheme.colorScheme.outline
-    }
-    Card(
-        modifier = Modifier
+    val pal = LocalPalette.current
+    val ko = el.ton == Ton.KO
+    Column(
+        Modifier
             .fillMaxWidth()
-            .padding(start = if (el.parent != null) 28.dp else 0.dp)
-            .clickable(onClick = onClick),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+            .padding(start = if (el.parent != null) 20.dp else 0.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .background(pal.carte)
+            .border(1.5.dp, if (ko) pal.bordureKo else pal.bordure, RoundedCornerShape(20.dp))
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 13.dp),
     ) {
-        Row(Modifier.padding(14.dp), verticalAlignment = Alignment.CenterVertically) {
-            Box(Modifier.size(10.dp).clip(CircleShape).background(couleur))
-            Spacer(Modifier.width(12.dp))
+        val p = el.progression
+        val sousTitre = when {
+            el.type == Type.TORRENT -> null
+            el.auteur != null -> el.auteur
+            el.format.isNotBlank() -> el.format
+            else -> null
+        }
+        Row(verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
                 Text(
-                    (if (el.parent != null) "↳ " else "") + titreAffiche(el),
-                    fontWeight = FontWeight.SemiBold,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
+                    el.titre ?: el.nom, color = pal.texte, fontSize = 16.sp, fontWeight = FontWeight.ExtraBold,
+                    maxLines = 2, overflow = TextOverflow.Ellipsis,
                 )
-                Text(
-                    listOf(el.format, el.statut).filter { it.isNotBlank() }.joinToString("  ·  "),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = couleur,
-                )
-                val p = el.progression
-                if (p != null) {
-                    Spacer(Modifier.height(6.dp))
-                    LinearProgressIndicator(progress = { p }, modifier = Modifier.fillMaxWidth())
+                if (sousTitre != null) {
+                    Text(sousTitre, color = pal.texteDoux, fontSize = 13.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 }
             }
+            Spacer(Modifier.width(10.dp))
+            if (el.type == Type.TORRENT && (p != null || el.ton == Ton.NEUTRE)) {
+                Puce("Torrent", "torrent")
+            } else {
+                Puce(texteDePuce(el), cleDePuce(el))
+            }
+        }
+        if (el.type == Type.TORRENT && (p != null || el.ton == Ton.NEUTRE)) {
+            if (p != null) {
+                Spacer(Modifier.height(6.dp))
+                ProgressionVague(p)
+            }
+            Text(
+                el.statut, color = if (p != null) Bleu else pal.texteDoux, fontSize = 12.sp,
+                fontWeight = FontWeight.ExtraBold, maxLines = 1, overflow = TextOverflow.Ellipsis,
+            )
+        } else if (p != null) {
+            Spacer(Modifier.height(6.dp))
+            ProgressionVague(p)
         }
     }
 }
 
+/** Barre de progression en forme de vague, avec un aileron qui avance. */
 @Composable
-fun BarreBas(vm: KwindleVM, lancer: () -> Unit) {
-    Surface(tonalElevation = 3.dp, shadowElevation = 8.dp) {
-        Row(
-            Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 16.dp, vertical = 10.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Switch(checked = vm.envoyer, onCheckedChange = { vm.changerEnvoi(it) }, enabled = !vm.enCours)
-            Spacer(Modifier.width(8.dp))
-            Text("Envoyer à\nma Kindle", style = MaterialTheme.typography.bodySmall)
-            Spacer(Modifier.weight(1f))
+fun ProgressionVague(p: Float) {
+    val pal = LocalPalette.current
+    val q = p.coerceIn(0f, 1f)
+    BoxWithConstraints(Modifier.fillMaxWidth().height(26.dp)) {
+        Canvas(Modifier.fillMaxSize()) {
+            val y = size.height * 0.62f
+            val amp = 3.dp.toPx()
+            val periode = 20.dp.toPx()
+            val chemin = Path().apply {
+                moveTo(0f, y)
+                var x = 0f
+                var haut = true
+                while (x < size.width) {
+                    quadraticTo(x + periode / 4, if (haut) y - 2 * amp else y + 2 * amp, x + periode / 2, y)
+                    x += periode / 2
+                    haut = !haut
+                }
+            }
+            val trait = Stroke(3.dp.toPx(), cap = StrokeCap.Round)
+            drawPath(chemin, pal.vagueVide, style = trait)
+            clipRect(right = size.width * q) { drawPath(chemin, Ocean, style = trait) }
+        }
+        Image(
+            painterResource(R.drawable.ic_aileron_bouton), contentDescription = null,
+            modifier = Modifier.offset(x = (maxWidth * q - 13.dp).coerceIn(0.dp, maxWidth - 26.dp), y = 0.dp)
+                .size(26.dp, 22.dp),
+        )
+    }
+}
+
+@Composable
+fun BarreBas(vm: RekindleVM, lancer: () -> Unit, ajouter: () -> Unit) {
+    val pal = LocalPalette.current
+    Column(
+        Modifier.fillMaxWidth().background(pal.fond).navigationBarsPadding()
+            .padding(start = 20.dp, end = 20.dp, top = 4.dp, bottom = 14.dp),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                "Envoyer à ma Kindle", color = pal.texte, fontWeight = FontWeight.Bold, fontSize = 15.sp,
+                modifier = Modifier.weight(1f),
+            )
+            Switch(
+                checked = vm.envoyer, onCheckedChange = { vm.changerEnvoi(it) }, enabled = !vm.enCours,
+                colors = SwitchDefaults.colors(checkedTrackColor = Ocean, checkedThumbColor = Color.White),
+            )
+        }
+        Spacer(Modifier.height(8.dp))
+        Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+            Button(
+                onClick = ajouter,
+                enabled = !vm.enCours,
+                shape = RoundedCornerShape(18.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Corail, contentColor = Marine),
+                contentPadding = PaddingValues(0.dp),
+                modifier = Modifier.size(58.dp),
+            ) {
+                Icon(
+                    painterResource(R.drawable.ic_ajouter), contentDescription = "Ajouter un livre ou un torrent",
+                    modifier = Modifier.size(28.dp),
+                )
+            }
             Button(
                 onClick = lancer,
                 enabled = !vm.arretDemande,
-                colors = if (vm.enCours) ButtonDefaults.buttonColors(containerColor = Rouge) else ButtonDefaults.buttonColors(),
-                contentPadding = PaddingValues(horizontal = 22.dp, vertical = 12.dp),
+                shape = RoundedCornerShape(18.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = if (vm.enCours) Rouge else pal.bouton,
+                    contentColor = if (vm.enCours) Color.White else pal.texteBouton,
+                ),
+                modifier = Modifier.weight(1f).height(58.dp),
             ) {
+                if (!vm.enCours) {
+                    Image(painterResource(R.drawable.ic_aileron_bouton), contentDescription = null, modifier = Modifier.size(24.dp, 20.dp))
+                    Spacer(Modifier.width(10.dp))
+                }
                 Text(
                     when {
                         vm.arretDemande -> "Arrêt…"
@@ -351,7 +660,7 @@ fun BarreBas(vm: KwindleVM, lancer: () -> Unit) {
                         vm.envoyer -> "Réparer et envoyer"
                         else -> "Réparer"
                     },
-                    fontWeight = FontWeight.Bold,
+                    fontWeight = FontWeight.ExtraBold, fontSize = 17.sp,
                 )
             }
         }
@@ -435,7 +744,7 @@ private fun ChoixFournisseur(valeur: String, onChoix: (String) -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EcranReglages(vm: KwindleVM, retour: () -> Unit) {
+fun EcranReglages(vm: RekindleVM, retour: () -> Unit) {
     val r = vm.reglages
     val ctx = LocalContext.current
     var kindle by rememberSaveable { mutableStateOf(r.kindle) }
@@ -495,18 +804,30 @@ fun EcranReglages(vm: KwindleVM, retour: () -> Unit) {
     }
 
     Scaffold(
+        containerColor = LocalPalette.current.fond,
         topBar = {
             TopAppBar(
-                title = { Text("Réglages") },
+                title = { Text("Réglages", fontWeight = FontWeight.ExtraBold) },
                 navigationIcon = {
                     IconButton(onClick = retour) {
                         Icon(painterResource(R.drawable.ic_retour), contentDescription = "Retour")
                     }
                 },
+                actions = {
+                    Image(
+                        painterResource(R.drawable.tete), contentDescription = null,
+                        modifier = Modifier.padding(end = 14.dp).size(30.dp, 34.dp),
+                    )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Marine,
+                    titleContentColor = Color(0xFFF4F1E8),
+                    navigationIconContentColor = Color(0xFFF4F1E8),
+                ),
             )
         },
         bottomBar = {
-            Surface(tonalElevation = 3.dp, shadowElevation = 8.dp) {
+            Surface(color = LocalPalette.current.fond, shadowElevation = 8.dp) {
                 Row(
                     Modifier.fillMaxWidth().navigationBarsPadding().imePadding()
                         .padding(horizontal = 16.dp, vertical = 10.dp),

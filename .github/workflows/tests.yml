@@ -61,7 +61,7 @@ jobs:
         run: |
           mkdir -p /tmp/rapport && cd /tmp/rapport
           cp "$GITHUB_WORKSPACE"/compilation.log "$GITHUB_WORKSPACE"/tests.log . 2>/dev/null || true
-          [ -f "$GITHUB_WORKSPACE/logcat.txt" ] && grep -E "kwindle|chaquopy|python|AndroidRuntime|TestRunner|libtorrent" "$GITHUB_WORKSPACE/logcat.txt" | tail -n 3000 > logcat.txt || true
+          [ -f "$GITHUB_WORKSPACE/logcat.txt" ] && grep -E "kwindle|rekindle|chaquopy|python|AndroidRuntime|TestRunner|libtorrent" "$GITHUB_WORKSPACE/logcat.txt" | tail -n 3000 > logcat.txt || true
           cp -r "$GITHUB_WORKSPACE"/android/app/build/outputs/androidTest-results . 2>/dev/null || true
           cp -r "$GITHUB_WORKSPACE"/captures "$GITHUB_WORKSPACE"/captures.log . 2>/dev/null || true
           echo "run ${{ github.run_number }} — ${{ github.sha }} — ${{ job.status }}" > RESULTAT.txt

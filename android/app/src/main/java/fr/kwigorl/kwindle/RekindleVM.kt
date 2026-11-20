@@ -41,7 +41,7 @@ data class Element(
 
 private val FORMATS = mapOf("zip" to "EPUB", "mobi" to "MOBI / AZW", "pdf" to "PDF", "topaz" to "Topaz", "kfx" to "KFX")
 
-class KwindleVM(app: Application) : AndroidViewModel(app) {
+class RekindleVM(app: Application) : AndroidViewModel(app) {
     val reglages = Reglages(app)
     val elements = mutableStateListOf<Element>()
 
@@ -136,7 +136,7 @@ class KwindleVM(app: Application) : AndroidViewModel(app) {
         arret.set(false)
         arretDemande = false
         enCours = true
-        TravailService.demarrer(ctx, "Kwindle travaille…")
+        TravailService.demarrer(ctx, "Rekindle travaille…")
 
         viewModelScope.launch(Dispatchers.IO) {
             var bloque: String? = null
@@ -185,7 +185,7 @@ class KwindleVM(app: Application) : AndroidViewModel(app) {
                             annonce = "Envoyé en $nbMails e-mails. Amazon peut demander une vérification pour " +
                                 "chacun : clique sur chaque lien « Vérifier la demande »."
                         elements.any { it.phase == Phase.PRET } ->
-                            annonce = "Livres réparés : une copie est dans Téléchargements › Kwindle."
+                            annonce = "Livres réparés : une copie est dans Téléchargements › Rekindle."
                     }
                 }
             }

@@ -39,10 +39,10 @@ class FumeeTest {
     fun modulesPython() {
         Moteur.init(ctx)
         val py = Python.getInstance()
-        for (m in listOf("lxml.etree", "PIL.Image", "mobi", "certifi", "kwindle_moteur", "kwindle_mail")) {
+        for (m in listOf("lxml.etree", "PIL.Image", "mobi", "certifi", "rekindle_moteur", "rekindle_mail")) {
             py.getModule(m)
         }
-        val stats = py.getModule("kwindle_mail").callAttr("contexte_ssl").callAttr("cert_store_stats")
+        val stats = py.getModule("rekindle_mail").callAttr("contexte_ssl").callAttr("cert_store_stats")
         val ca = stats.callAttr("get", "x509_ca").toInt()
         assertTrue("certificats TLS disponibles ($ca)", ca > 0)
     }
@@ -94,7 +94,7 @@ class FumeeTest {
                 assertTrue("le partageur n'a pas démarré", System.currentTimeMillis() < limite)
                 Thread.sleep(200)
             }
-            // … et Kwindle ne doit récupérer que les livres
+            // … et Rekindle ne doit récupérer que les livres
             val dl = File(ctx.cacheDir, "test/recu")
             dl.deleteRecursively()
             val recus = Torrents.telecharger(torrent, dl, { false }, listOf(TcpEndpoint("127.0.0.1", 43000))) { _, _, _, _ -> }

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Pont entre l'appli Android (Kotlin) et le moteur Python de Kwindle.
+Pont entre l'appli Android (Kotlin) et le moteur Python de Rekindle.
 Toutes les fonctions renvoient du JSON (texte) pour rester simples côté Kotlin.
 """
 
@@ -26,7 +26,7 @@ def init(dossier_temp):
 
 
 def traiter(chemin, dossier_sortie, langue):
-    from kwindle_moteur import traiter_livre
+    from rekindle_moteur import traiter_livre
     res = traiter_livre(chemin, dossier_sortie, {"langue": langue or "fr", "sorties_prises": _PRISES})
     return json.dumps({
         "ok": res.ok,
@@ -40,7 +40,7 @@ def traiter(chemin, dossier_sortie, langue):
 
 
 class _Reglages(dict):
-    """Ce que kwindle_mail attend d'un objet de réglages."""
+    """Ce que rekindle_mail attend d'un objet de réglages."""
 
     @property
     def login(self):
@@ -51,7 +51,7 @@ class _Reglages(dict):
 
 
 def envoyer(cfg_json, chemin, titre, auteur):
-    import kwindle_mail as km
+    import rekindle_mail as km
     cfg = _Reglages(json.loads(cfg_json))
     try:
         km.envoyer_livre(cfg, chemin, titre or None, auteur or None)
@@ -65,7 +65,7 @@ def envoyer(cfg_json, chemin, titre, auteur):
 
 def lots(cfg_json, livres_json):
     """Regroupe les livres en e-mails. livres : [{id, chemin, titre, auteur}]."""
-    import kwindle_mail as km
+    import rekindle_mail as km
     cfg = _Reglages(json.loads(cfg_json))
     livres = json.loads(livres_json)
     groupes, trop_gros = km.faire_lots(livres, cfg)
@@ -77,7 +77,7 @@ def lots(cfg_json, livres_json):
 
 def envoyer_lot(cfg_json, livres_json):
     """Un seul e-mail pour plusieurs livres. livres : [{chemin, titre, auteur}]."""
-    import kwindle_mail as km
+    import rekindle_mail as km
     cfg = _Reglages(json.loads(cfg_json))
     livres = [(l["chemin"], l.get("titre") or None, l.get("auteur") or None) for l in json.loads(livres_json)]
     try:
@@ -91,11 +91,11 @@ def envoyer_lot(cfg_json, livres_json):
 
 
 def tester(cfg_json):
-    import kwindle_mail as km
+    import rekindle_mail as km
     cfg = _Reglages(json.loads(cfg_json))
     try:
         km.tester(cfg)
-        return json.dumps({"ok": True, "message": "Connexion réussie : Kwindle peut envoyer depuis %s."
+        return json.dumps({"ok": True, "message": "Connexion réussie : Rekindle peut envoyer depuis %s."
                            % cfg.get("expediteur", "")}, ensure_ascii=False)
     except km.ErreurEnvoi as exc:
         return json.dumps({"ok": False, "message": str(exc)}, ensure_ascii=False)
@@ -104,7 +104,7 @@ def tester(cfg_json):
 
 
 def lire_torrent(chemin):
-    import kwindle_torrent as kt
+    import rekindle_torrent as kt
     try:
         info = kt.lire(chemin)
         return json.dumps({"ok": True, "nom": info["nom"], "livres": len(info["livres"]),

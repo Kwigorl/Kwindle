@@ -14,7 +14,7 @@ import androidx.core.app.ServiceCompat
 import androidx.core.content.ContextCompat
 
 /**
- * Service « au premier plan » : garde Kwindle en vie (avec une notification)
+ * Service « au premier plan » : garde Rekindle en vie (avec une notification)
  * pendant qu'il télécharge, répare ou envoie, même écran éteint.
  */
 class TravailService : Service() {
@@ -23,11 +23,11 @@ class TravailService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val texte = intent?.getStringExtra("texte") ?: "Kwindle travaille…"
+        val texte = intent?.getStringExtra("texte") ?: "Rekindle travaille…"
         ServiceCompat.startForeground(this, ID, notification(this, texte), ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
         if (verrou == null) {
             val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
-            verrou = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "kwindle:travail").apply {
+            verrou = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "rekindle:travail").apply {
                 acquire(3 * 60 * 60 * 1000L)
             }
         }
@@ -49,9 +49,9 @@ class TravailService : Service() {
                 Intent(c, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),
                 PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
             )
-            return NotificationCompat.Builder(c, KwindleApp.CANAL)
+            return NotificationCompat.Builder(c, RekindleApp.CANAL)
                 .setSmallIcon(R.drawable.ic_notif)
-                .setContentTitle("Kwindle")
+                .setContentTitle("Rekindle")
                 .setContentText(texte)
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)

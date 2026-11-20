@@ -6,12 +6,12 @@ import android.app.NotificationManager
 import com.chaquo.python.Python
 import com.chaquo.python.android.AndroidPlatform
 
-class KwindleApp : Application() {
+class RekindleApp : Application() {
     override fun onCreate() {
         super.onCreate()
         if (!Python.isStarted()) Python.start(AndroidPlatform(this))
         val canal = NotificationChannel(CANAL, "Travail en cours", NotificationManager.IMPORTANCE_LOW)
-        canal.description = "Affichée pendant que Kwindle télécharge, répare ou envoie des livres"
+        canal.description = "Affichée pendant que Rekindle télécharge, répare ou envoie des livres"
         getSystemService(NotificationManager::class.java).createNotificationChannel(canal)
     }
 

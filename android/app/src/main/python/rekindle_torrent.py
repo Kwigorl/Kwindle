@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Kwindle — récupération des livres contenus dans un fichier .torrent.
+Rekindle — récupération des livres contenus dans un fichier .torrent.
 
 Ne télécharge QUE les livres (EPUB, MOBI, AZW3, PDF) du torrent, pas le reste.
-Le torrent reste partagé tant que Kwindle est ouvert.
+Le torrent reste partagé tant que Rekindle est ouvert.
 """
 
 import os
@@ -37,14 +37,14 @@ def raison_indisponible():
     txt = str(_ERREUR_IMPORT)
     if "DLL" in txt or "dll" in txt:
         return ("Il manque un composant de Windows (« Visual C++ Redistributable ») pour les torrents. "
-                "Installe-le depuis %s puis relance Kwindle." % LIEN_VCREDIST)
+                "Installe-le depuis %s puis relance Rekindle." % LIEN_VCREDIST)
     v = sys.version_info
     if (v.major, v.minor) >= (3, 14) or (v.major, v.minor) < (3, 10):
-        return ("Le module torrent n'existe que pour Python 3.10 à 3.13, et Kwindle tourne avec "
+        return ("Le module torrent n'existe que pour Python 3.10 à 3.13, et Rekindle tourne avec "
                 "Python %d.%d. Installe Python 3.13 (par exemple en tapant « winget install -e --id "
-                "Python.Python.3.13 » dans un terminal), puis relance « Lancer Kwindle.bat » : "
+                "Python.Python.3.13 » dans un terminal), puis relance « Lancer Rekindle.bat » : "
                 "il choisira tout seul la bonne version." % (v.major, v.minor))
-    return "Le module torrent (libtorrent) n'est pas installé : relance « Lancer Kwindle.bat »."
+    return "Le module torrent (libtorrent) n'est pas installé : relance « Lancer Rekindle.bat »."
 
 
 # --------------------------------------------------------------------------
@@ -147,7 +147,7 @@ class Telechargeur:
             "enable_natpmp": True,
             "dht_bootstrap_nodes": ("dht.libtorrent.org:25401,router.bittorrent.com:6881,"
                                     "router.utorrent.com:6881,dht.transmissionbt.com:6881"),
-            "user_agent": "Kwindle/1.1 libtorrent/" + lt.__version__,
+            "user_agent": "Rekindle/1.1 libtorrent/" + lt.__version__,
             "stop_tracker_timeout": 2,
         })
         self.handles = {}
