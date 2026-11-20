@@ -144,7 +144,8 @@ class FumeeTest {
             }
             val s = Torrents.nouvelleSession(dossier, dht = dht, certificats = certificats, ecoute = ecoute)
             try {
-                s.download(ti, File(dossier, "dl"), null, Array(ti.numFiles()) { Priority.IGNORE }, emptyList(), torrent_flags_t())
+                val p = Torrents.charger(torrent)
+                Torrents.ajouter(s, p, p.torrentInfo!!, File(dossier, "dl"), Array(ti.numFiles()) { Priority.IGNORE }, emptyList())
                 val debut = System.currentTimeMillis()
                 var r = Triple(-1, emptyList<String>(), -1)
                 var dernierLog = 0L

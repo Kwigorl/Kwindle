@@ -1,6 +1,7 @@
 package fr.kwigorl.kwindle
 
 import android.system.Os
+import org.libtorrent4j.AddTorrentParams
 import org.libtorrent4j.AlertListener
 import org.libtorrent4j.Priority
 import org.libtorrent4j.SessionManager
@@ -11,7 +12,9 @@ import org.libtorrent4j.TorrentHandle
 import org.libtorrent4j.TorrentInfo
 import org.libtorrent4j.TorrentStatus
 import org.libtorrent4j.swig.settings_pack
-import org.libtorrent4j.swig.torrent_flags_t
+import org.libtorrent4j.swig.error_code
+import org.libtorrent4j.swig.libtorrent
+import org.libtorrent4j.swig.load_torrent_limits
 import java.io.File
 import java.net.URI
 import java.security.KeyStore
@@ -110,6 +113,42 @@ object Torrents {
         null
     }
 
+    /**
+     * Lit un .torrent avec ses trackers et ses sources web. Avec libtorrent 2.1, TorrentInfo
+     * ne contient plus les trackers : un torrent ajouté à partir de lui seul n'interroge aucun
+     * tracker (seul le réseau DHT peut alors trouver des sources, et jamais pour un torrent privé).
+     */
+    fun charger(fichier: File): AddTorrentParams {
+        val ec = error_code()
+        val p = try {
+            libtorrent.load_torrent_file(fichier.absolutePath, ec, load_torrent_limits())
+        } catch (e: Throwable) {
+            null
+        }
+        if (p == null || ec.value() != 0) throw ErreurTorrent("ce fichier .torrent est illisible")
+        return AddTorrentParams(p)
+    }
+
+    /** Ajoute le torrent à la session (ou met à jour ses priorités s'il y est déjà). */
+    fun ajouter(
+        s: SessionManager,
+        p: AddTorrentParams,
+        ti: TorrentInfo,
+        dossier: File,
+        priorites: Array<Priority>,
+        pairs: List<TcpEndpoint>,
+    ) {
+        val existant = s.find(ti.infoHash())
+        if (existant != null && existant.isValid) {
+            existant.prioritizeFiles(priorites)
+            return
+        }
+        p.savePath = dossier.absolutePath
+        p.filePriorities(priorites)
+        if (pairs.isNotEmpty()) p.peers(pairs)
+        s.swig().async_add_torrent(p.swig())
+    }
+
     /** Erreurs des trackers et nombre de partageurs qu'ils annoncent (-1 : inconnu). */
     fun etatTrackers(h: TorrentHandle): Triple<Int, List<String>, Int> {
         val erreurs = mutableListOf<String>()
@@ -145,11 +184,8 @@ object Torrents {
         pairs: List<TcpEndpoint> = emptyList(),
         progression: (Etat) -> Unit,
     ): List<File> {
-        val ti = try {
-            TorrentInfo(fichier)
-        } catch (e: Throwable) {
-            throw ErreurTorrent("ce fichier .torrent est illisible")
-        }
+        val params = charger(fichier)
+        val ti = params.torrentInfo ?: throw ErreurTorrent("ce fichier .torrent est illisible")
         val fs = ti.files()
         val n = fs.numFiles()
         val priorites = Array(n) { Priority.IGNORE }
@@ -165,7 +201,7 @@ object Torrents {
         dossier.mkdirs()
 
         val s = session(dossier.absoluteFile.parentFile ?: dossier)
-        s.download(ti, dossier, null, priorites, pairs, torrent_flags_t())
+        ajouter(s, params, ti, dossier, priorites, pairs)
 
         val debut = System.currentTimeMillis()
         var h: TorrentHandle? = null
