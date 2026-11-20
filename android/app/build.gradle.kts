@@ -7,6 +7,10 @@ plugins {
     id("com.chaquo.python")
 }
 
+// ABI compilées : arm64 pour le téléphone, x86_64 pour l'émulateur des tests (-Pabis=x86_64)
+val abis = (findProperty("abis") as String? ?: "arm64-v8a").split(",").map { it.trim() }
+
+
 android {
     namespace = "fr.kwigorl.kwindle"
     compileSdk = 35
@@ -18,9 +22,11 @@ android {
         versionCode = 1
         versionName = "1.0"
         ndk {
-            // le Poco F7 (et tous les téléphones récents) sont en arm64
-            abiFilters += listOf("arm64-v8a")
+            // le Poco F7 (et tous les téléphones récents) sont en arm64 ;
+            // les tests sur émulateur passent -Pabis=x86_64
+            abiFilters += abis
         }
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     // Clé de signature de l'appli : toujours la même, pour pouvoir installer
@@ -85,5 +91,10 @@ dependencies {
 
     // torrents
     implementation("org.libtorrent4j:libtorrent4j:2.1.0-39")
-    implementation("org.libtorrent4j:libtorrent4j-android-arm64:2.1.0-39")
+    if ("arm64-v8a" in abis) implementation("org.libtorrent4j:libtorrent4j-android-arm64:2.1.0-39")
+    if ("x86_64" in abis) implementation("org.libtorrent4j:libtorrent4j-android-x86_64:2.1.0-39")
+
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test:core:1.6.1")
 }

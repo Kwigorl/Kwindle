@@ -1,0 +1,69 @@
+name: Tests Android (émulateur)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "android/**"
+      - ".github/workflows/tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  emulateur:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Activer KVM (émulateur rapide)
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Compiler l'appli et les tests (x86_64)
+        working-directory: android
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew assembleDebug assembleDebugAndroidTest -Pabis=x86_64 2>&1 | tee ../compilation.log
+
+      - name: Lancer les tests sur l'émulateur
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          working-directory: android
+          script: ./gradlew connectedDebugAndroidTest -Pabis=x86_64 > ../tests.log 2>&1 ; R=$? ; adb logcat -d > ../logcat.txt ; exit $R
+
+      # Les journaux de GitHub ne sont pas lisibles depuis l'environnement de Claude :
+      # on publie le rapport sur la branche « rapport-tests ».
+      - name: Publier le rapport
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p /tmp/rapport && cd /tmp/rapport
+          cp "$GITHUB_WORKSPACE"/compilation.log "$GITHUB_WORKSPACE"/tests.log . 2>/dev/null || true
+          [ -f "$GITHUB_WORKSPACE/logcat.txt" ] && grep -E "kwindle|chaquopy|python|AndroidRuntime|TestRunner|libtorrent" "$GITHUB_WORKSPACE/logcat.txt" | tail -n 3000 > logcat.txt || true
+          cp -r "$GITHUB_WORKSPACE"/android/app/build/outputs/androidTest-results . 2>/dev/null || true
+          echo "run ${{ github.run_number }} — ${{ github.sha }} — ${{ job.status }}" > RESULTAT.txt
+          git init -q && git checkout -q -b rapport-tests && git add -A
+          git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" commit -qm "Rapport des tests ${{ github.run_number }}"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" rapport-tests
