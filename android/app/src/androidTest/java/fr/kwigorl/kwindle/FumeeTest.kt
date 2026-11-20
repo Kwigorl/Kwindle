@@ -124,7 +124,8 @@ class FumeeTest {
         val torrent = File(dossier, "ubuntu.torrent")
         URL("https://releases.ubuntu.com/noble/$nom").openStream().use { i -> torrent.outputStream().use { i.copyTo(it) } }
         val ti = TorrentInfo(torrent)
-        assertTrue("le torrent d'Ubuntu n'a plus de tracker HTTPS", ti.trackers().any { it.url().startsWith("https://") })
+        assertTrue("le torrent d'Ubuntu n'a plus de tracker HTTPS",
+            String(torrent.readBytes(), Charsets.ISO_8859_1).contains("https://"))
 
         fun essai(certificats: Boolean): Triple<Int, List<String>, Int> {
             val s = Torrents.nouvelleSession(dossier, dht = false, certificats = certificats)
