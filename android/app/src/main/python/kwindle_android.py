@@ -8,6 +8,14 @@ import json
 import os
 import tempfile
 
+_PRISES = set()   # fichiers de sortie déjà produits pendant ce passage (titres identiques)
+
+
+def debut():
+    """Nouveau passage « Réparer et envoyer »."""
+    _PRISES.clear()
+    return "ok"
+
 
 def init(dossier_temp):
     """Android n'a pas de /tmp : on donne un dossier temporaire à Python."""
@@ -19,7 +27,7 @@ def init(dossier_temp):
 
 def traiter(chemin, dossier_sortie, langue):
     from kwindle_moteur import traiter_livre
-    res = traiter_livre(chemin, dossier_sortie, {"langue": langue or "fr"})
+    res = traiter_livre(chemin, dossier_sortie, {"langue": langue or "fr", "sorties_prises": _PRISES})
     return json.dumps({
         "ok": res.ok,
         "sortie": res.sortie or "",
@@ -47,6 +55,33 @@ def envoyer(cfg_json, chemin, titre, auteur):
     cfg = _Reglages(json.loads(cfg_json))
     try:
         km.envoyer_livre(cfg, chemin, titre or None, auteur or None)
+        return json.dumps({"ok": True})
+    except km.ErreurEnvoi as exc:
+        return json.dumps({"ok": False, "erreur": str(exc), "bloquant": exc.bloquant}, ensure_ascii=False)
+    except Exception as exc:
+        return json.dumps({"ok": False, "erreur": "Erreur inattendue : %s" % exc, "bloquant": False},
+                          ensure_ascii=False)
+
+
+def lots(cfg_json, livres_json):
+    """Regroupe les livres en e-mails. livres : [{id, chemin, titre, auteur}]."""
+    import kwindle_mail as km
+    cfg = _Reglages(json.loads(cfg_json))
+    livres = json.loads(livres_json)
+    groupes, trop_gros = km.faire_lots(livres, cfg)
+    return json.dumps({
+        "lots": [[l["id"] for l in g] for g in groupes],
+        "trop_gros": [{"id": l["id"], "message": km.message_trop_gros(cfg, l["chemin"])} for l in trop_gros],
+    }, ensure_ascii=False)
+
+
+def envoyer_lot(cfg_json, livres_json):
+    """Un seul e-mail pour plusieurs livres. livres : [{chemin, titre, auteur}]."""
+    import kwindle_mail as km
+    cfg = _Reglages(json.loads(cfg_json))
+    livres = [(l["chemin"], l.get("titre") or None, l.get("auteur") or None) for l in json.loads(livres_json)]
+    try:
+        km.envoyer_lot(cfg, livres)
         return json.dumps({"ok": True})
     except km.ErreurEnvoi as exc:
         return json.dumps({"ok": False, "erreur": str(exc), "bloquant": exc.bloquant}, ensure_ascii=False)

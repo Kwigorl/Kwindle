@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 import java.util.concurrent.atomic.AtomicBoolean
@@ -139,8 +140,11 @@ class KwindleVM(app: Application) : AndroidViewModel(app) {
 
         viewModelScope.launch(Dispatchers.IO) {
             var bloque: String? = null
+            var nbMails = 0
             val file = ArrayDeque(aFaire)
+            val aEnvoyer = mutableListOf<Long>()
             try {
+                runCatching { Moteur.debut(ctx) }
                 while (file.isNotEmpty() && !arret.get()) {
                     val id = file.removeFirst()
                     val el = trouver(id) ?: continue
@@ -148,7 +152,8 @@ class KwindleVM(app: Application) : AndroidViewModel(app) {
                         if (el.type == Type.TORRENT) {
                             file.addAll(0, travailTorrent(el))
                         } else {
-                            bloque = travailLivre(el, envoi, bloque)
+                            val phase = travailLivre(el)
+                            if (phase == Phase.PRET || phase == Phase.ECHEC_ENVOI) aEnvoyer += id
                         }
                     } catch (e: Exception) {
                         maj(id) {
@@ -159,6 +164,11 @@ class KwindleVM(app: Application) : AndroidViewModel(app) {
                         }
                     }
                 }
+                if (envoi && aEnvoyer.isNotEmpty() && !arret.get()) {
+                    val r = envoyerGroupes(aEnvoyer)
+                    bloque = r.first
+                    nbMails = r.second
+                }
             } finally {
                 val arrete = arret.get()
                 withContext(NonCancellable + Dispatchers.Main) {
@@ -168,8 +178,12 @@ class KwindleVM(app: Application) : AndroidViewModel(app) {
                     when {
                         bloque != null -> alerte = bloque
                         arrete -> annonce = "Arrêté. Appuie à nouveau sur le bouton pour reprendre."
-                        envoi && elements.any { it.phase == Phase.ENVOYE } ->
-                            annonce = "C'est parti ! Les livres arrivent sur ta Kindle d'ici quelques minutes."
+                        envoi && nbMails == 1 ->
+                            annonce = "Envoyé en un seul e-mail. Si Amazon demande « Vérifiez votre demande », " +
+                                "clique sur le lien du mail : sans ça, les livres n'arrivent pas."
+                        envoi && nbMails > 1 ->
+                            annonce = "Envoyé en $nbMails e-mails. Amazon peut demander une vérification pour " +
+                                "chacun : clique sur chaque lien « Vérifier la demande »."
                         elements.any { it.phase == Phase.PRET } ->
                             annonce = "Livres réparés : une copie est dans Téléchargements › Kwindle."
                     }
@@ -227,56 +241,103 @@ class KwindleVM(app: Application) : AndroidViewModel(app) {
         return nouveaux.map { it.id }
     }
 
-    /** Répare (si besoin) puis envoie un livre. Renvoie l'erreur bloquante éventuelle. */
-    private suspend fun travailLivre(depart: Element, envoi: Boolean, bloque: String?): String? {
-        var el = depart
-        if (el.phase == Phase.ATTENTE || el.phase == Phase.ERREUR) {
-            maj(el.id) { it.copy(statut = "Réparation…", ton = Ton.EN_COURS) }
-            TravailService.maj(ctx, "Réparation : ${el.nom}")
-            val r = Moteur.traiter(ctx, el.fichier, dossierSortie, reglages.langue)
-            val tab = r.optJSONArray("lignes")
-            val lignes = (0 until (tab?.length() ?: 0)).map { i ->
-                val l = tab!!.getJSONArray(i)
-                l.getString(0) to l.getString(1)
-            }
-            val format = FORMATS[r.optString("format")] ?: ""
-            if (!r.optBoolean("ok")) {
-                maj(el.id) { it.copy(phase = Phase.ERREUR, statut = "✗ Impossible", ton = Ton.KO, format = format, lignes = lignes) }
-                return bloque
-            }
-            val sortie = r.optString("sortie")
-            Fichiers.enregistrer(ctx, File(sortie))
-            maj(el.id) {
-                it.copy(
-                    phase = Phase.PRET, statut = "✓ Réparé", ton = Ton.OK, format = format, sortie = sortie,
-                    titre = r.optString("titre").ifBlank { null }, auteur = r.optString("auteur").ifBlank { null },
-                    lignes = lignes,
-                )
-            }
-            el = trouver(el.id) ?: return bloque
+    /** Répare un livre (si ce n'est pas déjà fait) et renvoie sa nouvelle phase. */
+    private suspend fun travailLivre(el: Element): Phase {
+        if (el.phase != Phase.ATTENTE && el.phase != Phase.ERREUR) return el.phase
+        maj(el.id) { it.copy(statut = "Réparation…", ton = Ton.EN_COURS) }
+        TravailService.maj(ctx, "Réparation : ${el.nom}")
+        val r = Moteur.traiter(ctx, el.fichier, dossierSortie, reglages.langue)
+        val tab = r.optJSONArray("lignes")
+        val lignes = (0 until (tab?.length() ?: 0)).map { i ->
+            val l = tab!!.getJSONArray(i)
+            l.getString(0) to l.getString(1)
         }
-        if (!envoi) return bloque
-        if (bloque != null) {
-            maj(el.id) { it.copy(phase = Phase.ECHEC_ENVOI, statut = "✗ Pas envoyé", ton = Ton.KO) }
-            return bloque
+        val format = FORMATS[r.optString("format")] ?: ""
+        if (!r.optBoolean("ok")) {
+            maj(el.id) { it.copy(phase = Phase.ERREUR, statut = "✗ Impossible", ton = Ton.KO, format = format, lignes = lignes) }
+            return Phase.ERREUR
         }
-        val sortie = el.sortie ?: return bloque
-        maj(el.id) { it.copy(statut = "Envoi…", ton = Ton.EN_COURS) }
-        TravailService.maj(ctx, "Envoi : ${el.titre ?: el.nom}")
-        val r = Moteur.envoyer(ctx, reglages.versJson(), sortie, el.titre, el.auteur)
-        return if (r.optBoolean("ok")) {
-            val k = reglages.kindle
-            maj(el.id) {
-                it.copy(phase = Phase.ENVOYE, statut = "✓ Envoyé", ton = Ton.OK, lignes = it.lignes + ("envoi" to "Envoyé à $k"))
-            }
-            bloque
-        } else {
-            val msg = r.optString("erreur")
-            maj(el.id) {
-                it.copy(phase = Phase.ECHEC_ENVOI, statut = "✗ Envoi raté", ton = Ton.KO, lignes = it.lignes + ("erreur" to "Envoi : $msg"))
-            }
-            if (r.optBoolean("bloquant")) msg else bloque
+        val sortie = r.optString("sortie")
+        Fichiers.enregistrer(ctx, File(sortie))
+        maj(el.id) {
+            it.copy(
+                phase = Phase.PRET, statut = "✓ Réparé", ton = Ton.OK, format = format, sortie = sortie,
+                titre = r.optString("titre").ifBlank { null }, auteur = r.optString("auteur").ifBlank { null },
+                lignes = lignes,
+            )
         }
+        return Phase.PRET
+    }
+
+    /**
+     * Envoie les livres en regroupant plusieurs livres par e-mail : Amazon demande
+     * une vérification par e-mail, pas par livre. Renvoie (erreur bloquante, nombre d'e-mails).
+     */
+    private suspend fun envoyerGroupes(ids: List<Long>): Pair<String?, Int> {
+        val cfg = reglages.versJson()
+        val livres = JSONArray()
+        val parId = mutableMapOf<Long, Element>()
+        for (id in ids) {
+            val el = trouver(id) ?: continue
+            val sortie = el.sortie ?: continue
+            parId[id] = el
+            livres.put(JSONObject().apply {
+                put("id", id)
+                put("chemin", sortie)
+                put("titre", el.titre ?: el.nom)
+                put("auteur", el.auteur ?: "")
+            })
+        }
+        if (parId.isEmpty()) return null to 0
+        val repartition = Moteur.lots(ctx, cfg, livres)
+        val tropGros = repartition.optJSONArray("trop_gros") ?: JSONArray()
+        for (i in 0 until tropGros.length()) {
+            val t = tropGros.getJSONObject(i)
+            val msg = t.optString("message")
+            maj(t.getLong("id")) {
+                it.copy(phase = Phase.ECHEC_ENVOI, statut = "✗ Trop gros", ton = Ton.KO, lignes = it.lignes + ("erreur" to msg))
+            }
+        }
+        var bloque: String? = null
+        var nbMails = 0
+        val lots = repartition.optJSONArray("lots") ?: JSONArray()
+        for (n in 0 until lots.length()) {
+            if (arret.get()) break
+            val groupe = lots.getJSONArray(n)
+            val membres = (0 until groupe.length()).mapNotNull { parId[groupe.getLong(it)] }
+            if (bloque != null) {
+                for (el in membres) maj(el.id) { it.copy(phase = Phase.ECHEC_ENVOI, statut = "✗ Pas envoyé", ton = Ton.KO) }
+                continue
+            }
+            for (el in membres) maj(el.id) { it.copy(statut = "Envoi…", ton = Ton.EN_COURS) }
+            TravailService.maj(ctx, "Envoi de ${membres.size} livre(s)…")
+            val contenu = JSONArray()
+            for (el in membres) {
+                contenu.put(JSONObject().apply {
+                    put("chemin", el.sortie)
+                    put("titre", el.titre ?: el.nom)
+                    put("auteur", el.auteur ?: "")
+                })
+            }
+            val r = Moteur.envoyerLot(ctx, cfg, contenu)
+            if (r.optBoolean("ok")) {
+                nbMails++
+                val k = reglages.kindle
+                val note = if (membres.size > 1) "Envoyé à $k (un seul e-mail pour ${membres.size} livres)" else "Envoyé à $k"
+                for (el in membres) {
+                    maj(el.id) { it.copy(phase = Phase.ENVOYE, statut = "✓ Envoyé", ton = Ton.OK, lignes = it.lignes + ("envoi" to note)) }
+                }
+            } else {
+                val msg = r.optString("erreur")
+                for (el in membres) {
+                    maj(el.id) {
+                        it.copy(phase = Phase.ECHEC_ENVOI, statut = "✗ Envoi raté", ton = Ton.KO, lignes = it.lignes + ("erreur" to "Envoi : $msg"))
+                    }
+                }
+                if (r.optBoolean("bloquant")) bloque = msg
+            }
+        }
+        return bloque to nbMails
     }
 
     // ------------------------------------------------------------- réglages

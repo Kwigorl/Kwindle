@@ -8,6 +8,9 @@ on:
       - ".github/workflows/apk.yml"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   apk:
     runs-on: ubuntu-latest
@@ -41,3 +44,25 @@ jobs:
           name: Kwindle-apk
           path: Kwindle.apk
           retention-days: 30
+
+      # Page de téléchargement stable : Releases › « Kwindle Android »
+      - name: Publier la release « android »
+        working-directory: .
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete android --yes --cleanup-tag || true
+          gh release create android Kwindle.apk \
+            --title "Kwindle Android (build ${{ github.run_number }})" \
+            --notes "APK compilé automatiquement depuis ${{ github.sha }}. Installe-le par-dessus la version précédente." \
+            --latest
+
+      # Copie de l'APK sur la branche « apk » (récupérable avec git)
+      - name: Mettre l'APK sur la branche apk
+        working-directory: .
+        run: |
+          mkdir /tmp/branche-apk && cp Kwindle.apk /tmp/branche-apk/ && cd /tmp/branche-apk
+          git init -q && git checkout -q -b apk && git add Kwindle.apk
+          git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" \
+            commit -qm "APK build ${{ github.run_number }} (${{ github.sha }})"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" apk

@@ -3,6 +3,7 @@ package fr.kwigorl.kwindle
 import android.content.Context
 import com.chaquo.python.PyObject
 import com.chaquo.python.Python
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
 
@@ -34,6 +35,24 @@ object Moteur {
     fun envoyer(context: Context, cfg: JSONObject, chemin: String, titre: String?, auteur: String?): JSONObject {
         init(context)
         return json(module.callAttr("envoyer", cfg.toString(), chemin, titre ?: "", auteur ?: ""))
+    }
+
+    /** Début d'un passage « Réparer et envoyer ». */
+    fun debut(context: Context) {
+        init(context)
+        module.callAttr("debut")
+    }
+
+    /** Regroupe des livres en e-mails : {"lots": [[id…]…], "trop_gros": [{id, message}…]}. */
+    fun lots(context: Context, cfg: JSONObject, livres: JSONArray): JSONObject {
+        init(context)
+        return json(module.callAttr("lots", cfg.toString(), livres.toString()))
+    }
+
+    /** Envoie plusieurs livres dans un seul e-mail (une seule vérification Amazon). */
+    fun envoyerLot(context: Context, cfg: JSONObject, livres: JSONArray): JSONObject {
+        init(context)
+        return json(module.callAttr("envoyer_lot", cfg.toString(), livres.toString()))
     }
 
     fun tester(context: Context, cfg: JSONObject): JSONObject {

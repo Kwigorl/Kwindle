@@ -9,6 +9,7 @@ import ssl
 import sys
 from collections import OrderedDict
 from email.message import EmailMessage
+from email.utils import formatdate, make_msgid
 
 from kwindle_moteur import nom_fichier_sur
 
@@ -207,30 +208,86 @@ def tester(cfg, mdp=None):
         pass
 
 
-def envoyer_livre(cfg, chemin, titre=None, auteur=None):
-    """Envoie un livre (un e-mail par livre). Lève ErreurEnvoi en cas de souci."""
-    taille = os.path.getsize(chemin)
-    if taille > 50 * 1024 * 1024:
-        raise ErreurEnvoi("Fichier de %.0f Mo : Amazon limite l'e-mail à 50 Mo. "
-                          "Utilise amazon.fr/sendtokindle (jusqu'à 200 Mo)." % (taille / 1048576))
-    limite = FOURNISSEURS.get(cfg.get("fournisseur"), {}).get("limite")
-    if limite and taille * 1.37 > limite * 1024 * 1024:
-        raise ErreurEnvoi("Fichier de %.0f Mo : trop gros pour %s (pièces jointes limitées à %d Mo). "
-                          "Utilise amazon.fr/sendtokindle." % (taille / 1048576, cfg["fournisseur"], limite))
-    ext = os.path.splitext(chemin)[1].lower()
-    sous_type = {".epub": "epub+zip", ".pdf": "pdf"}.get(ext, "octet-stream")
-    base = titre or os.path.splitext(os.path.basename(chemin))[0]
-    if auteur:
-        base += " - " + auteur
-    nom_pj = nom_fichier_sur(base, ascii_seul=True) + ext
+MAX_PJ = 25                      # Amazon : 25 pièces jointes maximum par e-mail
+MAX_AMAZON = 50 * 1024 * 1024    # Amazon : 50 Mo par e-mail
+MAX_LOT_INCONNU = 18 * 1024 * 1024
 
+
+def limites(cfg):
+    """(taille max d'un fichier seul, taille max d'un e-mail groupé), en octets avant encodage."""
+    limite = FOURNISSEURS.get(cfg.get("fournisseur"), {}).get("limite")
+    if limite:
+        m = min(MAX_AMAZON, int(limite * 1024 * 1024 / 1.37))   # +37 % une fois encodé
+        return m, m
+    return MAX_AMAZON, MAX_LOT_INCONNU
+
+
+def faire_lots(livres, cfg):
+    """Regroupe des livres en e-mails (un e-mail = une seule vérification Amazon).
+
+    `livres` : liste de dicts avec au moins la clé "chemin".
+    Renvoie (lots, trop_gros) : liste de listes de livres, et livres impossibles à envoyer par e-mail.
+    """
+    max_fichier, max_lot = limites(cfg)
+    lots, courant, total, trop_gros = [], [], 0, []
+    for livre in livres:
+        t = os.path.getsize(livre["chemin"])
+        if t > max_fichier:
+            trop_gros.append(livre)
+            continue
+        if t > max_lot:                      # gros fichier : tout seul dans son e-mail
+            lots.append([livre])
+            continue
+        if courant and (total + t > max_lot or len(courant) >= MAX_PJ):
+            lots.append(courant)
+            courant, total = [], 0
+        courant.append(livre)
+        total += t
+    if courant:
+        lots.append(courant)
+    return lots, trop_gros
+
+
+def message_trop_gros(cfg, chemin):
+    taille = os.path.getsize(chemin) / 1048576
+    limite = FOURNISSEURS.get(cfg.get("fournisseur"), {}).get("limite")
+    if limite and taille <= 50:
+        return ("Fichier de %.0f Mo : trop gros pour %s (pièces jointes limitées à %d Mo). "
+                "Utilise amazon.fr/sendtokindle (jusqu'à 200 Mo)." % (taille, cfg["fournisseur"], limite))
+    return ("Fichier de %.0f Mo : Amazon limite l'e-mail à 50 Mo. "
+            "Utilise amazon.fr/sendtokindle (jusqu'à 200 Mo)." % taille)
+
+
+def envoyer_lot(cfg, livres):
+    """Envoie plusieurs livres dans UN seul e-mail. `livres` : liste de (chemin, titre, auteur)."""
+    expediteur = cfg["expediteur"].strip()
     msg = EmailMessage()
-    msg["From"] = cfg["expediteur"].strip()
+    msg["From"] = expediteur
     msg["To"] = cfg["kindle"].strip()
-    msg["Subject"] = titre or "Livre"
-    msg.set_content("Livre envoyé par Kwindle.\n")
-    with open(chemin, "rb") as f:
-        msg.add_attachment(f.read(), maintype="application", subtype=sous_type, filename=nom_pj)
+    msg["Date"] = formatdate(localtime=True)
+    msg["Message-ID"] = make_msgid(domain=expediteur.split("@")[-1] or None)
+    if len(livres) == 1:
+        msg["Subject"] = livres[0][1] or "Livre"
+    else:
+        msg["Subject"] = "Kwindle : %d livres" % len(livres)
+    msg.set_content("Livres envoyés par Kwindle :\n" + "\n".join(
+        "- %s%s" % (titre or os.path.basename(chemin), " (%s)" % auteur if auteur else "")
+        for chemin, titre, auteur in livres) + "\n")
+    noms = set()
+    for chemin, titre, auteur in livres:
+        ext = os.path.splitext(chemin)[1].lower()
+        sous_type = {".epub": "epub+zip", ".pdf": "pdf"}.get(ext, "octet-stream")
+        base = titre or os.path.splitext(os.path.basename(chemin))[0]
+        if auteur:
+            base += " - " + auteur
+        base = nom_fichier_sur(base, ascii_seul=True)
+        nom_pj, n = base + ext, 2
+        while nom_pj.lower() in noms:
+            nom_pj = "%s (%d)%s" % (base, n, ext)
+            n += 1
+        noms.add(nom_pj.lower())
+        with open(chemin, "rb") as f:
+            msg.add_attachment(f.read(), maintype="application", subtype=sous_type, filename=nom_pj)
     s = connexion(cfg)
     try:
         s.send_message(msg)
@@ -247,3 +304,11 @@ def envoyer_livre(cfg, chemin, titre=None, auteur=None):
             s.quit()
         except Exception:
             pass
+
+
+def envoyer_livre(cfg, chemin, titre=None, auteur=None):
+    """Envoie un seul livre. Lève ErreurEnvoi en cas de souci."""
+    max_fichier, _ = limites(cfg)
+    if os.path.getsize(chemin) > max_fichier:
+        raise ErreurEnvoi(message_trop_gros(cfg, chemin))
+    envoyer_lot(cfg, [(chemin, titre, auteur)])

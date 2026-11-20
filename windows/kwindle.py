@@ -81,8 +81,13 @@ def ligne_de_commande(args):
         except kt.ErreurTorrent as exc:
             print("    ✗ %s" % exc)
             code = 1
+    if args.envoyer and cfg.probleme():
+        print("✗ Envoi impossible : " + cfg.probleme())
+        return 1
+    prets = []
+    prises = set()
     for chemin in livres:
-        res = traiter_livre(chemin, sortie, {"langue": cfg.get("langue", "fr")})
+        res = traiter_livre(chemin, sortie, {"langue": cfg.get("langue", "fr"), "sorties_prises": prises})
         print(("✓ " if res.ok else "✗ ") + os.path.basename(chemin))
         for niv, msg in res.rapport.lignes():
             print("    %s %s" % (SYMBOLES[niv], msg))
@@ -91,19 +96,24 @@ def ligne_de_commande(args):
             continue
         if not args.verifier:
             print("    → %s" % res.sortie)
-        if args.envoyer:
-            pb = cfg.probleme()
-            if pb:
-                print("    ✗ Envoi impossible : " + pb)
-                return 1
+        prets.append({"chemin": res.sortie, "titre": res.titre, "auteur": res.auteur})
+    if args.envoyer and prets:
+        lots, trop_gros = km.faire_lots(prets, cfg)
+        for e in trop_gros:
+            print("✗ « %s » : %s" % (e["titre"], km.message_trop_gros(cfg, e["chemin"])))
+            code = 1
+        for lot in lots:
+            titres = ", ".join("« %s »" % e["titre"] for e in lot)
             try:
-                km.envoyer_livre(cfg, res.sortie, res.titre, res.auteur)
-                print("    ✓ Envoyé à " + cfg["kindle"])
+                km.envoyer_lot(cfg, [(e["chemin"], e["titre"], e["auteur"]) for e in lot])
+                print("✉ Envoyé à %s en un seul e-mail : %s" % (cfg["kindle"], titres))
             except km.ErreurEnvoi as exc:
-                print("    ✗ " + str(exc))
+                print("✗ Envoi de %s : %s" % (titres, exc))
                 code = 1
                 if exc.bloquant:
                     return code
+        if lots:
+            print("  Si Amazon envoie un mail « Vérifiez votre demande », clique sur le lien (un par e-mail).")
     return code
 
 
@@ -615,6 +625,9 @@ def interface():
 
         def travail(self, iids, envoyer):
             self.bloque = None
+            self.nb_mails = 0
+            self.sorties_prises = set()
+            a_envoyer = []
             file = list(iids)
             while file:
                 if self.arret.is_set():
@@ -627,12 +640,58 @@ def interface():
                     if l["type"] == "torrent":
                         file[0:0] = self.travail_torrent(iid, l)
                     else:
-                        self.travail_livre(iid, l, envoyer)
+                        self.travail_livre(iid, l)
+                        if l["etat"] in ("pret", "echec_envoi"):
+                            a_envoyer.append(iid)
                 except Exception as exc:  # filet de sécurité : on passe au suivant
                     l["etat"] = "erreur"
                     self.q.put(("etat", iid, "✗ Impossible", "ko", None))
                     self.q.put(("log", "✗  Erreur inattendue : %s" % exc, "erreur"))
-            self.q.put(("fin", envoyer, self.bloque, self.arret.is_set()))
+            if envoyer and a_envoyer and not self.arret.is_set():
+                self.envoyer_groupes(a_envoyer)
+            self.q.put(("fin", envoyer, self.bloque, self.arret.is_set(), self.nb_mails))
+
+        def envoyer_groupes(self, iids):
+            """Un seul e-mail pour plusieurs livres : Amazon ne demande alors qu'une vérification."""
+            livres = []
+            for iid in iids:
+                res = self.livres[iid]["res"]
+                livres.append({"iid": iid, "chemin": res.sortie, "titre": res.titre, "auteur": res.auteur})
+            lots, trop_gros = km.faire_lots(livres, self.cfg)
+            for e in trop_gros:
+                self.livres[e["iid"]]["etat"] = "echec_envoi"
+                self.q.put(("etat", e["iid"], "✗ Trop gros", "ko", None))
+                self.q.put(("log", "✗  « %s » : %s" % (e["titre"], km.message_trop_gros(self.cfg, e["chemin"])),
+                            "erreur"))
+            for lot in lots:
+                if self.arret.is_set():
+                    break
+                if self.bloque:
+                    for e in lot:
+                        self.livres[e["iid"]]["etat"] = "echec_envoi"
+                        self.q.put(("etat", e["iid"], "✗ Pas envoyé", "ko", None))
+                    continue
+                for e in lot:
+                    self.q.put(("etat", e["iid"], "Envoi…", "encours", None))
+                titres = ", ".join("« %s »" % e["titre"] for e in lot)
+                try:
+                    km.envoyer_lot(self.cfg, [(e["chemin"], e["titre"], e["auteur"]) for e in lot])
+                    self.nb_mails += 1
+                    for e in lot:
+                        self.livres[e["iid"]]["etat"] = "envoye"
+                        self.q.put(("etat", e["iid"], "✓ Envoyé", "ok", None))
+                    if len(lot) == 1:
+                        self.q.put(("log", "✉  %s envoyé à %s" % (titres, self.cfg["kindle"]), "envoi"))
+                    else:
+                        self.q.put(("log", "✉  %d livres envoyés en un seul e-mail à %s : %s"
+                                    % (len(lot), self.cfg["kindle"], titres), "envoi"))
+                except Exception as exc:
+                    for e in lot:
+                        self.livres[e["iid"]]["etat"] = "echec_envoi"
+                        self.q.put(("etat", e["iid"], "✗ Envoi raté", "ko", None))
+                    self.q.put(("log", "✗  Envoi de %s : %s" % (titres, exc), "erreur"))
+                    if getattr(exc, "bloquant", False):
+                        self.bloque = exc
 
         def travail_torrent(self, iid, l):
             if not kt.disponible():
@@ -683,43 +742,21 @@ def interface():
                 nouveaux.append(niid)
             return nouveaux
 
-        def travail_livre(self, iid, l, envoyer):
-            if l["etat"] in ("attente", "erreur"):
-                self.q.put(("etat", iid, "Réparation…", "encours", None))
-                res = traiter_livre(l["chemin"], self.cfg["dossier_sortie"],
-                                    {"langue": self.cfg.get("langue") or "fr"})
-                l["res"] = res
-                self.q.put(("rapport", res))
-                fmt = FORMATS.get(res.format_source, "?")
-                if not res.ok:
-                    l["etat"] = "erreur"
-                    self.q.put(("etat", iid, "✗ Impossible", "ko", fmt))
-                    return
-                l["etat"] = "pret"
-                self.q.put(("etat", iid, "✓ Réparé", "ok", fmt))
-            res = l["res"]
-            if not envoyer:
+        def travail_livre(self, iid, l):
+            if l["etat"] not in ("attente", "erreur"):
                 return
-            if self.bloque:
-                l["etat"] = "echec_envoi"
-                self.q.put(("etat", iid, "✗ Pas envoyé", "ko", None))
+            self.q.put(("etat", iid, "Réparation…", "encours", None))
+            res = traiter_livre(l["chemin"], self.cfg["dossier_sortie"],
+                                {"langue": self.cfg.get("langue") or "fr", "sorties_prises": self.sorties_prises})
+            l["res"] = res
+            self.q.put(("rapport", res))
+            fmt = FORMATS.get(res.format_source, "?")
+            if not res.ok:
+                l["etat"] = "erreur"
+                self.q.put(("etat", iid, "✗ Impossible", "ko", fmt))
                 return
-            self.q.put(("etat", iid, "Envoi…", "encours", None))
-            try:
-                km.envoyer_livre(self.cfg, res.sortie, res.titre, res.auteur)
-                l["etat"] = "envoye"
-                self.q.put(("etat", iid, "✓ Envoyé", "ok", None))
-                self.q.put(("log", "✉  « %s » envoyé à %s" % (res.titre, self.cfg["kindle"]), "envoi"))
-            except km.ErreurEnvoi as exc:
-                l["etat"] = "echec_envoi"
-                self.q.put(("etat", iid, "✗ Envoi raté", "ko", None))
-                self.q.put(("log", "✗  Envoi de « %s » : %s" % (res.titre, exc), "erreur"))
-                if exc.bloquant:
-                    self.bloque = exc
-            except Exception as exc:
-                l["etat"] = "echec_envoi"
-                self.q.put(("etat", iid, "✗ Envoi raté", "ko", None))
-                self.q.put(("log", "✗  Envoi : erreur inattendue (%s)" % exc, "erreur"))
+            l["etat"] = "pret"
+            self.q.put(("etat", iid, "✓ Réparé", "ok", fmt))
 
         def pomper(self):
             try:
@@ -753,13 +790,19 @@ def interface():
                         for b in (self.b_go, self.b_ajout, self.b_retirer, self.b_vider):
                             b.configure(state="normal")
                         self.envoi_change(sauver=False)
-                        _, envoyer, bloque, arrete = m
+                        _, envoyer, bloque, arrete, nb_mails = m
                         if arrete:
                             self.ecrire("■  Arrêté. Clique à nouveau sur le bouton pour reprendre.", "neutre")
-                        elif envoyer and not bloque and any(l["etat"] == "envoye" for l in self.livres.values()):
-                            self.ecrire("Les livres arrivent sur ta Kindle d'ici quelques minutes "
-                                        "(Wi-Fi activé). Si Amazon t'envoie un mail « Vérifiez votre "
-                                        "demande », clique sur le lien pour valider.", "neutre")
+                        elif envoyer and nb_mails == 1:
+                            self.ecrire("Envoyé en un seul e-mail. Si Amazon t'envoie un mail « Vérifiez votre "
+                                        "demande », clique sur le lien : sans ça, les livres n'arrivent pas. "
+                                        "Ensuite, ils arrivent sur ta Kindle en quelques minutes (Wi-Fi activé).",
+                                        "neutre")
+                        elif envoyer and nb_mails > 1:
+                            self.ecrire("Envoyé en %d e-mails. Amazon peut demander une vérification pour "
+                                        "CHACUN : Gmail range ces mails « Vérifiez votre demande » dans une seule "
+                                        "conversation, ouvre-les tous et clique sur chaque lien." % nb_mails,
+                                        "neutre")
                         if bloque:
                             messagebox.showerror("Envoi impossible", str(bloque), parent=self.root)
             except queue.Empty:

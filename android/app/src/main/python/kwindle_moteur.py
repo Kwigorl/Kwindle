@@ -2019,6 +2019,13 @@ def traiter_livre(chemin, dossier_sortie, options=None):
         res.sortie = os.path.join(dossier_sortie, nom + ".epub")
         if os.path.abspath(res.sortie) == os.path.abspath(chemin):
             res.sortie = os.path.join(dossier_sortie, nom + " (Kindle).epub")
+        prises = options.get("sorties_prises")      # deux livres différents au même titre
+        if prises is not None:
+            n = 2
+            while os.path.normcase(os.path.abspath(res.sortie)) in prises:
+                res.sortie = os.path.join(dossier_sortie, "%s (%d).epub" % (nom, n))
+                n += 1
+            prises.add(os.path.normcase(os.path.abspath(res.sortie)))
         with open(res.sortie, "wb") as f:
             f.write(donnees)
         if len(donnees) > LIMITE_MAIL:
