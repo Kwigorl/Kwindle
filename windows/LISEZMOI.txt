@@ -1,7 +1,7 @@
-KWINDLE — tes livres vers ta Kindle
+REKINDLE — tes livres vers ta Kindle
 =====================================
 
-Kwindle répare les livres que Send to Kindle refuse, convertit les
+Rekindle répare les livres que Send to Kindle refuse, convertit les
 anciens fichiers Kindle (MOBI, AZW3) en vrai EPUB, récupère les livres
 contenus dans un fichier .torrent, puis les envoie par e-mail à ton
 adresse Kindle.
@@ -13,18 +13,26 @@ INSTALLATION (une seule fois)
    (3.14…) marchent pour tout SAUF les torrents : le module torrent
    n'existe pas encore pour elles. Si plusieurs versions sont
    installées, le lanceur choisit tout seul la bonne.
-   S'il n'y a pas de Python, « Lancer Kwindle.bat » propose de
+   S'il n'y a pas de Python, « Lancer Rekindle.bat » propose de
    l'installer (ou ouvre la page de téléchargement : coche alors
    « Add python.exe to PATH »).
-2. Range le dossier Kwindle où tu veux (par ex. dans Documents).
-3. Double-clique sur « Lancer Kwindle.bat ». La 1re fois, il installe
+2. Range le dossier Rekindle où tu veux (par ex. dans Documents).
+3. Double-clique sur « Lancer Rekindle.bat ». La 1re fois, il installe
    les composants (une minute environ), puis la fenêtre s'ouvre.
 4. Facultatif : « Creer un raccourci sur le Bureau.bat » pour avoir
-   une icône Kwindle sur le Bureau.
+   une icône Rekindle sur le Bureau.
 
 
-RÉGLAGES (bouton « ⚙ Réglages »)
---------------------------------
+TU AVAIS KWINDLE ?
+------------------
+Kwindle s'appelle maintenant Rekindle. Au premier lancement, Rekindle
+reprend tout seul tes réglages (adresse Kindle, messagerie, mot de
+passe). Tu peux supprimer l'ancien dossier Kwindle, puis relancer
+« Creer un raccourci sur le Bureau.bat » : il remplace l'ancienne icône.
+
+
+RÉGLAGES (bouton « Réglages », en haut à droite)
+------------------------------------------------
 - Adresse Kindle : sur amazon.fr → Gérer votre contenu et vos appareils
   → Préférences → Paramètres des documents personnels. Elle finit par
   @kindle.com.
@@ -41,19 +49,19 @@ RÉGLAGES (bouton « ⚙ Réglages »)
 
 Le mot de passe est rangé dans le Gestionnaire d'identification de
 Windows, pas dans un fichier. Les réglages sont dans
-%APPDATA%\Kwindle\reglages.json.
+%APPDATA%\Rekindle\reglages.json.
 
 
 UTILISATION
 -----------
 Glisse tes livres dans la fenêtre (ou « Ajouter des livres… »), puis
 « Réparer et envoyer ». Les livres réparés sont gardés dans
-Documents\Kwindle. Décoche « Envoyer à ma Kindle » pour seulement
+Documents\Rekindle. Décoche « Envoyer à ma Kindle » pour seulement
 les réparer.
 Double-clic sur un livre de la liste : revoir son rapport et l'ouvrir
 dans l'Explorateur.
 
-Kwindle regroupe les livres dans un seul e-mail (jusqu'à 25 livres,
+Rekindle regroupe les livres dans un seul e-mail (jusqu'à 25 livres,
 dans la limite de taille de ta messagerie). C'est important : Amazon
 peut demander une vérification (mail « Vérifiez votre demande de
 document Send to Kindle ») POUR CHAQUE e-mail reçu, et tant qu'on ne
@@ -62,7 +70,7 @@ ces demandes dans une seule conversation : s'il y en a plusieurs,
 ouvre-les toutes et clique sur chaque lien (valable 48 h).
 Pour ne plus avoir ces vérifications, Amazon conseille de changer
 ton adresse @kindle.com dans les Paramètres des documents personnels
-(puis de mettre la nouvelle dans les réglages de Kwindle).
+(puis de mettre la nouvelle dans les réglages de Rekindle).
 
 Les livres arrivent ensuite sur la Kindle en quelques minutes (Wi-Fi
 activé).
@@ -71,16 +79,16 @@ activé).
 TORRENTS
 --------
 Glisse un fichier .torrent dans la fenêtre comme un livre, puis
-« Réparer et envoyer ». Kwindle :
+« Réparer et envoyer ». Rekindle :
 - ne télécharge QUE les livres du torrent (EPUB, MOBI, AZW3, PDF),
   pas les images, cartes, fichiers texte…
-- les range dans Documents\Kwindle\Torrents\<nom du torrent>,
+- les range dans Documents\Rekindle\Torrents\<nom du torrent>,
 - puis les répare et les envoie comme les autres (ils apparaissent
   sous le torrent dans la liste).
-Le torrent reste partagé tant que Kwindle est ouvert ; à la fermeture,
+Le torrent reste partagé tant que Rekindle est ouvert ; à la fermeture,
 le partage s'arrête.
 Le bouton « Arrêter » interrompt un téléchargement. Si personne ne
-partage le torrent, Kwindle abandonne au bout de 10 minutes.
+partage le torrent, Rekindle abandonne au bout de 10 minutes.
 La 1re fois, le pare-feu de Windows peut demander d'autoriser Python à
 communiquer : accepte (réseaux privés), sinon les autres auront plus de
 mal à te transmettre les fichiers.
@@ -89,10 +97,10 @@ depuis https://aka.ms/vs/17/release/vc_redist.x64.exe.
 
 Les PDF passent tels quels sur la Kindle. Attention au poids : Gmail
 limite les pièces jointes à 25 Mo (soit un fichier d'environ 18 Mo).
-Au-delà, Kwindle te le dit : envoie-le par amazon.fr/sendtokindle.
+Au-delà, Rekindle te le dit : envoie-le par amazon.fr/sendtokindle.
 
 
-CE QUE KWINDLE RÉPARE
+CE QUE REKINDLE RÉPARE
 ----------------------
 - Faux EPUB : fichier MOBI ou AZW3 renommé en .epub (refusé par Amazon)
 - MOBI / AZW3 → EPUB (Amazon ne prend plus le MOBI par e-mail)
@@ -116,7 +124,7 @@ CE QU'IL NE FAIT PAS
 
 EN LIGNE DE COMMANDE (facultatif)
 ---------------------------------
-  py -3.13 kwindle.py livre.epub              répare dans Documents\Kwindle
-  py -3.13 kwindle.py livre.epub --envoyer    répare et envoie
-  py -3.13 kwindle.py pack.torrent --envoyer  récupère, répare et envoie
-  py -3.13 kwindle.py *.epub --verifier       diagnostic seulement
+  py -3.13 rekindle.py livre.epub              répare dans Documents\Rekindle
+  py -3.13 rekindle.py livre.epub --envoyer    répare et envoie
+  py -3.13 rekindle.py pack.torrent --envoyer  récupère, répare et envoie
+  py -3.13 rekindle.py *.epub --verifier       diagnostic seulement

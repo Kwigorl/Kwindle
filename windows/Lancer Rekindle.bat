@@ -1,5 +1,5 @@
 @echo off
-rem Kwindle - lanceur Windows
+rem Rekindle - lanceur Windows
 cd /d "%~dp0"
 
 set "PY="
@@ -31,7 +31,7 @@ if not defined PY goto pas_de_python
 %PY% -c "import lxml, mobi, PIL, keyring" >nul 2>nul
 if errorlevel 1 (
   echo.
-  echo  Premiere ouverture : installation des composants de Kwindle...
+  echo  Premiere ouverture : installation des composants de Rekindle...
   echo  ^(ca prend une minute, ca ne se fait qu'une fois^)
   echo.
   %PY% -m pip install --user --disable-pip-version-check -r requirements.txt
@@ -51,20 +51,20 @@ rem composants facultatifs : glisser-deposer et torrents
   )
 )
 
-start "" %PYW% "%~dp0kwindle.py"
+start "" %PYW% "%~dp0rekindle.py"
 exit /b 0
 
 :pas_de_python
 echo.
 echo  Python n'est pas installe sur cet ordinateur.
-echo  Kwindle a besoin de Python 3.13 (ou 3.10 a 3.12) pour tout faire, torrents compris.
+echo  Rekindle a besoin de Python 3.13 (ou 3.10 a 3.12) pour tout faire, torrents compris.
 echo.
 where winget >nul 2>nul || goto telechargement
 choice /c ON /m " L'installer maintenant"
 if errorlevel 2 goto telechargement
 winget install -e --id Python.Python.3.13 --scope user --accept-package-agreements --accept-source-agreements
 echo.
-echo  C'est fait. Ferme cette fenetre et relance "Lancer Kwindle.bat".
+echo  C'est fait. Ferme cette fenetre et relance "Lancer Rekindle.bat".
 pause
 exit /b 0
 

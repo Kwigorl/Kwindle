@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Kwindle — répare tes livres (EPUB, MOBI renommés…) pour Send to Kindle
+Rekindle — répare tes livres (EPUB, MOBI renommés…) pour Send to Kindle
 et les envoie directement à ton adresse Kindle.
 
-  Interface :     python kwindle.py
-  Ligne de cmd :  python kwindle.py livre.epub [--envoyer] [--verifier] [--sortie DOSSIER]
+  Interface :     python rekindle.py
+  Ligne de cmd :  python rekindle.py livre.epub [--envoyer] [--verifier] [--sortie DOSSIER]
 """
 
 import argparse
@@ -21,9 +21,9 @@ import webbrowser
 ICI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, ICI)
 
-from kwindle_moteur import traiter_livre  # noqa: E402
-import kwindle_mail as km                 # noqa: E402
-import kwindle_torrent as kt              # noqa: E402
+from rekindle_moteur import traiter_livre  # noqa: E402
+import rekindle_mail as km                 # noqa: E402
+import rekindle_torrent as kt              # noqa: E402
 
 VERSION = "1.1"
 SYMBOLES = {"info": "ℹ", "corrige": "✓", "alerte": "⚠", "erreur": "✗"}
@@ -57,7 +57,7 @@ def ouvrir(chemin, selectionner=False):
 
 def ligne_de_commande(args):
     cfg = km.Reglages()
-    sortie = args.sortie or (tempfile.mkdtemp(prefix="kwindle_") if args.verifier else cfg["dossier_sortie"])
+    sortie = args.sortie or (tempfile.mkdtemp(prefix="rekindle_") if args.verifier else cfg["dossier_sortie"])
     code = 0
     livres = []
     for chemin in args.livres:
@@ -121,6 +121,18 @@ def ligne_de_commande(args):
 # Interface graphique
 # ==========================================================================
 
+def charger_polices():
+    """Rend les polices de Rekindle (dossier polices) utilisables par l'appli, sans les installer."""
+    dossier = os.path.join(ICI, "polices")
+    try:
+        import ctypes
+        for f in os.listdir(dossier):
+            if f.lower().endswith(".ttf"):
+                ctypes.windll.gdi32.AddFontResourceExW(os.path.join(dossier, f), 0x10, 0)  # FR_PRIVATE
+    except Exception:
+        pass
+
+
 def interface():
     import tkinter as tk
     from tkinter import ttk, filedialog, messagebox
@@ -133,27 +145,108 @@ def interface():
         try:
             import ctypes
             ctypes.windll.shcore.SetProcessDpiAwareness(1)
+            # icône Rekindle dans la barre des tâches (et pas celle de Python)
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("Kwigorl.Rekindle")
         except Exception:
             pass
+        charger_polices()
 
     root = TkinterDnD.Tk() if TkinterDnD else tk.Tk()
 
-    POLICE = "Segoe UI" if sys.platform.startswith("win") else "DejaVu Sans"
-    GRIS = "#6b6b6b"
-    VERT, ORANGE, ROUGE, BLEU = "#1d7a3a", "#b35c00", "#c0262d", "#2459a6"
+    from tkinter import font as tkfont
+    familles = set(tkfont.families(root))
+    if "Nunito" in familles:
+        POLICE = "Nunito"
+    else:
+        POLICE = "Segoe UI" if sys.platform.startswith("win") else "DejaVu Sans"
+    if sys.platform.startswith("win") and "Nunito ExtraBold" in familles:
+        def forte(taille):
+            return ("Nunito ExtraBold", taille)
+    else:
+        def forte(taille):
+            return (POLICE, taille, "bold")
+    POLICE_TITRE = "Lilita One" if "Lilita One" in familles else None
+    echelle = max(1.0, root.winfo_fpixels("1i") / 96.0)
 
+    # couleurs de Rekindle
+    MARINE, MARINE_CLAIR, OCEAN = "#0A2E4A", "#123E5F", "#127C9E"
+    CORAIL, CORAIL_CLAIR, CREME, BRUME = "#FF6B57", "#FF8A78", "#F4F1E8", "#A9C7DA"
+    ECUME, BORDURE, BLANC = "#E9F6FA", "#CFE6EE", "#FFFFFF"
+    GRIS = "#3F5566"
+    VERT, ORANGE, ROUGE, BLEU = "#1d7a3a", "#b35c00", "#c0262d", "#0E6A86"
+
+    root.configure(background=ECUME)
     style = ttk.Style(root)
-    for theme in ("vista", "clam"):
-        if theme in style.theme_names():
-            style.theme_use(theme)
-            break
-    style.configure(".", font=(POLICE, 10))
-    style.configure("Titre.TLabel", font=(POLICE, 20, "bold"))
+    style.theme_use("clam")
+    style.configure(".", font=(POLICE, 10), background=ECUME, foreground=MARINE, bordercolor=BORDURE,
+                    lightcolor=BLANC, darkcolor=BORDURE, troughcolor=ECUME, focuscolor=OCEAN,
+                    selectbackground=BORDURE, selectforeground=MARINE, fieldbackground=BLANC,
+                    insertcolor=MARINE)
+    style.configure("TLabel", background=ECUME, foreground=MARINE)
+    style.configure("Titre.TLabel", font=(POLICE_TITRE, 20) if POLICE_TITRE else forte(20))
     style.configure("Sous.TLabel", font=(POLICE, 10), foreground=GRIS)
     style.configure("Aide.TLabel", font=(POLICE, 9), foreground=GRIS)
+    style.configure("Section.TLabel", font=forte(11), foreground=MARINE)
+    style.configure("TButton", background=BLANC, foreground=MARINE, bordercolor=BORDURE, lightcolor=BLANC,
+                    darkcolor=BLANC, padding=(12, 5), relief="flat", font=(POLICE, 10, "bold"))
+    style.map("TButton", background=[("disabled", ECUME), ("pressed", BORDURE), ("active", "#DCEFF5")],
+              foreground=[("disabled", "#8AA4B8")])
+    for nom, fond, texte, survol in (("Primaire", MARINE, CREME, MARINE_CLAIR),
+                                     ("Corail", CORAIL, MARINE, CORAIL_CLAIR),
+                                     ("Stop", ROUGE, BLANC, "#a51f25"),
+                                     ("Entete", MARINE_CLAIR, CREME, "#1B4868")):
+        style.configure(nom + ".TButton", background=fond, foreground=texte, bordercolor=fond,
+                        lightcolor=fond, darkcolor=fond, font=(POLICE, 11 if nom != "Entete" else 10, "bold"),
+                        padding=(20, 9) if nom in ("Primaire", "Stop") else (14, 7))
+        style.map(nom + ".TButton", background=[("disabled", "#8AA4B8"), ("pressed", survol), ("active", survol)],
+                  foreground=[("disabled", ECUME)], bordercolor=[("active", survol)],
+                  lightcolor=[("active", survol)], darkcolor=[("active", survol)])
     style.configure("Grand.TButton", font=(POLICE, 11, "bold"), padding=(18, 8))
-    style.configure("Treeview", rowheight=26)
-    style.configure("Section.TLabel", font=(POLICE, 11, "bold"))
+    style.configure("Treeview", background=BLANC, fieldbackground=BLANC, foreground=MARINE,
+                    rowheight=int(30 * echelle), bordercolor=BORDURE, lightcolor=BORDURE, darkcolor=BORDURE)
+    style.map("Treeview", background=[("selected", "#D7EEF5")], foreground=[("selected", MARINE)])
+    style.configure("Treeview.Heading", background="#DCEFF5", foreground=MARINE, font=(POLICE, 10, "bold"),
+                    relief="flat", bordercolor=BORDURE, lightcolor="#DCEFF5", darkcolor="#DCEFF5", padding=(6, 5))
+    style.map("Treeview.Heading", background=[("active", BORDURE)])
+    style.configure("TCheckbutton", background=ECUME, foreground=MARINE, font=(POLICE, 10, "bold"),
+                    indicatorbackground=BLANC, indicatorforeground=BLANC, indicatormargin=(0, 0, 6, 0))
+    style.map("TCheckbutton", background=[("active", ECUME)],
+              indicatorbackground=[("selected", OCEAN), ("active", "#DCEFF5")])
+    style.configure("TScrollbar", background=BORDURE, troughcolor=ECUME, bordercolor=ECUME,
+                    lightcolor=BORDURE, darkcolor=BORDURE, arrowcolor=MARINE)
+    style.map("TScrollbar", background=[("active", "#B5D7E3")])
+    style.configure("TLabelframe", background=ECUME, bordercolor=BORDURE)
+    style.configure("TLabelframe.Label", background=ECUME, foreground=MARINE, font=forte(10))
+    style.configure("TEntry", fieldbackground=BLANC, bordercolor=BORDURE, lightcolor=BLANC, padding=4)
+    style.map("TEntry", bordercolor=[("focus", OCEAN)], lightcolor=[("focus", OCEAN)])
+    style.configure("TCombobox", fieldbackground=BLANC, background=BLANC, bordercolor=BORDURE,
+                    arrowcolor=MARINE, padding=4)
+    style.map("TCombobox", fieldbackground=[("readonly", BLANC)], bordercolor=[("focus", OCEAN)],
+              selectbackground=[("readonly", BLANC)], selectforeground=[("readonly", MARINE)])
+    root.option_add("*TCombobox*Listbox.background", BLANC)
+    root.option_add("*TCombobox*Listbox.selectBackground", BORDURE)
+    root.option_add("*TCombobox*Listbox.selectForeground", MARINE)
+    root.option_add("*TCombobox*Listbox.font", (POLICE, 10))
+
+    images = {}
+
+    def image(nom, hauteur):
+        """Image de windows/images, à la hauteur voulue (en pixels écran)."""
+        cle = (nom, hauteur)
+        if cle not in images:
+            chemin = os.path.join(ICI, "images", nom + ".png")
+            try:
+                from PIL import Image, ImageTk
+                im = Image.open(chemin).convert("RGBA")
+                im = im.resize((max(1, round(im.width * hauteur / im.height)), hauteur), Image.LANCZOS)
+                images[cle] = ImageTk.PhotoImage(im, master=root)
+            except Exception:
+                try:
+                    im = tk.PhotoImage(file=chemin, master=root)
+                    images[cle] = im.subsample(max(1, im.height() // hauteur))
+                except Exception:
+                    images[cle] = None
+        return images[cle]
 
     # ------------------------------------------------------------------
     class FenetreReglages(tk.Toplevel):
@@ -161,7 +254,8 @@ def interface():
             super().__init__(app.root)
             self.app = app
             cfg = app.cfg
-            self.title("Réglages — Kwindle")
+            self.title("Réglages — Rekindle")
+            self.configure(background=ECUME)
             self.transient(app.root)
             self.resizable(False, False)
             self.v = {
@@ -266,7 +360,7 @@ def interface():
             b.grid(row=r, column=0, columnspan=3, sticky="we", pady=(18, 0))
             self.bouton_test = ttk.Button(b, text="Tester la connexion", command=self.tester)
             self.bouton_test.pack(side="left")
-            ttk.Button(b, text="Enregistrer", command=self.enregistrer).pack(side="right")
+            ttk.Button(b, text="Enregistrer", style="Primaire.TButton", command=self.enregistrer).pack(side="right")
             ttk.Button(b, text="Annuler", command=self.destroy).pack(side="right", padx=8)
 
             self.fournisseur_change(False)
@@ -323,7 +417,7 @@ def interface():
             def fil():
                 try:
                     km.tester(c, mdp)
-                    msg = (True, "Connexion réussie : Kwindle peut envoyer depuis %s." % c["expediteur"])
+                    msg = (True, "Connexion réussie : Rekindle peut envoyer depuis %s." % c["expediteur"])
                 except km.ErreurEnvoi as exc:
                     msg = (False, str(exc))
                 except Exception as exc:
@@ -368,7 +462,7 @@ def interface():
             self.en_cours = False
             self.arret = threading.Event()
             self.bloque = None
-            root.title("Kwindle — tes livres vers ta Kindle")
+            root.title("Rekindle — tes livres vers ta Kindle")
             root.geometry("920x680")
             root.minsize(720, 520)
             icone = os.path.join(ICI, "icone.png")
@@ -378,8 +472,20 @@ def interface():
                     root.iconphoto(True, self.img_icone)
                 except Exception:
                     pass
+            if sys.platform.startswith("win") and os.path.exists(os.path.join(ICI, "icone.ico")):
+                try:
+                    root.iconbitmap(default=os.path.join(ICI, "icone.ico"))
+                except Exception:
+                    pass
 
-            principal = ttk.Frame(root, padding=(18, 14, 18, 10))
+            self.entete = tk.Canvas(root, height=int(118 * echelle), background=MARINE, highlightthickness=0,
+                                    borderwidth=0)
+            self.entete.pack(fill="x")
+            self.b_reglages = ttk.Button(self.entete, text="Réglages", style="Entete.TButton",
+                                         command=self.ouvrir_reglages)
+            self.entete.bind("<Configure>", lambda e: self.dessiner_entete())
+
+            principal = ttk.Frame(root, padding=(18, 4, 18, 10))
             principal.pack(fill="both", expand=True)
 
             bas = ttk.Frame(principal)
@@ -388,17 +494,8 @@ def interface():
             self.etat.pack(side="left")
             ttk.Button(bas, text="Ouvrir le dossier des livres", command=self.ouvrir_sortie).pack(side="right")
 
-            tete = ttk.Frame(principal)
-            tete.pack(fill="x")
-            g = ttk.Frame(tete)
-            g.pack(side="left")
-            ttk.Label(g, text="Kwindle", style="Titre.TLabel").pack(anchor="w")
-            ttk.Label(g, text="Récupère, répare et envoie tes livres à ta Kindle (EPUB, MOBI, PDF, torrents)",
-                      style="Sous.TLabel").pack(anchor="w")
-            ttk.Button(tete, text="⚙  Réglages", command=self.ouvrir_reglages).pack(side="right", anchor="n")
-
             cadre = ttk.Frame(principal)
-            cadre.pack(fill="both", expand=True, pady=(14, 8))
+            cadre.pack(fill="both", expand=True, pady=(6, 10))
             self.arbre = ttk.Treeview(cadre, columns=("livre", "format", "etat"), show="headings",
                                       selectmode="extended", height=8)
             self.arbre.heading("livre", text="Livre", anchor="w")
@@ -416,9 +513,11 @@ def interface():
             sb.pack(side="right", fill="y")
             self.arbre.bind("<Double-1>", self.double_clic)
             self.arbre.bind("<Delete>", lambda e: self.retirer())
-            self.vide = ttk.Label(self.arbre, justify="center", style="Sous.TLabel",
-                                  text=("Glisse tes livres ou tes fichiers .torrent ici\nou clique sur « Ajouter des livres… »"
-                                        if TkinterDnD else "Clique sur « Ajouter des livres… »"))
+            self.vide = tk.Label(self.arbre, justify="center", background=BLANC, foreground=GRIS,
+                                 font=(POLICE, 11), image=image("mascotte", int(150 * echelle)), compound="top",
+                                 text=("\nGlisse tes livres ou tes fichiers .torrent ici\n"
+                                       "ou clique sur « + Ajouter des livres… »"
+                                       if TkinterDnD else "\nClique sur « + Ajouter des livres… »"))
             self.vide.place(relx=0.5, rely=0.55, anchor="center")
             if TkinterDnD:
                 for w in (self.arbre, self.vide):
@@ -427,14 +526,15 @@ def interface():
 
             barre = ttk.Frame(principal)
             barre.pack(fill="x")
-            self.b_ajout = ttk.Button(barre, text="+  Ajouter des livres…", command=self.ajouter_dialogue)
+            self.b_ajout = ttk.Button(barre, text="+  Ajouter des livres…", style="Corail.TButton",
+                                      command=self.ajouter_dialogue)
             self.b_ajout.pack(side="left")
             self.b_retirer = ttk.Button(barre, text="Retirer", command=self.retirer)
             self.b_retirer.pack(side="left", padx=(8, 0))
             self.b_vider = ttk.Button(barre, text="Vider la liste", command=self.vider)
             self.b_vider.pack(side="left", padx=(8, 0))
             self.var_envoyer = tk.BooleanVar(value=bool(self.cfg.get("envoyer", True)))
-            self.b_go = ttk.Button(barre, style="Grand.TButton", command=self.lancer)
+            self.b_go = ttk.Button(barre, style="Primaire.TButton", command=self.lancer)
             self.b_go.pack(side="right")
             ttk.Checkbutton(barre, text="Envoyer à ma Kindle", variable=self.var_envoyer,
                             command=self.envoi_change).pack(side="right", padx=(0, 14))
@@ -443,28 +543,64 @@ def interface():
             jcadre = ttk.LabelFrame(principal, text=" Détails ", padding=(8, 6))
             jcadre.pack(fill="both", expand=True, pady=(12, 0))
             self.journal = tk.Text(jcadre, height=11, wrap="word", relief="flat", borderwidth=0,
-                                   font=(POLICE, 10), background="white",
+                                   font=(POLICE, 10), background=BLANC, foreground=MARINE,
+                                   selectbackground=BORDURE, selectforeground=MARINE, highlightthickness=0,
                                    padx=6, pady=4, state="disabled", cursor="arrow")
             js = ttk.Scrollbar(jcadre, orient="vertical", command=self.journal.yview)
             self.journal.configure(yscrollcommand=js.set)
             self.journal.pack(side="left", fill="both", expand=True)
             js.pack(side="right", fill="y")
-            self.journal.tag_configure("titre", font=(POLICE, 10, "bold"), spacing1=6)
+            self.journal.tag_configure("titre", font=forte(10), spacing1=6)
             self.journal.tag_configure("corrige", foreground=VERT, lmargin1=14, lmargin2=30)
             self.journal.tag_configure("alerte", foreground=ORANGE, lmargin1=14, lmargin2=30)
             self.journal.tag_configure("erreur", foreground=ROUGE, lmargin1=14, lmargin2=30)
             self.journal.tag_configure("info", foreground=BLEU, lmargin1=14, lmargin2=30)
-            self.journal.tag_configure("neutre", foreground="#333333", lmargin1=14, lmargin2=30)
+            self.journal.tag_configure("neutre", foreground=GRIS, lmargin1=14, lmargin2=30)
             self.journal.tag_configure("envoi", foreground=VERT, font=(POLICE, 10, "bold"), lmargin1=14)
 
             self.maj_barre()
 
             if not self.cfg.get("kindle"):
                 self.ecrire("Bienvenue !", "titre")
-                self.ecrire("Commence par « ⚙ Réglages » pour indiquer ton adresse Kindle et la "
+                self.ecrire("Commence par « Réglages » (en haut à droite) pour indiquer ton adresse Kindle et la "
                             "messagerie qui enverra les livres. Ensuite, ajoute un livre et clique sur "
                             "« Réparer et envoyer ».", "neutre")
             root.after(100, self.pomper)
+
+        # -------------------------------------------------------- en-tête
+        def dessiner_entete(self):
+            c = self.entete
+            c.delete("all")
+            l, h = c.winfo_width(), c.winfo_height()
+            e = echelle
+            x = int(22 * e)
+            tete = image("tete", int(54 * e))
+            if tete is not None:
+                c.create_image(x, int(16 * e), image=tete, anchor="nw")
+                x += tete.width() + int(14 * e)
+            y = int(16 * e)
+            police_titre = (POLICE_TITRE, 26) if POLICE_TITRE else forte(24)
+            t1 = c.create_text(x, y, text="Rekin", fill=CORAIL, font=police_titre, anchor="nw")
+            x2 = c.bbox(t1)[2]
+            c.create_text(x2, y, text="dle", fill=CREME, font=police_titre, anchor="nw")
+            y2 = c.bbox(t1)[3] + int(2 * e)
+            c.create_text(x, y2, text="Répare tes livres et les envoie à ta Kindle  ·  EPUB, MOBI, PDF, torrents",
+                          fill=BRUME, font=(POLICE, 10), anchor="nw")
+            c.create_window(l - int(20 * e), int(18 * e), window=self.b_reglages, anchor="ne")
+            aileron = image("aileron", int(30 * e))
+            if aileron is not None:
+                c.create_image(l - int(70 * e), h - int(9 * e), image=aileron, anchor="se")
+            # vagues
+            periode, amp, base = 48 * e, 6 * e, h - 9 * e
+            pts = [-20, h + 40, -20, base]      # points hors champ : le lissage ne mord pas sur le bas
+            xx = 0.0
+            haut = True
+            while xx <= l + periode:
+                pts += [xx, base, xx + periode / 4, base - amp if haut else base + amp]
+                xx += periode / 2
+                haut = not haut
+            pts += [xx, base, xx + 20, h + 40]
+            c.create_polygon(pts, fill=ECUME, outline="", smooth=True)
 
         # ---------------------------------------------------------- liste
         def ajouter(self, chemins):
@@ -569,7 +705,7 @@ def interface():
                 self.etat.configure(text="Envoi vers %s  ·  depuis %s" % (k, self.cfg.get("expediteur") or "?"),
                                     foreground=GRIS)
             else:
-                self.etat.configure(text="Adresse Kindle pas encore réglée : clique sur « ⚙ Réglages ».",
+                self.etat.configure(text="Adresse Kindle pas encore réglée : clique sur « Réglages ».",
                                     foreground=ORANGE)
 
         def envoi_change(self, sauver=True):
@@ -602,7 +738,7 @@ def interface():
                 if not self.livres:
                     self.ajouter_dialogue()
                 else:
-                    messagebox.showinfo("Kwindle", "Tous les livres de la liste sont déjà traités.",
+                    messagebox.showinfo("Rekindle", "Tous les livres de la liste sont déjà traités.",
                                         parent=self.root)
                 return
             if envoyer and self.cfg.probleme():
@@ -614,7 +750,7 @@ def interface():
             self.arret = threading.Event()
             for b in (self.b_ajout, self.b_retirer, self.b_vider):
                 b.configure(state="disabled")
-            self.b_go.configure(text="Arrêter")
+            self.b_go.configure(text="Arrêter", style="Stop.TButton")
             threading.Thread(target=self.travail, args=(a_faire, envoyer), daemon=True).start()
 
         def position(self, iid):
@@ -731,7 +867,7 @@ def interface():
             self.q.put(("etat", iid, "✓ %d livre%s récupéré%s" % (len(recus), "s" if len(recus) > 1 else "",
                                                                     "s" if len(recus) > 1 else ""), "ok", "Torrent"))
             self.q.put(("log", "▸ " + l["nom"], "titre"))
-            self.q.put(("log", "⇣  Téléchargé dans %s — le torrent reste partagé tant que Kwindle est ouvert."
+            self.q.put(("log", "⇣  Téléchargé dans %s — le torrent reste partagé tant que Rekindle est ouvert."
                         % os.path.dirname(recus[0]), "info"))
             nouveaux = []
             for n, chemin in enumerate(recus):
@@ -789,6 +925,7 @@ def interface():
                         self.en_cours = False
                         for b in (self.b_go, self.b_ajout, self.b_retirer, self.b_vider):
                             b.configure(state="normal")
+                        self.b_go.configure(style="Primaire.TButton")
                         self.envoi_change(sauver=False)
                         _, envoyer, bloque, arrete, nb_mails = m
                         if arrete:
@@ -814,7 +951,7 @@ def interface():
 
 
 def main():
-    p = argparse.ArgumentParser(prog="kwindle", description="Répare des livres pour Send to Kindle et les envoie.")
+    p = argparse.ArgumentParser(prog="rekindle", description="Répare des livres pour Send to Kindle et les envoie.")
     p.add_argument("livres", nargs="*", help="fichiers EPUB / MOBI / AZW3 / PDF")
     p.add_argument("--envoyer", action="store_true", help="envoyer à la Kindle (réglages de l'interface)")
     p.add_argument("--verifier", action="store_true", help="diagnostic seulement, sans garder de fichier")
