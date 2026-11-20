@@ -1,0 +1,4 @@
+lxml>=5.0
+mobi>=0.3.3
+Pillow>=10.0
+keyring>=24.0

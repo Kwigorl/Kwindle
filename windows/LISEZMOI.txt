@@ -1,0 +1,112 @@
+KWINDLE — tes livres vers ta Kindle
+=====================================
+
+Kwindle répare les livres que Send to Kindle refuse, convertit les
+anciens fichiers Kindle (MOBI, AZW3) en vrai EPUB, récupère les livres
+contenus dans un fichier .torrent, puis les envoie par e-mail à ton
+adresse Kindle.
+
+
+INSTALLATION (une seule fois)
+-----------------------------
+1. Il faut Python 3.13 (ou 3.10 à 3.12). Les versions plus récentes
+   (3.14…) marchent pour tout SAUF les torrents : le module torrent
+   n'existe pas encore pour elles. Si plusieurs versions sont
+   installées, le lanceur choisit tout seul la bonne.
+   S'il n'y a pas de Python, « Lancer Kwindle.bat » propose de
+   l'installer (ou ouvre la page de téléchargement : coche alors
+   « Add python.exe to PATH »).
+2. Range le dossier Kwindle où tu veux (par ex. dans Documents).
+3. Double-clique sur « Lancer Kwindle.bat ». La 1re fois, il installe
+   les composants (une minute environ), puis la fenêtre s'ouvre.
+4. Facultatif : « Creer un raccourci sur le Bureau.bat » pour avoir
+   une icône Kwindle sur le Bureau.
+
+
+RÉGLAGES (bouton « ⚙ Réglages »)
+--------------------------------
+- Adresse Kindle : sur amazon.fr → Gérer votre contenu et vos appareils
+  → Préférences → Paramètres des documents personnels. Elle finit par
+  @kindle.com.
+- Sur cette même page, ajoute l'adresse qui envoie les livres à la
+  « Liste des adresses e-mail approuvées ». Sans ça, Amazon jette les
+  envois sans prévenir.
+- Messagerie qui envoie :
+    · Gmail : il faut un « mot de passe d'application » (16 lettres),
+      pas ton mot de passe habituel. Active la validation en 2 étapes,
+      puis crée-le sur myaccount.google.com/apppasswords.
+    · Outlook.com / Hotmail perso : ne marche pas, Microsoft a coupé
+      l'envoi par mot de passe pour ces comptes. Prends une adresse Gmail.
+- « Tester la connexion » vérifie que tout est bon avant d'envoyer.
+
+Le mot de passe est rangé dans le Gestionnaire d'identification de
+Windows, pas dans un fichier. Les réglages sont dans
+%APPDATA%\Kwindle\reglages.json.
+
+
+UTILISATION
+-----------
+Glisse tes livres dans la fenêtre (ou « Ajouter des livres… »), puis
+« Réparer et envoyer ». Les livres réparés sont gardés dans
+Documents\Kwindle. Décoche « Envoyer à ma Kindle » pour seulement
+les réparer.
+Double-clic sur un livre de la liste : revoir son rapport et l'ouvrir
+dans l'Explorateur.
+
+Le livre arrive sur la Kindle en quelques minutes (Wi-Fi activé). La
+1re fois, Amazon peut envoyer un mail « Vérifiez votre demande » :
+clique sur le lien.
+
+
+TORRENTS
+--------
+Glisse un fichier .torrent dans la fenêtre comme un livre, puis
+« Réparer et envoyer ». Kwindle :
+- ne télécharge QUE les livres du torrent (EPUB, MOBI, AZW3, PDF),
+  pas les images, cartes, fichiers texte…
+- les range dans Documents\Kwindle\Torrents\<nom du torrent>,
+- puis les répare et les envoie comme les autres (ils apparaissent
+  sous le torrent dans la liste).
+Le torrent reste partagé tant que Kwindle est ouvert ; à la fermeture,
+le partage s'arrête.
+Le bouton « Arrêter » interrompt un téléchargement. Si personne ne
+partage le torrent, Kwindle abandonne au bout de 10 minutes.
+La 1re fois, le pare-feu de Windows peut demander d'autoriser Python à
+communiquer : accepte (réseaux privés), sinon les autres auront plus de
+mal à te transmettre les fichiers.
+Si un message parle de « Visual C++ Redistributable », installe-le
+depuis https://aka.ms/vs/17/release/vc_redist.x64.exe.
+
+Les PDF passent tels quels sur la Kindle. Attention au poids : Gmail
+limite les pièces jointes à 25 Mo (soit un fichier d'environ 18 Mo).
+Au-delà, Kwindle te le dit : envoie-le par amazon.fr/sendtokindle.
+
+
+CE QUE KWINDLE RÉPARE
+----------------------
+- Faux EPUB : fichier MOBI ou AZW3 renommé en .epub (refusé par Amazon)
+- MOBI / AZW3 → EPUB (Amazon ne prend plus le MOBI par e-mail)
+- Langue absente ou invalide (cause n°1 de l'erreur E999)
+- Fichiers sans déclaration UTF-8, mal encodés (latin-1…)
+- HTML mal formé (balises non fermées, &nbsp; et autres entités)
+- Liens vers l'identifiant <body> (bug connu de Send to Kindle)
+- Polices « obfusquées » (Adobe / IDPF)
+- Manifeste faux : fichiers manquants, oubliés, doublons, mauvais types
+- Noms de fichiers internes avec espaces ou accents
+- Images WebP / BMP / TIFF, images énormes
+- Sommaire absent, couverture mal déclarée, archive mal rangée
+  (mimetype, __MACOSX…)
+
+CE QU'IL NE FAIT PAS
+--------------------
+- Les livres protégés par DRM : il les signale et n'y touche pas.
+- Les fichiers de plus de 50 Mo ne passent pas par e-mail : utilise
+  amazon.fr/sendtokindle (jusqu'à 200 Mo).
+
+
+EN LIGNE DE COMMANDE (facultatif)
+---------------------------------
+  py -3.13 kwindle.py livre.epub              répare dans Documents\Kwindle
+  py -3.13 kwindle.py livre.epub --envoyer    répare et envoie
+  py -3.13 kwindle.py pack.torrent --envoyer  récupère, répare et envoie
+  py -3.13 kwindle.py *.epub --verifier       diagnostic seulement
