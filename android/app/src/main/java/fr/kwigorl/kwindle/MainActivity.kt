@@ -339,7 +339,7 @@ fun EcranPrincipal(vm: RekindleVM, ouvrirReglages: () -> Unit) {
     val (surTitre, titre) = when {
         vm.enCours -> "Au travail" to (if (vm.envoyer) "Réparation et envoi…" else "Réparation…")
         hauts.isEmpty() -> "Bienvenue" to "Aucun livre pour l'instant"
-        aFaire.isNotEmpty() -> (if (vm.envoyer) "Prêt à envoyer" else "Prêt à réparer") to "$enAttente en attente"
+        aFaire.isNotEmpty() -> (if (vm.envoyer) "Prêt à envoyer" else "Prêt à réparer") to enAttente
         else -> "Tout est fait" to (pluriel(hauts.size, "élément") + " traité" + if (hauts.size > 1) "s" else "")
     }
     val kindle = vm.reglages.kindle
@@ -480,9 +480,9 @@ fun Vide(modifier: Modifier) {
     ) {
         Image(
             painterResource(R.drawable.mascotte), contentDescription = "Le requin lecteur de Rekindle",
-            modifier = Modifier.size(150.dp, 158.dp),
+            modifier = Modifier.size(128.dp, 135.dp),
         )
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(14.dp))
         Text(
             "Ajoute un livre ou un fichier .torrent",
             style = MaterialTheme.typography.titleMedium, color = pal.texte, textAlign = TextAlign.Center,
