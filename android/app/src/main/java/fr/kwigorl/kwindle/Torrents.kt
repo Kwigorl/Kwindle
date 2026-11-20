@@ -30,6 +30,7 @@ object Torrents {
     /**
      * Télécharge les livres du torrent dans [dossier] et renvoie leurs fichiers.
      * [progression] reçoit (fraction, sources, débit en o/s, vérification en cours).
+     * [pairs] : sources connues à contacter directement (utile pour les tests).
      * Sur téléphone, on ne continue pas à partager une fois le téléchargement fini
      * (données mobiles et batterie).
      */
@@ -37,6 +38,7 @@ object Torrents {
         fichier: File,
         dossier: File,
         arrete: () -> Boolean,
+        pairs: List<TcpEndpoint> = emptyList(),
         progression: (Float, Int, Int, Boolean) -> Unit,
     ): List<File> {
         val ti = try {
@@ -59,7 +61,7 @@ object Torrents {
         dossier.mkdirs()
 
         val s = session()
-        s.download(ti, dossier, null, priorites, emptyList<TcpEndpoint>(), torrent_flags_t())
+        s.download(ti, dossier, null, priorites, pairs, torrent_flags_t())
 
         var h: TorrentHandle? = null
         var dernierFait = -1L
