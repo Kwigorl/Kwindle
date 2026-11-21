@@ -24,7 +24,7 @@ toucher() {
 
 adb install -r app/build/outputs/apk/$S/debug/app-$S-debug.apk
 adb shell pm grant $P android.permission.POST_NOTIFICATIONS
-adb shell am start -W -n $P/.MainActivity
+adb shell am start -W -n $P/fr.kwigorl.kwindle.MainActivity
 sleep 6
 adb exec-out screencap -p > $D/1_accueil.png
 
@@ -32,10 +32,10 @@ adb push app/src/androidTest/assets/test_casse.epub /data/local/tmp/Livre_casse.
 adb push app/src/androidTest/assets/pack.torrent /data/local/tmp/Pack_JDR.torrent
 adb shell chmod 644 /data/local/tmp/Livre_casse.epub /data/local/tmp/Pack_JDR.torrent
 adb shell am start -W -a android.intent.action.VIEW -t application/epub+zip \
-  -d file:///data/local/tmp/Livre_casse.epub -n $P/.MainActivity
+  -d file:///data/local/tmp/Livre_casse.epub -n $P/fr.kwigorl.kwindle.MainActivity
 sleep 3
 adb shell am start -W -a android.intent.action.VIEW -t application/x-bittorrent \
-  -d file:///data/local/tmp/Pack_JDR.torrent -n $P/.MainActivity
+  -d file:///data/local/tmp/Pack_JDR.torrent -n $P/fr.kwigorl.kwindle.MainActivity
 sleep 4
 adb exec-out screencap -p > $D/2_liste.png
 
