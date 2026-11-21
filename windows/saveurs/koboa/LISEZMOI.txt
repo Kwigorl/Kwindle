@@ -58,6 +58,11 @@ La Kobo range elle-même les séries (informations de série du livre) :
 l'option « Mettre le numéro de tome dans le titre » est donc désactivée
 au départ ; active-la si tu préfères trier par titre.
 
+Les livres sont convertis en KEPUB (fichiers .kepub.epub), le format maison
+de Kobo : les pages tournent plus vite et la Kobo affiche le temps de lecture
+restant et les statistiques. Les BD et albums à mise en page fixe restent
+en EPUB.
+
 
 TORRENTS
 --------

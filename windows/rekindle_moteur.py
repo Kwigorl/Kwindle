@@ -1305,6 +1305,109 @@ def deviner_langue(textes):
 
 
 # --------------------------------------------------------------------------
+# KEPUB : le format maison de Kobo
+# --------------------------------------------------------------------------
+# Même principe que kepubify : chaque phrase du texte va dans un
+# <span class="koboSpan" id="kobo.P.S"> (P = paragraphe, S = phrase), et le
+# contenu de chaque chapitre dans <div id="book-columns"><div id="book-inner">.
+# La Kobo s'en sert pour tourner les pages plus vite, compter le temps de
+# lecture restant et placer les surlignages. Le fichier se nomme .kepub.epub.
+
+# éléments qui commencent un nouveau paragraphe (P)
+KOBO_BLOCS = {"p", "ol", "ul", "li", "table", "tr", "td", "th", "h1", "h2", "h3", "h4", "h5", "h6",
+              "blockquote", "div", "section", "article", "aside", "figure", "figcaption", "dl", "dt",
+              "dd", "header", "footer", "nav", "hr", "br"}
+# éléments dont on ne touche pas le texte
+KOBO_SANS = {"script", "style", "pre", "textarea", "select", "option", "audio", "video", "object",
+             "noscript", "iframe", "canvas", "map", "head", "title"}
+# fin de phrase : ponctuation, guillemets ou parenthèses fermants, puis un espace
+_FIN_PHRASE = re.compile("[.!?…]+(?:[  ]?[»\"”’')\\]])*[ \t\r\n]+")
+STYLE_KOBO = "div#book-inner { margin-top: 0; margin-bottom: 0; }"
+
+
+def _phrases(texte):
+    """(blancs du début, [phrases]) ; chaque phrase garde les espaces qui la suivent."""
+    reste = texte.lstrip()
+    prefixe = texte[:len(texte) - len(reste)]
+    phrases, pos = [], 0
+    for m in _FIN_PHRASE.finditer(reste):
+        phrases.append(reste[pos:m.end()])
+        pos = m.end()
+    if pos < len(reste):
+        phrases.append(reste[pos:])
+    return prefixe, phrases
+
+
+def koboiser_corps(body):
+    """Met le texte du <body> en koboSpans. Renvoie le nombre de spans créés."""
+    etat = {"p": 0, "s": 0, "neuf": True, "n": 0}
+
+    def span(texte=None):
+        if etat["neuf"]:
+            etat["p"] += 1
+            etat["s"] = 0
+            etat["neuf"] = False
+        etat["s"] += 1
+        etat["n"] += 1
+        sp = etree.Element(q(XHTML, "span"))
+        sp.set("class", "koboSpan")
+        sp.set("id", "kobo.%d.%d" % (etat["p"], etat["s"]))
+        sp.text = texte
+        return sp
+
+    def couper(texte):
+        prefixe, phrases = _phrases(texte)
+        return prefixe or None, [span(p) for p in phrases]
+
+    def parcourir(el):
+        enfants = list(el)
+        if el.text and el.text.strip():
+            el.text, spans = couper(el.text)
+            for i, sp in enumerate(spans):
+                el.insert(i, sp)
+        for enfant in enfants:
+            avant = enfant           # l'élément après lequel vient le texte qui suit (tail)
+            if isinstance(enfant.tag, str) and enfant.tag.startswith("{%s}" % XHTML):
+                nom = nom_local(enfant.tag)
+                if nom == "img":                 # une image = un « paragraphe » à elle seule
+                    etat["neuf"] = True
+                    sp = span()
+                    suite, enfant.tail = enfant.tail, None
+                    enfant.addprevious(sp)
+                    sp.append(enfant)
+                    sp.tail = suite
+                    avant = sp
+                    etat["neuf"] = True
+                elif nom not in KOBO_SANS:
+                    bloc = nom in KOBO_BLOCS
+                    if bloc:
+                        etat["neuf"] = True
+                    parcourir(enfant)
+                    if bloc:
+                        etat["neuf"] = True
+            # (SVG, MathML, commentaires : on n'entre pas dedans, mais le texte qui suit compte)
+            if avant.tail and avant.tail.strip():
+                avant.tail, spans = couper(avant.tail)
+                for sp in reversed(spans):
+                    avant.addnext(sp)
+
+    parcourir(body)
+    return etat["n"]
+
+
+def envelopper_corps(body):
+    """Tout le contenu du <body> dans <div id="book-columns"><div id="book-inner">."""
+    colonnes = etree.Element(q(XHTML, "div"))
+    colonnes.set("id", "book-columns")
+    interieur = etree.SubElement(colonnes, q(XHTML, "div"))
+    interieur.set("id", "book-inner")
+    interieur.text, body.text = body.text, None
+    for enfant in list(body):
+        interieur.append(enfant)          # l'enfant garde le texte qui le suit
+    body.append(colonnes)
+
+
+# --------------------------------------------------------------------------
 # Réparation d'un EPUB
 # --------------------------------------------------------------------------
 
@@ -2082,6 +2185,67 @@ class Reparateur:
                 props = (item.get("properties") or "").split()
                 item.set("properties", " ".join(props + ["cover-image"]))
 
+    # ----------------------------------------------------------- KEPUB (Kobo)
+    def mise_en_page_fixe(self):
+        """BD, albums… : pages dessinées à l'avance (rien à découper en phrases)."""
+        for m in self.metadata.iter(q(OPF, "meta")):
+            if m.get("property") == "rendition:layout" and (m.text or "").strip() == "pre-paginated":
+                return True
+            if (m.get("name") or "").lower() == "fixed-layout" and (m.get("content") or "").lower() == "true":
+                return True
+        for chemin, data in self.f.items():
+            if chemin.lower() == "meta-inf/com.apple.ibooks.display-options.xml":
+                if re.search(rb'name="fixed-layout"[^>]*>\s*true', data):
+                    return True
+        return False
+
+    def convertir_kepub(self):
+        """Passe le livre au format KEPUB de Kobo. Renvoie True si le livre est (déjà) en KEPUB."""
+        if self.mise_en_page_fixe():
+            self.r.info("Livre à mise en page fixe (BD, album) : gardé en EPUB, la Kobo le lit tel quel.")
+            return False
+        chapitres = OrderedDict()
+        for ir in self.spine.iter(q(OPF, "itemref")):
+            chemin = self.items.get(ir.get("idref"), (None, None))[1]
+            if chemin in self.docs:
+                chapitres[chemin] = self.docs[chemin]
+        if not chapitres:
+            return False
+        for root in chapitres.values():
+            for sp in root.iter(q(XHTML, "span")):
+                if "koboSpan" in (sp.get("class") or "").split():
+                    self.r.info("Livre déjà au format KEPUB de Kobo.")
+                    return True
+        phrases = 0
+        for chemin, root in chapitres.items():
+            body = root.find(q(XHTML, "body"))
+            if body is None:
+                continue
+            try:
+                phrases += koboiser_corps(body)
+            except RecursionError:          # HTML imbriqué à l'extrême : chapitre laissé tel quel
+                continue
+            envelopper_corps(body)
+            head = root.find(q(XHTML, "head"))
+            if head is None:
+                head = etree.Element(q(XHTML, "head"))
+                root.insert(0, head)
+            style = etree.SubElement(head, q(XHTML, "style"))
+            style.set("type", "text/css")
+            if self.epub3:                   # (attribut refusé par le XHTML 1.1 des EPUB 2)
+                style.set("class", "kobostylehacks")
+            style.text = STYLE_KOBO
+        # la Kobo cherche la couverture d'un KEPUB avec la propriété cover-image
+        cover = next((m.get("content") for m in self.metadata.iter(q(OPF, "meta"))
+                      if m.get("name") == "cover"), None)
+        if cover in self.items and not self.item_par_prop("cover-image"):
+            item = self.items[cover][0]
+            if (item.get("media-type") or "").startswith("image/"):
+                item.set("properties", " ".join((item.get("properties") or "").split() + ["cover-image"]))
+        self.r.info("Converti au format KEPUB de Kobo (%d phrases repérées) : pages plus rapides, "
+                    "temps de lecture restant et statistiques sur la Kobo." % phrases)
+        return True
+
     # ----------------------------------------------------------- écriture
     def serialiser(self):
         for chemin, root in self.docs.items():
@@ -2120,6 +2284,7 @@ class Reparateur:
         for ancien, nouveau in ren_images.items():
             renommages.setdefault(ancien, nouveau)
         self.reecrire_liens(renommages)
+        self.kepub = bool(self.opt.get("kepub")) and self.convertir_kepub()
         self.serialiser()
         if len(ecrire_epub(self.f)) > CIBLE_MAIL and Image is not None:
             ren2 = self.traiter_images(agressif=True)
@@ -2205,14 +2370,15 @@ def traiter_livre(chemin, dossier_sortie, options=None):
 
         os.makedirs(dossier_sortie, exist_ok=True)
         nom = nom_fichier_sur(res.titre + (" - " + res.auteur if res.auteur else ""))
-        res.sortie = os.path.join(dossier_sortie, nom + ".epub")
+        ext = ".kepub.epub" if getattr(rep, "kepub", False) else ".epub"
+        res.sortie = os.path.join(dossier_sortie, nom + ext)
         if os.path.abspath(res.sortie) == os.path.abspath(chemin):
-            res.sortie = os.path.join(dossier_sortie, nom + " (%s).epub" % liseuse(options))
+            res.sortie = os.path.join(dossier_sortie, nom + " (%s)%s" % (liseuse(options), ext))
         prises = options.get("sorties_prises")      # deux livres différents au même titre
         if prises is not None:
             n = 2
             while os.path.normcase(os.path.abspath(res.sortie)) in prises:
-                res.sortie = os.path.join(dossier_sortie, "%s (%d).epub" % (nom, n))
+                res.sortie = os.path.join(dossier_sortie, "%s (%d)%s" % (nom, n, ext))
                 n += 1
             prises.add(os.path.normcase(os.path.abspath(res.sortie)))
         with open(res.sortie, "wb") as f:

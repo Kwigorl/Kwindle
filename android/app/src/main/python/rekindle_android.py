@@ -30,7 +30,7 @@ def traiter(chemin, dossier_sortie, langue, tome_dans_titre=True):
     import saveur
     res = traiter_livre(chemin, dossier_sortie, {"langue": langue or "fr", "sorties_prises": _PRISES,
                                                  "tome_dans_titre": bool(tome_dans_titre),
-                                                 "liseuse": saveur.LISEUSE})
+                                                 "liseuse": saveur.LISEUSE, "kepub": saveur.KEPUB})
     return json.dumps({
         "ok": res.ok,
         "sortie": res.sortie or "",

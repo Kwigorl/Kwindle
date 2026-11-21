@@ -90,7 +90,7 @@ def ligne_de_commande(args):
     for chemin in livres:
         res = traiter_livre(chemin, sortie, {"langue": cfg.get("langue", "fr"), "sorties_prises": prises,
                                              "tome_dans_titre": cfg.get("tome_dans_titre", saveur.TOME_DANS_TITRE),
-                                             "liseuse": saveur.LISEUSE})
+                                             "liseuse": saveur.LISEUSE, "kepub": saveur.KEPUB})
         print(("✓ " if res.ok else "✗ ") + os.path.basename(chemin))
         for niv, msg in res.rapport.lignes():
             print("    %s %s" % (SYMBOLES[niv], msg))
@@ -939,7 +939,7 @@ def interface():
             res = traiter_livre(l["chemin"], self.cfg["dossier_sortie"],
                                 {"langue": self.cfg.get("langue") or "fr", "sorties_prises": self.sorties_prises,
                                  "tome_dans_titre": self.cfg.get("tome_dans_titre", saveur.TOME_DANS_TITRE),
-                                 "liseuse": saveur.LISEUSE})
+                                 "liseuse": saveur.LISEUSE, "kepub": saveur.KEPUB})
             l["res"] = res
             self.q.put(("rapport", res))
             fmt = FORMATS.get(res.format_source, "?")

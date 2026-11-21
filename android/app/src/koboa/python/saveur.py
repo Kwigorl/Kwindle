@@ -12,6 +12,7 @@ ANCIENS_NOMS = ()
 
 # options par défaut
 TOME_DANS_TITRE = False       # la Kobo range elle-même les séries (informations calibre)
+KEPUB = True                  # livres convertis en KEPUB, le format maison de Kobo (.kepub.epub)
 
 # envoi par e-mail
 MAX_PJ = 25

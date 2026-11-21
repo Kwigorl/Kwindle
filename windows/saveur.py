@@ -12,6 +12,7 @@ ANCIENS_NOMS = ("Kwindle", "Kindlixo")      # pour reprendre les anciens réglag
 
 # options par défaut
 TOME_DANS_TITRE = True        # la Kindle ne range pas les séries des documents envoyés
+KEPUB = False                # pas de KEPUB : c'est un format Kobo
 
 # envoi par e-mail
 MAX_PJ = 25                          # Amazon : 25 pièces jointes maximum par e-mail

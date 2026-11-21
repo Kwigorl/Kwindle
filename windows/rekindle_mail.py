@@ -280,6 +280,8 @@ def envoyer_lot(cfg, livres):
     for chemin, titre, auteur in livres:
         ext = os.path.splitext(chemin)[1].lower()
         sous_type = {".epub": "epub+zip", ".pdf": "pdf"}.get(ext, "octet-stream")
+        if chemin.lower().endswith(".kepub.epub"):      # KEPUB (Kobo) : la double extension compte
+            ext = ".kepub.epub"
         base = titre or os.path.splitext(os.path.basename(chemin))[0]
         if auteur:
             base += " - " + auteur

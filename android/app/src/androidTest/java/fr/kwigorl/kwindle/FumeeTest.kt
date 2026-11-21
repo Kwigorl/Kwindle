@@ -72,6 +72,31 @@ class FumeeTest {
         assertEquals("Sourcellerie", sans.getString("titre"))
     }
 
+    /** Conversion KEPUB (Koboa) avec le Python du téléphone : phrases en koboSpans, fichier .kepub.epub. */
+    @Test
+    fun conversionKepub() {
+        Moteur.init(ctx)
+        val py = Python.getInstance()
+        val options = py.builtins.callAttr("dict")
+        options.callAttr("__setitem__", "kepub", true)
+        options.callAttr("__setitem__", "liseuse", "Kobo")
+        val dossier = File(ctx.cacheDir, "test/kepub")
+        dossier.deleteRecursively()
+        val res = py.getModule("rekindle_moteur")
+            .callAttr("traiter_livre", asset("test_casse.epub").path, dossier.path, options)
+        assertTrue(res.callAttr("__getattribute__", "ok").toBoolean())
+        val sortie = res.callAttr("__getattribute__", "sortie").toString()
+        assertTrue(sortie, sortie.endsWith(".kepub.epub"))
+        val textes = java.util.zip.ZipFile(sortie).use { z ->
+            z.entries().toList().filter { it.name.endsWith("html") }
+                .map { e -> z.getInputStream(e).bufferedReader().readText() }
+        }
+        assertTrue(
+            "koboSpans et book-inner attendus",
+            textes.any { "class=\"koboSpan\" id=\"kobo.1.1\"" in it && "id=\"book-inner\"" in it },
+        )
+    }
+
     @Test
     fun lectureTorrent() {
         val f = asset("test.torrent")
