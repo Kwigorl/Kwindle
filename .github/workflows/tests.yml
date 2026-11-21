@@ -40,7 +40,7 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          ./gradlew assembleDebug assembleDebugAndroidTest -Pabis=x86_64 2>&1 | tee ../compilation.log
+          ./gradlew assembleRekindleDebug assembleRekindleDebugAndroidTest assembleKoboaDebug -Pabis=x86_64 2>&1 | tee ../compilation.log
 
       - name: Lancer les tests sur l'émulateur
         uses: reactivecircus/android-emulator-runner@v2
@@ -51,7 +51,7 @@ jobs:
           disable-animations: true
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           working-directory: android
-          script: ./gradlew connectedDebugAndroidTest -Pabis=x86_64 > ../tests.log 2>&1 ; R=$? ; sh ci/captures.sh > ../captures.log 2>&1 ; adb logcat -d > ../logcat.txt ; exit $R
+          script: ./gradlew connectedRekindleDebugAndroidTest -Pabis=x86_64 > ../tests.log 2>&1 ; R=$? ; sh ci/captures.sh rekindle fr.kwigorl.kwindle > ../captures.log 2>&1 ; sh ci/captures.sh koboa fr.kwigorl.koboa >> ../captures.log 2>&1 ; adb logcat -d > ../logcat.txt ; exit $R
 
       # Les journaux de GitHub ne sont pas lisibles depuis l'environnement de Claude :
       # on publie le rapport sur la branche « rapport-tests ».
@@ -61,7 +61,7 @@ jobs:
         run: |
           mkdir -p /tmp/rapport && cd /tmp/rapport
           cp "$GITHUB_WORKSPACE"/compilation.log "$GITHUB_WORKSPACE"/tests.log . 2>/dev/null || true
-          [ -f "$GITHUB_WORKSPACE/logcat.txt" ] && grep -E "kwindle|rekindle|chaquopy|python|AndroidRuntime|TestRunner|libtorrent" "$GITHUB_WORKSPACE/logcat.txt" | tail -n 3000 > logcat.txt || true
+          [ -f "$GITHUB_WORKSPACE/logcat.txt" ] && grep -E "kwindle|rekindle|koboa|chaquopy|python|AndroidRuntime|TestRunner|libtorrent" "$GITHUB_WORKSPACE/logcat.txt" | tail -n 3000 > logcat.txt || true
           cp -r "$GITHUB_WORKSPACE"/android/app/build/outputs/androidTest-results . 2>/dev/null || true
           cp -r "$GITHUB_WORKSPACE"/captures "$GITHUB_WORKSPACE"/captures.log . 2>/dev/null || true
           echo "run ${{ github.run_number }} — ${{ github.sha }} — ${{ job.status }}" > RESULTAT.txt

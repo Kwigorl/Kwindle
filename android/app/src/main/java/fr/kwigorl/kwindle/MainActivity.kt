@@ -114,13 +114,14 @@ import java.io.File
 
 // ====================================================================== couleurs et polices
 
-val Marine = Color(0xFF0A2E4A)
-private val MarineClair = Color(0xFF123E5F)
-private val Ocean = Color(0xFF127C9E)
-private val Corail = Color(0xFFFF6B57)
-private val CorailClair = Color(0xFFFF8A78)
-private val Creme = Color(0xFFF4F1E8)
-private val Brume = Color(0xFFA9C7DA)
+// les couleurs propres à chaque saveur (Rekindle, Koboa) sont dans Saveur.kt
+val Principale = Saveur.principale
+private val PrincipaleClaire = Saveur.principaleClaire
+private val Secondaire = Saveur.secondaire
+private val Accent = Saveur.accent
+private val AccentClair = Saveur.accentClair
+private val Creme = Saveur.creme
+private val Brume = Saveur.brume
 private val Vert = Color(0xFF1D7A3A)
 private val Orange = Color(0xFFB35C00)
 private val Rouge = Color(0xFFC0262D)
@@ -139,35 +140,7 @@ data class Palette(
     val puces: Map<String, Pair<Color, Color>>,   // fond, texte
 )
 
-private val PaletteClaire = Palette(
-    fond = Color(0xFFE9F6FA), carte = Color.White, bordure = Color(0xFFCFE6EE), bordureKo = Color(0xFFF3D3D3),
-    texte = Marine, texteDoux = Color(0xFF3F5566), vagueVide = Color(0xFFCFE6EE),
-    bouton = Marine, texteBouton = Creme,
-    puces = mapOf(
-        "envoye" to (Color(0xFFD7F0F6) to Color(0xFF0B5A70)),
-        "repare" to (Color(0xFFFFE2DC) to Color(0xFFA8321F)),
-        "ko" to (Color(0xFFFCE4E4) to Color(0xFF9B1C1C)),
-        "encours" to (Color(0xFFDCEFF5) to Color(0xFF0E6A86)),
-        "neutre" to (Color(0xFFE4ECF1) to Color(0xFF34495A)),
-        "torrent" to (Color(0xFFF6E7C8) to Color(0xFF6E4A00)),
-    ),
-)
-
-private val PaletteSombre = Palette(
-    fond = Color(0xFF06213A), carte = Color(0xFF0D3050), bordure = Color(0xFF1B4868), bordureKo = Color(0xFF6B2A2A),
-    texte = Color(0xFFE8F1F6), texteDoux = Brume, vagueVide = Color(0xFF1B4868),
-    bouton = Ocean, texteBouton = Color.White,
-    puces = mapOf(
-        "envoye" to (Color(0xFF0F4B5E) to Color(0xFFBDEBF7)),
-        "repare" to (Color(0xFF5A2A22) to Color(0xFFFFC9BE)),
-        "ko" to (Color(0xFF5A1F1F) to Color(0xFFFFC4C4)),
-        "encours" to (Color(0xFF123F5C) to Color(0xFFA9DDEE)),
-        "neutre" to (Color(0xFF1E3D55) to Color(0xFFC9D8E3)),
-        "torrent" to (Color(0xFF4A3A14) to Color(0xFFF6DFA8)),
-    ),
-)
-
-val LocalPalette = staticCompositionLocalOf { PaletteClaire }
+val LocalPalette = staticCompositionLocalOf { Saveur.paletteClaire }
 
 val Nunito = FontFamily(
     Font(R.font.nunito_medium, FontWeight.Normal),
@@ -201,7 +174,7 @@ class MainActivity : ComponentActivity() {
         // barre d'état claire sur l'en-tête bleu marine
         enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT))
         if (savedInstanceState == null) recevoir(intent)
-        setContent { ThemeRekindle { Racine(vm) } }
+        setContent { ThemeAppli { Racine(vm) } }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -225,22 +198,22 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ThemeRekindle(contenu: @Composable () -> Unit) {
+fun ThemeAppli(contenu: @Composable () -> Unit) {
     val sombre = isSystemInDarkTheme()
-    val pal = if (sombre) PaletteSombre else PaletteClaire
+    val pal = if (sombre) Saveur.paletteSombre else Saveur.paletteClaire
     val couleurs = if (sombre) {
         darkColorScheme(
-            primary = Color(0xFF8FD0E6), onPrimary = Marine, secondary = Corail, onSecondary = Marine,
-            tertiary = Corail, background = pal.fond, surface = pal.fond, onSurface = pal.texte,
+            primary = Saveur.primaireSombre, onPrimary = Principale, secondary = Accent, onSecondary = Principale,
+            tertiary = Accent, background = pal.fond, surface = pal.fond, onSurface = pal.texte,
             surfaceVariant = pal.carte, onSurfaceVariant = pal.texteDoux, surfaceContainerHigh = pal.carte,
-            outline = Color(0xFF5B7488), error = Color(0xFFFFB4AB),
+            outline = Saveur.contourSombre, error = Color(0xFFFFB4AB),
         )
     } else {
         lightColorScheme(
-            primary = Marine, onPrimary = Creme, secondary = Corail, onSecondary = Marine,
-            tertiary = Corail, background = pal.fond, surface = pal.fond, onSurface = pal.texte,
-            surfaceVariant = Color(0xFFDCEFF5), onSurfaceVariant = pal.texteDoux,
-            surfaceContainerHigh = Color.White, outline = Color(0xFF8AA4B8), error = Rouge,
+            primary = Principale, onPrimary = Creme, secondary = Accent, onSecondary = Principale,
+            tertiary = Accent, background = pal.fond, surface = pal.fond, onSurface = pal.texte,
+            surfaceVariant = Saveur.varianteClaire, onSurfaceVariant = pal.texteDoux,
+            surfaceContainerHigh = Color.White, outline = Saveur.contourClair, error = Rouge,
         )
     }
     CompositionLocalProvider(LocalPalette provides pal) {
@@ -295,13 +268,14 @@ private fun titreAffiche(el: Element): String =
 
 private fun pluriel(n: Int, mot: String) = "$n $mot" + if (n > 1) "s" else ""
 
-/** « Rekin » en corail, « dle » dans la couleur du texte. */
+/** Le nom de l'appli : certains morceaux dans la couleur d'accent (« Rekin » en corail, « boa » en ambre). */
 @Composable
-fun MotRekindle(taille: TextUnit, couleur: Color, modifier: Modifier = Modifier) {
+fun NomAppli(taille: TextUnit, couleur: Color, modifier: Modifier = Modifier) {
     Text(
         buildAnnotatedString {
-            withStyle(SpanStyle(color = Corail)) { append("Rekin") }
-            append("dle")
+            for ((morceau, enCouleur) in Saveur.PARTIES_NOM) {
+                if (enCouleur) withStyle(SpanStyle(color = Accent)) { append(morceau) } else append(morceau)
+            }
         },
         fontFamily = Lilita, fontSize = taille, color = couleur, modifier = modifier,
     )
@@ -356,7 +330,7 @@ fun EcranPrincipal(vm: RekindleVM, ouvrirReglages: () -> Unit) {
         else -> "Tout est fait" to (pluriel(hauts.size, "élément") + " traité" + if (hauts.size > 1) "s" else "")
     }
     val kindle = vm.reglages.kindle
-    val sousTitre = if (kindle.isNotBlank()) "vers $kindle" else "Adresse Kindle à régler ›"
+    val sousTitre = if (kindle.isNotBlank()) "vers $kindle" else Saveur.ADRESSE_A_REGLER
 
     Scaffold(
         containerColor = pal.fond,
@@ -418,23 +392,23 @@ fun EcranPrincipal(vm: RekindleVM, ouvrirReglages: () -> Unit) {
 @Composable
 fun EnTete(surTitre: String, titre: String, sousTitre: String, onSousTitre: (() -> Unit)?, ouvrirReglages: () -> Unit) {
     val pal = LocalPalette.current
-    Box(Modifier.fillMaxWidth().background(Marine)) {
+    Box(Modifier.fillMaxWidth().background(Principale)) {
         Column(
             Modifier.fillMaxWidth().statusBarsPadding()
                 .padding(start = 20.dp, end = 16.dp, top = 12.dp, bottom = 40.dp),
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Box(
-                    Modifier.size(42.dp).clip(RoundedCornerShape(12.dp)).background(MarineClair),
+                    Modifier.size(42.dp).clip(RoundedCornerShape(12.dp)).background(PrincipaleClaire),
                     contentAlignment = Alignment.Center,
                 ) {
-                    Image(painterResource(R.drawable.tete), contentDescription = null, modifier = Modifier.size(32.dp, 36.dp))
+                    Image(painterResource(R.drawable.tete), contentDescription = null, modifier = Modifier.size(Saveur.tailleTete))
                 }
                 Spacer(Modifier.width(10.dp))
-                MotRekindle(30.sp, Creme, Modifier.weight(1f))
+                NomAppli(30.sp, Creme, Modifier.weight(1f))
                 IconButton(
                     onClick = ouvrirReglages,
-                    modifier = Modifier.size(44.dp).clip(RoundedCornerShape(14.dp)).background(MarineClair),
+                    modifier = Modifier.size(44.dp).clip(RoundedCornerShape(14.dp)).background(PrincipaleClaire),
                 ) {
                     Icon(
                         painterResource(R.drawable.ic_reglages), contentDescription = "Réglages",
@@ -444,7 +418,7 @@ fun EnTete(surTitre: String, titre: String, sousTitre: String, onSousTitre: (() 
             }
             Spacer(Modifier.height(18.dp))
             Text(
-                surTitre.uppercase(), color = CorailClair, fontSize = 12.sp,
+                surTitre.uppercase(), color = AccentClair, fontSize = 12.sp,
                 fontWeight = FontWeight.ExtraBold, letterSpacing = 1.5.sp,
             )
             Text(
@@ -452,14 +426,14 @@ fun EnTete(surTitre: String, titre: String, sousTitre: String, onSousTitre: (() 
                 maxLines = 2, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(end = 56.dp),
             )
             Text(
-                sousTitre, color = if (onSousTitre != null) CorailClair else Brume, fontSize = 13.sp,
+                sousTitre, color = if (onSousTitre != null) AccentClair else Brume, fontSize = 13.sp,
                 maxLines = 1, overflow = TextOverflow.Ellipsis,
                 modifier = if (onSousTitre != null) Modifier.clickable(onClick = onSousTitre) else Modifier,
             )
         }
         Image(
-            painterResource(R.drawable.aileron), contentDescription = null,
-            modifier = Modifier.align(Alignment.BottomEnd).padding(end = 34.dp, bottom = 12.dp).size(40.dp, 34.dp),
+            painterResource(R.drawable.deco_entete), contentDescription = null,
+            modifier = Modifier.align(Alignment.BottomEnd).padding(end = 34.dp, bottom = 12.dp).size(Saveur.tailleDeco),
         )
         Vague(pal.fond, Modifier.align(Alignment.BottomStart).fillMaxWidth().height(26.dp))
     }
@@ -497,8 +471,8 @@ fun Vide(modifier: Modifier) {
         verticalArrangement = Arrangement.Center,
     ) {
         Image(
-            painterResource(R.drawable.mascotte), contentDescription = "Le requin lecteur de Rekindle",
-            modifier = Modifier.size(128.dp, 135.dp),
+            painterResource(R.drawable.mascotte), contentDescription = Saveur.DESCRIPTION_MASCOTTE,
+            modifier = Modifier.size(Saveur.tailleMascotte),
         )
         Spacer(Modifier.height(14.dp))
         Text(
@@ -507,7 +481,7 @@ fun Vide(modifier: Modifier) {
         )
         Spacer(Modifier.height(6.dp))
         Text(
-            "Bouton +, ou depuis une autre appli : Partager › Rekindle.\nEPUB, MOBI, AZW3, PDF et .torrent (téléchargé dès l'ajout).",
+            "Bouton +, ou depuis une autre appli : Partager › ${Saveur.NOM}.\nEPUB, MOBI, AZW3, PDF et .torrent (téléchargé dès l'ajout).",
             style = MaterialTheme.typography.bodyMedium, color = pal.texteDoux, textAlign = TextAlign.Center,
         )
     }
@@ -593,7 +567,7 @@ fun CarteElement(el: Element, onClick: () -> Unit) {
     }
 }
 
-/** Barre de progression en forme de vague, avec un aileron qui avance. */
+/** Barre de progression en forme de vague, avec la mascotte (aileron, boa) qui avance. */
 @Composable
 fun ProgressionVague(p: Float) {
     val pal = LocalPalette.current
@@ -615,12 +589,15 @@ fun ProgressionVague(p: Float) {
             }
             val trait = Stroke(3.dp.toPx(), cap = StrokeCap.Round)
             drawPath(chemin, pal.vagueVide, style = trait)
-            clipRect(right = size.width * q) { drawPath(chemin, Ocean, style = trait) }
+            clipRect(right = size.width * q) { drawPath(chemin, Secondaire, style = trait) }
         }
         Image(
-            painterResource(R.drawable.ic_aileron_bouton), contentDescription = null,
-            modifier = Modifier.offset(x = (maxWidth * q - 13.dp).coerceIn(0.dp, maxWidth - 26.dp), y = 0.dp)
-                .size(26.dp, 22.dp),
+            painterResource(R.drawable.ic_progression), contentDescription = null,
+            modifier = Modifier.offset(
+                x = (maxWidth * q - Saveur.tailleProgression.width / 2)
+                    .coerceIn(0.dp, maxWidth - Saveur.tailleProgression.width),
+                y = 0.dp,
+            ).size(Saveur.tailleProgression),
         )
     }
 }
@@ -634,12 +611,12 @@ fun BarreBas(vm: RekindleVM, lancer: () -> Unit, ajouter: () -> Unit) {
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                "Envoyer à ma Kindle", color = pal.texte, fontWeight = FontWeight.Bold, fontSize = 15.sp,
+                Saveur.ENVOYER_A, color = pal.texte, fontWeight = FontWeight.Bold, fontSize = 15.sp,
                 modifier = Modifier.weight(1f),
             )
             Switch(
                 checked = vm.envoyer, onCheckedChange = { vm.changerEnvoi(it) }, enabled = !vm.enCours,
-                colors = SwitchDefaults.colors(checkedTrackColor = Ocean, checkedThumbColor = Color.White),
+                colors = SwitchDefaults.colors(checkedTrackColor = Secondaire, checkedThumbColor = Color.White),
             )
         }
         Spacer(Modifier.height(8.dp))
@@ -648,7 +625,7 @@ fun BarreBas(vm: RekindleVM, lancer: () -> Unit, ajouter: () -> Unit) {
                 onClick = ajouter,
                 enabled = !vm.enCours,
                 shape = RoundedCornerShape(18.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Corail, contentColor = Marine),
+                colors = ButtonDefaults.buttonColors(containerColor = Accent, contentColor = Principale),
                 contentPadding = PaddingValues(0.dp),
                 modifier = Modifier.size(58.dp),
             ) {
@@ -669,10 +646,10 @@ fun BarreBas(vm: RekindleVM, lancer: () -> Unit, ajouter: () -> Unit) {
                 modifier = Modifier.weight(1f).height(58.dp),
             ) {
                 if (!vm.enCours) {
-                    // le requin, transformé (doré, lunettes de soleil)
+                    // la mascotte, transformée (dorée, lunettes de soleil)
                     Image(
-                        painterResource(R.drawable.ic_requin_transforme), contentDescription = null,
-                        modifier = Modifier.size(27.dp, 30.dp),
+                        painterResource(R.drawable.ic_transforme), contentDescription = null,
+                        modifier = Modifier.size(Saveur.tailleTransforme),
                     )
                     Spacer(Modifier.width(10.dp))
                 }
@@ -774,7 +751,7 @@ private fun LigneInterrupteur(
         }
         Switch(
             checked = coche, onCheckedChange = onChange, enabled = actif,
-            colors = SwitchDefaults.colors(checkedTrackColor = Ocean, checkedThumbColor = Color.White),
+            colors = SwitchDefaults.colors(checkedTrackColor = Secondaire, checkedThumbColor = Color.White),
         )
     }
 }
@@ -889,13 +866,13 @@ fun EcranReglages(vm: RekindleVM, retour: () -> Unit) {
                 actions = {
                     Image(
                         painterResource(R.drawable.tete), contentDescription = null,
-                        modifier = Modifier.padding(end = 14.dp).size(30.dp, 34.dp),
+                        modifier = Modifier.padding(end = 14.dp).size(Saveur.tailleTeteBarre),
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Marine,
-                    titleContentColor = Color(0xFFF4F1E8),
-                    navigationIconContentColor = Color(0xFFF4F1E8),
+                    containerColor = Principale,
+                    titleContentColor = Creme,
+                    navigationIconContentColor = Creme,
                 ),
             )
         },
@@ -918,21 +895,17 @@ fun EcranReglages(vm: RekindleVM, retour: () -> Unit) {
             Modifier.padding(marges).fillMaxSize().verticalScroll(rememberScrollState()).padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            Section("Ta Kindle")
+            Section(Saveur.SECTION_LISEUSE)
             OutlinedTextField(
                 value = kindle, onValueChange = { kindle = it },
-                label = { Text("Adresse Kindle") },
-                placeholder = { Text("prenom_xxx@kindle.com") },
+                label = { Text(Saveur.LIBELLE_ADRESSE) },
+                placeholder = { Text(Saveur.EXEMPLE_ADRESSE) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier.fillMaxWidth(),
             )
-            Aide(
-                "Sur amazon.fr : Gérer votre contenu et vos appareils → Préférences → Paramètres des " +
-                    "documents personnels. Sur la même page, ajoute l'adresse d'envoi ci-dessous à la « liste " +
-                    "des adresses e-mail approuvées », sinon Amazon ignore les livres."
-            )
-            OutlinedButton(onClick = { ouvrirLien(ctx, PAGE_AMAZON) }) { Text("Ouvrir la page Amazon") }
+            Aide(Saveur.AIDE_ADRESSE)
+            OutlinedButton(onClick = { ouvrirLien(ctx, Saveur.PAGE_AIDE) }) { Text(Saveur.LIBELLE_PAGE_AIDE) }
 
             Section("La messagerie qui envoie")
             ChoixFournisseur(nomFournisseur, choisirFournisseur)
@@ -962,17 +935,15 @@ fun EcranReglages(vm: RekindleVM, retour: () -> Unit) {
             Section("Livres")
             LigneInterrupteur(
                 "Numéro de tome dans le titre",
-                "Pour que la Kindle range les séries dans l'ordre quand elle trie par titre : « Le Trône de " +
-                    "fer, Tome 3 : La Bataille des rois » devient « Le Trône de fer 03 — La Bataille des rois ». " +
-                    "Le numéro vient des informations du livre (calibre) ou de son titre.",
+                Saveur.AIDE_TOME,
                 tome,
             ) { tome = it }
 
             Section("Après l'envoi")
             LigneInterrupteur(
                 "Supprimer les fichiers une fois envoyés",
-                "Rekindle efface le livre réparé (y compris sa copie dans Téléchargements › Rekindle) et " +
-                    "les fichiers téléchargés par torrent, dès que l'envoi à ta Kindle a réussi.",
+                "${Saveur.NOM} efface le livre réparé (y compris sa copie dans Téléchargements › ${Saveur.NOM}) " +
+                    "et les fichiers téléchargés par torrent, dès que l'envoi ${Saveur.VERS_LA_LISEUSE} a réussi.",
                 supprimer,
             ) { supprimer = it }
             LigneInterrupteur(

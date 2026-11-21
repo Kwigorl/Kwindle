@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="fond">#E9F6FA</color>
-    <color name="marine">#0A2E4A</color>
+    <color name="principale">#0A2E4A</color>
     <color name="fond_icone">#0A2E4A</color>
 </resources>

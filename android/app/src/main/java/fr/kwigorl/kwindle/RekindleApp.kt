@@ -11,7 +11,7 @@ class RekindleApp : Application() {
         super.onCreate()
         if (!Python.isStarted()) Python.start(AndroidPlatform(this))
         val canal = NotificationChannel(CANAL, "Travail en cours", NotificationManager.IMPORTANCE_LOW)
-        canal.description = "Affichée pendant que Rekindle télécharge, répare ou envoie des livres"
+        canal.description = "Affichée pendant que ${Saveur.NOM} télécharge, répare ou envoie des livres"
         getSystemService(NotificationManager::class.java).createNotificationChannel(canal)
     }
 

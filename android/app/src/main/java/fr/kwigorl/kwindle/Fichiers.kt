@@ -72,7 +72,7 @@ object Fichiers {
             val valeurs = ContentValues().apply {
                 put(MediaStore.Downloads.DISPLAY_NAME, f.name)
                 put(MediaStore.Downloads.MIME_TYPE, mime(f.name))
-                put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/Rekindle")
+                put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/" + Saveur.NOM)
             }
             val uri = context.contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, valeurs)
                 ?: return null

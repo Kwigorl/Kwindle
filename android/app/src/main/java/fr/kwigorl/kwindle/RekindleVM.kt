@@ -223,7 +223,7 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
         arret.set(false)
         arretDemande = false
         enCours = true
-        debutTravail("Rekindle travaille…")
+        debutTravail("${Saveur.NOM} travaille…")
 
         viewModelScope.launch(Dispatchers.IO) {
             var bloque: String? = null
@@ -263,13 +263,11 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
                         bloque != null -> alerte = bloque
                         arrete -> annonce = "Arrêté. Appuie à nouveau sur le bouton pour reprendre."
                         envoi && nbMails == 1 ->
-                            annonce = "Envoyé en un seul e-mail. Si Amazon demande « Vérifiez votre demande », " +
-                                "clique sur le lien du mail : sans ça, les livres n'arrivent pas."
+                            annonce = Saveur.apresUnEnvoi()
                         envoi && nbMails > 1 ->
-                            annonce = "Envoyé en $nbMails e-mails. Amazon peut demander une vérification pour " +
-                                "chacun : clique sur chaque lien « Vérifier la demande »."
+                            annonce = Saveur.apresPlusieursEnvois(nbMails)
                         elements.any { it.phase == Phase.PRET } ->
-                            annonce = "Livres réparés : une copie est dans Téléchargements › Rekindle."
+                            annonce = "Livres réparés : une copie est dans Téléchargements › ${Saveur.NOM}."
                     }
                 }
             }
@@ -462,7 +460,7 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
                     el.copie?.let { Fichiers.supprimerCopie(ctx, it) }
                     el.sortie?.let { runCatching { File(it).delete() } }
                     runCatching { el.fichier.delete() }    // copie reçue, ou fichier venu du torrent
-                    notes += "Copies effacées du téléphone (y compris dans Téléchargements › Rekindle)"
+                    notes += "Copies effacées du téléphone (y compris dans Téléchargements › ${Saveur.NOM})"
                     if (el.parent == null) effacerOrigine(el)?.let { notes += it }
                 }
                 el.type == Type.TORRENT && el.phase == Phase.TELECHARGE && el.id !in telechargements -> {

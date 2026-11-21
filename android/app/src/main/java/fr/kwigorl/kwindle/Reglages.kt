@@ -21,8 +21,6 @@ data class Fournisseur(
     val lien: String = "",
 )
 
-const val PAGE_AMAZON = "https://www.amazon.fr/mycd"
-
 val FOURNISSEURS = listOf(
     Fournisseur(
         "Gmail", "smtp.gmail.com", 465, "SSL",
@@ -89,17 +87,17 @@ class Reglages(context: Context) {
         get() = p.getBoolean("envoyer", true)
         set(v) = p.edit { putBoolean("envoyer", v) }
 
-    /** Numéro de tome juste après le nom de la série, pour le classement par titre de la Kindle. */
+    /** Numéro de tome juste après le nom de la série, pour le classement par titre de la liseuse. */
     var tomeDansTitre: Boolean
-        get() = p.getBoolean("tome_dans_titre", true)
+        get() = p.getBoolean("tome_dans_titre", Saveur.TOME_DANS_TITRE)
         set(v) = p.edit { putBoolean("tome_dans_titre", v) }
 
-    /** Après un envoi réussi : effacer les copies faites par Rekindle (livre réparé, téléchargements). */
+    /** Après un envoi réussi : effacer les copies faites par l'appli (livre réparé, téléchargements). */
     var supprimerApresEnvoi: Boolean
         get() = p.getBoolean("supprimer_apres_envoi", false)
         set(v) = p.edit { putBoolean("supprimer_apres_envoi", v) }
 
-    /** … et aussi le fichier d'origine (le .torrent ou le livre ouvert dans Rekindle). */
+    /** … et aussi le fichier d'origine (le .torrent ou le livre ouvert dans l'appli). */
     var supprimerOrigine: Boolean
         get() = p.getBoolean("supprimer_origine", false)
         set(v) = p.edit { putBoolean("supprimer_origine", v) }
@@ -109,11 +107,8 @@ class Reglages(context: Context) {
         set(v) = ecrire("mdp", chiffrer(v))
 
     fun probleme(): String? {
-        val k = kindle.trim().lowercase()
+        Saveur.problemeAdresse(kindle)?.let { return it }
         return when {
-            k.isEmpty() -> "Indique ton adresse Kindle dans les réglages."
-            !(k.endsWith("@kindle.com") || k.endsWith("@free.kindle.com")) ->
-                "L'adresse Kindle doit finir par @kindle.com."
             expediteur.isBlank() -> "Indique l'adresse e-mail qui envoie les livres."
             serveur.isBlank() -> "Indique le serveur d'envoi (SMTP)."
             motDePasse.isEmpty() -> "Indique le mot de passe de ta messagerie."

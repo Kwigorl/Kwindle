@@ -49,6 +49,15 @@ CONTAINER = "urn:oasis:names:tc:opendocument:xmlns:container"
 ENC = "http://www.w3.org/2001/04/xmlenc#"
 
 LIMITE_MAIL = 50 * 1024 * 1024          # limite Send to Kindle par e-mail
+
+
+def liseuse(options):
+    """« Kindle » (par défaut) ou « Kobo » : adapte les messages à la liseuse visée."""
+    return (options or {}).get("liseuse") or "Kindle"
+
+
+def pour_kindle(options):
+    return liseuse(options) == "Kindle"
 CIBLE_MAIL = 48 * 1024 * 1024           # on vise un peu en dessous
 
 CONTAINER_XML = (
@@ -1244,11 +1253,11 @@ def traiter_chiffrement(fichiers, identifiants, rapport):
         else:
             tout_traite = False
             del fichiers[uri]
-            rapport.alerte("Police intégrée illisible retirée : %s (la Kindle utilisera ses polices)."
+            rapport.alerte("Police intégrée illisible retirée : %s (la liseuse utilisera ses polices)."
                            % posixpath.basename(uri))
     del fichiers["META-INF/encryption.xml"]
     if remises and tout_traite:
-        rapport.corrige("%d police(s) « obfusquée(s) » remise(s) en clair (Amazon les refuse sinon)."
+        rapport.corrige("%d police(s) « obfusquée(s) » remise(s) en clair (sinon la liseuse ne peut pas les lire)."
                         % remises)
     elif remises:
         rapport.corrige("%d police(s) « obfusquée(s) » remise(s) en clair." % remises)
@@ -1437,10 +1446,11 @@ class Reparateur:
             nouv.text = choix
             if langs:
                 ancien = ", ".join(repr(e.text or "") for e in langs)
-                self.r.corrige("Langue invalide (%s) remplacée par « %s » — cause n°1 des refus Amazon."
-                               % (ancien, choix))
+                self.r.corrige("Langue invalide (%s) remplacée par « %s »%s."
+                               % (ancien, choix, " — cause n°1 des refus Amazon" if pour_kindle(self.opt) else ""))
             else:
-                self.r.corrige("Langue absente : « %s » ajoutée — cause n°1 des refus Amazon." % choix)
+                self.r.corrige("Langue absente : « %s » ajoutée%s."
+                               % (choix, " — cause n°1 des refus Amazon" if pour_kindle(self.opt) else ""))
             self.langue = choix
         else:
             e0, n0 = valides[0]
@@ -1496,7 +1506,8 @@ class Reparateur:
                 m.set("content", nouveau)
             elif t.get("id") and m.get("refines") == "#" + t.get("id") and m.get("property") == "file-as":
                 m.text = nouveau
-        self.r.corrige("Titre renommé pour que la Kindle range la série dans l'ordre : « %s »." % nouveau)
+        self.r.corrige("Titre renommé pour que la %s range la série dans l'ordre : « %s »."
+                       % (liseuse(self.opt), nouveau))
         self.titre = nouveau
 
     def textes_echantillon(self):
@@ -1702,7 +1713,8 @@ class Reparateur:
             self.doctypes[chemin] = doctype
         if decl:
             self.r.corrige("Déclaration d'encodage UTF-8 ajoutée en tête de %d fichier(s) "
-                           "(sans elle, Amazon lit le texte de travers et peut refuser le livre)." % len(decl))
+                           "(sans elle, la liseuse peut lire le texte de travers%s)."
+                           % (len(decl), " et Amazon refuser le livre" if pour_kindle(self.opt) else ""))
         if reencodes:
             self.r.corrige("Texte réencodé en UTF-8 : %s" % ", ".join(reencodes[:5]) +
                            (" …" if len(reencodes) > 5 else ""))
@@ -1710,7 +1722,7 @@ class Reparateur:
             self.r.corrige("HTML mal formé réparé dans %d fichier(s) : %s" %
                            (len(reconstruits), ", ".join(reconstruits[:5]) + (" …" if len(reconstruits) > 5 else "")))
         if scripts:
-            self.r.corrige("%d script(s) retiré(s) (non pris en charge par la Kindle)." % scripts)
+            self.r.corrige("%d script(s) retiré(s) (non pris en charge par la %s)." % (scripts, liseuse(self.opt)))
 
     # ------------------------------------------------------- sommaire NCX/nav
     def item_par_prop(self, prop):
@@ -1874,7 +1886,7 @@ class Reparateur:
             else:
                 allegees += 1
         if converties:
-            self.r.corrige("%d image(s) dans un format refusé par la Kindle (WebP, BMP, TIFF) convertie(s)."
+            self.r.corrige("%d image(s) dans un format illisible par la liseuse (WebP, BMP, TIFF) convertie(s)."
                            % converties)
         if allegees:
             self.r.corrige("%d image(s) trop lourde(s) allégée(s)%s." %
@@ -2036,8 +2048,8 @@ class Reparateur:
             if not len(guide):
                 self.opf.remove(guide)
         if liens_body:
-            self.r.corrige("%d lien(s) vers un identifiant de <body> corrigé(s) (bug connu de Send to Kindle)."
-                           % liens_body)
+            self.r.corrige("%d lien(s) vers un identifiant de <body> corrigé(s)%s."
+                           % (liens_body, " (bug connu de Send to Kindle)" if pour_kindle(self.opt) else ""))
         if liens_morts:
             self.r.corrige("%d lien(s) vers des pages inexistantes neutralisé(s)." % liens_morts)
         if images_mortes:
@@ -2154,11 +2166,13 @@ def traiter_livre(chemin, dossier_sortie, options=None):
             fichiers = lire_zip(chemin, r)
         elif fmt == "mobi":
             if ext == ".epub":
-                r.info("Ce fichier n'est pas un vrai EPUB : c'est un MOBI (ancien format Kindle) "
-                       "renommé en .epub. C'est pour ça qu'Amazon le refusait.")
+                r.info("Ce fichier n'est pas un vrai EPUB : c'est un MOBI (ancien format Kindle) renommé "
+                       "en .epub. %s" % ("C'est pour ça qu'Amazon le refusait." if pour_kindle(options)
+                                         else "Converti en vrai EPUB."))
             else:
-                r.info("Fichier au format Kindle (MOBI/AZW) : Amazon ne l'accepte plus par e-mail, "
-                       "conversion en EPUB.")
+                r.info("Fichier au format Kindle (MOBI/AZW) : %s, conversion en EPUB."
+                       % ("Amazon ne l'accepte plus par e-mail" if pour_kindle(options)
+                          else "mieux lu par la Kobo en EPUB"))
             genre, donnees = mobi_vers_epub(chemin, r)
             if genre == "pdf":
                 os.makedirs(dossier_sortie, exist_ok=True)
@@ -2167,14 +2181,14 @@ def traiter_livre(chemin, dossier_sortie, options=None):
                 with open(res.sortie, "wb") as f:
                     f.write(donnees)
                 res.titre = os.path.splitext(os.path.basename(chemin))[0]
-                r.info("Livre « Print Replica » : extrait en PDF (accepté tel quel par Amazon).")
+                r.info("Livre « Print Replica » : extrait en PDF (lisible tel quel).")
                 res.ok = True
                 return res
             fichiers = donnees
         elif fmt == "pdf":
             res.titre = os.path.splitext(os.path.basename(chemin))[0]
             res.sortie = chemin
-            r.info("PDF : Amazon l'accepte tel quel, aucune conversion nécessaire.")
+            r.info("PDF : la %s le lit tel quel, aucune conversion nécessaire." % liseuse(options))
             res.ok = True
             return res
         elif fmt in ("topaz", "kfx"):
@@ -2193,7 +2207,7 @@ def traiter_livre(chemin, dossier_sortie, options=None):
         nom = nom_fichier_sur(res.titre + (" - " + res.auteur if res.auteur else ""))
         res.sortie = os.path.join(dossier_sortie, nom + ".epub")
         if os.path.abspath(res.sortie) == os.path.abspath(chemin):
-            res.sortie = os.path.join(dossier_sortie, nom + " (Kindle).epub")
+            res.sortie = os.path.join(dossier_sortie, nom + " (%s).epub" % liseuse(options))
         prises = options.get("sorties_prises")      # deux livres différents au même titre
         if prises is not None:
             n = 2
@@ -2204,8 +2218,9 @@ def traiter_livre(chemin, dossier_sortie, options=None):
         with open(res.sortie, "wb") as f:
             f.write(donnees)
         if len(donnees) > LIMITE_MAIL:
-            r.alerte("Le livre fait %.0f Mo : trop gros pour l'e-mail (50 Mo max). "
-                     "Passe par amazon.fr/sendtokindle (jusqu'à 200 Mo)." % (len(donnees) / 1048576))
+            r.alerte("Le livre fait %.0f Mo : trop gros pour l'e-mail (50 Mo max). %s"
+                     % (len(donnees) / 1048576, "Passe par amazon.fr/sendtokindle (jusqu'à 200 Mo)."
+                        if pour_kindle(options) else "Copie-le sur la Kobo avec un câble USB."))
         if not r.corrections and fmt == "zip":
             r.info("Aucun problème trouvé : le livre était déjà propre.")
         res.ok = True

@@ -23,7 +23,7 @@ class TravailService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val texte = intent?.getStringExtra("texte") ?: "Rekindle travaille…"
+        val texte = intent?.getStringExtra("texte") ?: "${Saveur.NOM} travaille…"
         ServiceCompat.startForeground(this, ID, notification(this, texte), ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC)
         if (verrou == null) {
             val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
@@ -51,7 +51,7 @@ class TravailService : Service() {
             )
             return NotificationCompat.Builder(c, RekindleApp.CANAL)
                 .setSmallIcon(R.drawable.ic_notif)
-                .setContentTitle("Rekindle")
+                .setContentTitle(Saveur.NOM)
                 .setContentText(texte)
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)

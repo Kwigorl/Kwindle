@@ -19,14 +19,28 @@ android {
         applicationId = "fr.kwigorl.kwindle"
         minSdk = 29
         targetSdk = 35
-        versionCode = 2
-        versionName = "2.0"
+        versionCode = 3
+        versionName = "2.1"
         ndk {
             // le Poco F7 (et tous les téléphones récents) sont en arm64 ;
             // les tests sur émulateur passent -Pabis=x86_64
             abiFilters += abis
         }
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    // Deux saveurs de la même appli : Rekindle (Kindle, requin) et Koboa (Kobo, boa).
+    // Ce qui les distingue est dans src/<saveur>/ : Saveur.kt, saveur.py, images, couleurs, nom.
+    flavorDimensions += "liseuse"
+    productFlavors {
+        create("rekindle") {
+            dimension = "liseuse"
+            applicationId = "fr.kwigorl.kwindle"
+        }
+        create("koboa") {
+            dimension = "liseuse"
+            applicationId = "fr.kwigorl.koboa"
+        }
     }
 
     // Clé de signature de l'appli : toujours la même, pour pouvoir installer

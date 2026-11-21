@@ -33,16 +33,21 @@ jobs:
 
       - uses: gradle/actions/setup-gradle@v4
 
-      - name: Construire l'APK
-        run: ./gradlew assembleRelease --stacktrace
+      # deux saveurs : Rekindle (Kindle) et Koboa (Kobo)
+      - name: Construire les APK
+        run: ./gradlew assembleRekindleRelease assembleKoboaRelease --stacktrace
 
-      - name: Renommer l'APK
-        run: cp app/build/outputs/apk/release/app-release.apk ../Rekindle.apk
+      - name: Renommer les APK
+        run: |
+          cp app/build/outputs/apk/rekindle/release/app-rekindle-release.apk ../Rekindle.apk
+          cp app/build/outputs/apk/koboa/release/app-koboa-release.apk ../Koboa.apk
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Rekindle-apk
-          path: Rekindle.apk
+          name: apk
+          path: |
+            Rekindle.apk
+            Koboa.apk
           retention-days: 30
 
       # Page de téléchargement stable : Releases › « Rekindle Android »
@@ -56,13 +61,18 @@ jobs:
             --title "Rekindle Android (build ${{ github.run_number }})" \
             --notes "APK compilé automatiquement depuis ${{ github.sha }}. Installe-le par-dessus la version précédente." \
             --latest
+          gh release delete koboa --yes --cleanup-tag || true
+          gh release create koboa Koboa.apk \
+            --title "Koboa Android (build ${{ github.run_number }})" \
+            --notes "Koboa : Rekindle pour les liseuses Kobo (avec KoboaExpress sur la Kobo). APK compilé depuis ${{ github.sha }}." \
+            --latest=false
 
-      # Copie de l'APK sur la branche « apk » (récupérable avec git)
-      - name: Mettre l'APK sur la branche apk
+      # Copie des APK sur la branche « apk » (récupérable avec git)
+      - name: Mettre les APK sur la branche apk
         working-directory: .
         run: |
-          mkdir /tmp/branche-apk && cp Rekindle.apk /tmp/branche-apk/ && cd /tmp/branche-apk
-          git init -q && git checkout -q -b apk && git add Rekindle.apk
+          mkdir /tmp/branche-apk && cp Rekindle.apk Koboa.apk /tmp/branche-apk/ && cd /tmp/branche-apk
+          git init -q && git checkout -q -b apk && git add Rekindle.apk Koboa.apk
           git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" \
             commit -qm "APK build ${{ github.run_number }} (${{ github.sha }})"
           git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" apk

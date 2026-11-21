@@ -27,8 +27,10 @@ def init(dossier_temp):
 
 def traiter(chemin, dossier_sortie, langue, tome_dans_titre=True):
     from rekindle_moteur import traiter_livre
+    import saveur
     res = traiter_livre(chemin, dossier_sortie, {"langue": langue or "fr", "sorties_prises": _PRISES,
-                                                 "tome_dans_titre": bool(tome_dans_titre)})
+                                                 "tome_dans_titre": bool(tome_dans_titre),
+                                                 "liseuse": saveur.LISEUSE})
     return json.dumps({
         "ok": res.ok,
         "sortie": res.sortie or "",
@@ -96,8 +98,8 @@ def tester(cfg_json):
     cfg = _Reglages(json.loads(cfg_json))
     try:
         km.tester(cfg)
-        return json.dumps({"ok": True, "message": "Connexion réussie : Rekindle peut envoyer depuis %s."
-                           % cfg.get("expediteur", "")}, ensure_ascii=False)
+        return json.dumps({"ok": True, "message": "Connexion réussie : %s peut envoyer depuis %s."
+                           % (km.saveur.NOM, cfg.get("expediteur", ""))}, ensure_ascii=False)
     except km.ErreurEnvoi as exc:
         return json.dumps({"ok": False, "message": str(exc)}, ensure_ascii=False)
     except Exception as exc:

@@ -1,7 +1,9 @@
 #!/bin/sh
 # Captures d'écran de l'appli sur l'émulateur (lancé par le workflow de tests).
-P=fr.kwigorl.kwindle
-D=../captures
+# usage : captures.sh <saveur> <paquet>   (rekindle fr.kwigorl.kwindle, koboa fr.kwigorl.koboa)
+S=${1:-rekindle}
+P=${2:-fr.kwigorl.kwindle}
+D=../captures/$S
 mkdir -p $D
 
 centre_de() {
@@ -20,7 +22,7 @@ toucher() {
   [ -n "$XY" ] && adb shell input tap $XY
 }
 
-adb install -r app/build/outputs/apk/debug/app-debug.apk
+adb install -r app/build/outputs/apk/$S/debug/app-$S-debug.apk
 adb shell pm grant $P android.permission.POST_NOTIFICATIONS
 adb shell am start -W -n $P/.MainActivity
 sleep 6
@@ -37,7 +39,7 @@ adb shell am start -W -a android.intent.action.VIEW -t application/x-bittorrent 
 sleep 4
 adb exec-out screencap -p > $D/2_liste.png
 
-# on décoche « Envoyer à ma Kindle » puis « Transformer »
+# on décoche « Envoyer à ma Kindle / Kobo » puis « Transformer »
 toucher 'checkable="true"'
 sleep 1
 toucher 'text="Transformer"'
