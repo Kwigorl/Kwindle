@@ -1,5 +1,5 @@
 # KoboaExpress : boutons dans le menu NickelMenu (si NickelMenu est installé)
 menu_item:main:KoboaExpress - relever les livres:nickel_wifi:autoconnect
   chain_success:cmd_spawn:quiet:/usr/local/koboaexpress/lancer.sh manuel
-menu_item:main:KoboaExpress - importer les livres:nickel_misc:rescan_books
+menu_item:main:KoboaExpress - importer les livres:nickel_misc:rescan_books_full
 menu_item:main:KoboaExpress - journal:cmd_output:500:tail -n 12 /mnt/onboard/KoboaExpress/journal.log
