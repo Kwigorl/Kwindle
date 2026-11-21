@@ -189,6 +189,25 @@ class FumeeTest {
         )
     }
 
+    /** Effacement après envoi : la copie dans Téléchargements, et un fichier d'origine accessible. */
+    @Test
+    fun effacementApresEnvoi() {
+        val f = File(ctx.cacheDir, "test/efface.epub").apply { parentFile!!.mkdirs(); writeText("test") }
+        val copie = Fichiers.enregistrer(ctx, f)
+        assertTrue("copie dans Téléchargements impossible", copie != null)
+        fun existe(u: android.net.Uri) = ctx.contentResolver.query(u, null, null, null, null)?.use { it.count > 0 } ?: false
+        assertTrue(existe(copie!!))
+        Fichiers.supprimerCopie(ctx, copie.toString())
+        assertTrue("la copie doit être effacée", !existe(copie))
+        // fichier « d'origine » que Rekindle a le droit d'effacer
+        val origine = Fichiers.enregistrer(ctx, f)!!
+        assertEquals(Fichiers.Suppression.FAITE, Fichiers.supprimerOrigine(ctx, origine))
+        assertTrue(!existe(origine))
+        // fichier dont on n'a pas le droit : pas d'effacement, pas de plantage
+        val etranger = android.net.Uri.parse("content://fr.kwigorl.inexistant/fichier.torrent")
+        assertEquals(Fichiers.Suppression.IMPOSSIBLE, Fichiers.supprimerOrigine(ctx, etranger))
+    }
+
     @Test
     fun sessionTorrent() {
         val s = SessionManager(false)
