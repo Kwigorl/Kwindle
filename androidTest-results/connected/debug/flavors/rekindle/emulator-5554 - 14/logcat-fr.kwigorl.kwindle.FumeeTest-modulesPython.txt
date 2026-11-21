@@ -1,0 +1,61 @@
+11-21 13:46:10.414  4217  4306 I TestRunner: started: modulesPython(fr.kwigorl.kwindle.FumeeTest)
+11-21 13:46:10.423  4217  4217 W roidJUnitRunner: type=1400 audit(0.0:197): avc:  granted  { execute } for  path="/data/data/fr.kwigorl.kwindle/files/chaquopy/AssetFinder/stdlib-x86_64/_json.cpython-313-x86_64-linux-android.so" dev="dm-40" ino=328587 scontext=u:r:untrusted_app:s0:c192,c256,c512,c768 tcontext=u:object_r:app_data_file:s0:c192,c256,c512,c768 tclass=file app=fr.kwigorl.kwindle
+11-21 13:46:10.437  1407  2065 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.clearcut.uploader.QosUploaderService started execution. cause:1 exec_start_elapsed_seconds: 72 [CONTEXT service_id=218 ]
+11-21 13:46:10.512   835  1015 E RoleControllerServiceImpl: Default/fallback role holder package doesn't qualify for the role, package: com.google.android.gms.supervision, role: android.app.role.SYSTEM_SUPERVISION
+11-21 13:46:10.514   835  1015 I Role    : com.google.android.gms not qualified for android.app.role.SYSTEM_CALL_STREAMING due to missing RequiredComponent{mIntentFilterData=IntentFilterData{mAction='android.telecom.CallStreamingService', mCategories='[]', mDataScheme='null', mDataType='null'}, mMinTargetSdkVersion=1, mFlags='0', mPermission='android.permission.BIND_CALL_STREAMING_SERVICE', mQueryFlags=0, mMetaData=[]}
+11-21 13:46:10.515   835  1015 E RoleControllerServiceImpl: Default/fallback role holder package doesn't qualify for the role, package: com.google.android.gms, role: android.app.role.SYSTEM_CALL_STREAMING
+11-21 13:46:10.516   835  1015 W Role    : Default holder doesn't have required signing certificate: com.google.android.apps.work.clouddpc:23962F4B43B9857638EA66F4D419518EAE282491ACDA4B94707BD59003C45E58
+11-21 13:46:10.523  4217  4217 W roidJUnitRunner: type=1400 audit(0.0:198): avc:  granted  { execute } for  path="/data/data/fr.kwigorl.kwindle/files/chaquopy/AssetFinder/requirements/chaquopy/lib/libxml2.so" dev="dm-40" ino=328494 scontext=u:r:untrusted_app:s0:c192,c256,c512,c768 tcontext=u:object_r:app_data_file:s0:c192,c256,c512,c768 tclass=file app=fr.kwigorl.kwindle
+11-21 13:46:10.523  4217  4217 W roidJUnitRunner: type=1400 audit(0.0:199): avc:  granted  { execute } for  path="/data/data/fr.kwigorl.kwindle/files/chaquopy/AssetFinder/requirements/chaquopy/lib/libxslt.so" dev="dm-40" ino=328520 scontext=u:r:untrusted_app:s0:c192,c256,c512,c768 tcontext=u:object_r:app_data_file:s0:c192,c256,c512,c768 tclass=file app=fr.kwigorl.kwindle
+11-21 13:46:10.617   835   853 I ssioncontroller: Background concurrent copying GC freed 98240(5414KB) AllocSpace objects, 3(204KB) LOS objects, 49% free, 6456KB/12MB, paused 26us,10us total 217.051ms
+11-21 13:46:10.670   521  2660 I RemoteProvisionSysSvc: getRegistration(android.hardware.security.keymint.IRemotelyProvisionedComponent/default)
+11-21 13:46:10.672   521   521 I RegistrationProxy: onServiceConnected: com.android.rkpdapp.service.RemoteProvisioningService
+11-21 13:46:10.677   521  2660 I RegistrationProxy: IGetRegistrationCallback.onSuccess
+11-21 13:46:10.679   521   595 I RemoteProvisionSysSvc: Fetching key 10131 for client 10670924
+11-21 13:46:10.680   521   595 I RegistrationProxy: getKeyAsync operation started with callback 175984533
+11-21 13:46:10.680  3728  3822 I RkpdRegistrationBinder: Key requested for : android.hardware.security.keymint.IRemotelyProvisionedComponent/default, clientUid: 1017, keyId: 10131, callback: 5440710
+11-21 13:46:10.681  3728  3822 I RkpdRegistrationBinder: Key successfully assigned to client
+11-21 13:46:10.681   521   521 I RemoteProvisionSysSvc: Successfully fetched key for client 10670924
+11-21 13:46:10.694  1637  2693 I AiAiEcho: Settings changed for uri: content://settings/secure/autofill_user_data_max_category_count
+11-21 13:46:10.698  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.698  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.698  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.699  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.700  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.700  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.700  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.701  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.701  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-21 13:46:10.702   833   833 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-21 13:46:10.702  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+11-21 13:46:10.708  1460  3106 I Icing   : Indexing com.google.android.gms-apps from com.google.android.gms
+11-21 13:46:10.720  1460  3106 I Icing   : Indexing done com.google.android.gms-apps
+11-21 13:46:10.747  4217  4306 W python.stderr: ./java/android/importer.py:633: DeprecationWarning: imghdr was removed in Python 3.13. Please be aware that you are currently NOT using standard 'imghdr', but instead a separately installed 'standard-imghdr'.
+11-21 13:46:10.749  1407  3408 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.clearcut.uploader.QosUploaderService finished executing. cause:1 result: 1 elapsed_millis: 340 uptime_millis: 340 exec_start_elapsed_seconds: 72 [CONTEXT service_id=218 ]
+11-21 13:46:10.783  1637  2693 I AiAiEcho: Settings changed for uri: content://settings/secure/config_update_certificate
+11-21 13:46:10.785  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.785  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.785  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.785  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.786  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.786  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.786  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.787  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.788  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-21 13:46:10.789   833   833 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-21 13:46:10.789  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+11-21 13:46:10.794  1637  2693 I AiAiEcho: Settings changed for uri: content://settings/secure/print_service_search_uri
+11-21 13:46:10.795  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.795  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.795  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.796  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.796  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.797  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.797  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.797  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.798  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-21 13:46:10.798   833   833 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-21 13:46:10.799  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+11-21 13:46:10.821  1460  3106 I Icing   : Indexing com.google.android.gms-internal.3p:MobileApplication from com.google.android.gms
+11-21 13:46:10.823  1460  3106 I Icing   : Indexing done com.google.android.gms-internal.3p:MobileApplication
+11-21 13:46:10.863  4217  4306 I TestRunner: finished: modulesPython(fr.kwigorl.kwindle.FumeeTest)

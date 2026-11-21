@@ -1,0 +1,100 @@
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:findRekindleDebugPythonCommand
+> Task :app:extractRekindleDebugPythonBuildPackages UP-TO-DATE
+> Task :app:installRekindleDebugPythonRequirements UP-TO-DATE
+> Task :app:mergeRekindleDebugPythonSources UP-TO-DATE
+> Task :app:generateRekindleDebugPythonProxies UP-TO-DATE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preRekindleDebugBuild UP-TO-DATE
+> Task :app:checkRekindleDebugAarMetadata UP-TO-DATE
+> Task :app:processRekindleDebugNavigationResources UP-TO-DATE
+> Task :app:compileRekindleDebugNavigationResources UP-TO-DATE
+> Task :app:generateRekindleDebugResValues UP-TO-DATE
+> Task :app:mapRekindleDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateRekindleDebugResources UP-TO-DATE
+> Task :app:mergeRekindleDebugResources UP-TO-DATE
+> Task :app:packageRekindleDebugResources UP-TO-DATE
+> Task :app:parseRekindleDebugLocalResources UP-TO-DATE
+> Task :app:createRekindleDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksRekindleDebug UP-TO-DATE
+> Task :app:processRekindleDebugMainManifest UP-TO-DATE
+> Task :app:processRekindleDebugManifest UP-TO-DATE
+> Task :app:processRekindleDebugManifestForPackage UP-TO-DATE
+> Task :app:processRekindleDebugResources UP-TO-DATE
+> Task :app:compileRekindleDebugKotlin UP-TO-DATE
+> Task :app:javaPreCompileRekindleDebug UP-TO-DATE
+> Task :app:compileRekindleDebugJavaWithJavac NO-SOURCE
+> Task :app:bundleRekindleDebugClassesToCompileJar UP-TO-DATE
+> Task :app:preRekindleDebugAndroidTestBuild SKIPPED
+> Task :app:checkRekindleDebugAndroidTestAarMetadata UP-TO-DATE
+> Task :app:processRekindleDebugAndroidTestNavigationResources UP-TO-DATE
+> Task :app:compileRekindleDebugAndroidTestNavigationResources UP-TO-DATE
+> Task :app:generateRekindleDebugAndroidTestResValues UP-TO-DATE
+> Task :app:mapRekindleDebugAndroidTestSourceSetPaths UP-TO-DATE
+> Task :app:generateRekindleDebugAndroidTestResources UP-TO-DATE
+> Task :app:mergeRekindleDebugAndroidTestResources UP-TO-DATE
+> Task :app:processRekindleDebugAndroidTestManifest UP-TO-DATE
+> Task :app:processRekindleDebugAndroidTestResources UP-TO-DATE
+> Task :app:compileRekindleDebugAndroidTestKotlin UP-TO-DATE
+> Task :app:javaPreCompileRekindleDebugAndroidTest UP-TO-DATE
+> Task :app:compileRekindleDebugAndroidTestJavaWithJavac NO-SOURCE
+> Task :app:mergeRekindleDebugShaders UP-TO-DATE
+> Task :app:compileRekindleDebugShaders NO-SOURCE
+> Task :app:generateRekindleDebugAssets UP-TO-DATE
+> Task :app:generateRekindleDebugPythonMiscAssets UP-TO-DATE
+> Task :app:generateRekindleDebugPythonRequirementsAssets UP-TO-DATE
+> Task :app:generateRekindleDebugPythonSourceAssets UP-TO-DATE
+> Task :app:generateRekindleDebugPythonBuildAssets UP-TO-DATE
+> Task :app:mergeRekindleDebugAssets UP-TO-DATE
+> Task :app:compressRekindleDebugAssets UP-TO-DATE
+> Task :app:checkRekindleDebugDuplicateClasses UP-TO-DATE
+> Task :app:desugarRekindleDebugFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexRekindleDebug UP-TO-DATE
+> Task :app:mergeLibDexRekindleDebug UP-TO-DATE
+> Task :app:dexBuilderRekindleDebug UP-TO-DATE
+> Task :app:mergeProjectDexRekindleDebug UP-TO-DATE
+> Task :app:mergeRekindleDebugGlobalSynthetics UP-TO-DATE
+> Task :app:processRekindleDebugJavaRes UP-TO-DATE
+> Task :app:mergeRekindleDebugJavaResource UP-TO-DATE
+> Task :app:generateRekindleDebugPythonJniLibs UP-TO-DATE
+> Task :app:mergeRekindleDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeRekindleDebugNativeLibs UP-TO-DATE
+> Task :app:stripRekindleDebugDebugSymbols UP-TO-DATE
+> Task :app:validateSigningRekindleDebug UP-TO-DATE
+> Task :app:writeRekindleDebugAppMetadata UP-TO-DATE
+> Task :app:writeRekindleDebugSigningConfigVersions UP-TO-DATE
+> Task :app:packageRekindleDebug UP-TO-DATE
+> Task :app:createRekindleDebugApkListingFileRedirect UP-TO-DATE
+> Task :app:mergeRekindleDebugAndroidTestShaders UP-TO-DATE
+> Task :app:compileRekindleDebugAndroidTestShaders NO-SOURCE
+> Task :app:generateRekindleDebugAndroidTestAssets UP-TO-DATE
+> Task :app:mergeRekindleDebugAndroidTestAssets UP-TO-DATE
+> Task :app:compressRekindleDebugAndroidTestAssets UP-TO-DATE
+> Task :app:checkRekindleDebugAndroidTestDuplicateClasses UP-TO-DATE
+> Task :app:desugarRekindleDebugAndroidTestFileDependencies UP-TO-DATE
+> Task :app:mergeExtDexRekindleDebugAndroidTest UP-TO-DATE
+> Task :app:mergeLibDexRekindleDebugAndroidTest UP-TO-DATE
+> Task :app:dexBuilderRekindleDebugAndroidTest UP-TO-DATE
+> Task :app:mergeProjectDexRekindleDebugAndroidTest UP-TO-DATE
+> Task :app:mergeRekindleDebugAndroidTestGlobalSynthetics UP-TO-DATE
+> Task :app:processRekindleDebugAndroidTestJavaRes UP-TO-DATE
+> Task :app:mergeRekindleDebugAndroidTestJavaResource UP-TO-DATE
+> Task :app:mergeRekindleDebugAndroidTestJniLibFolders UP-TO-DATE
+> Task :app:mergeRekindleDebugAndroidTestNativeLibs NO-SOURCE
+> Task :app:stripRekindleDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :app:validateSigningRekindleDebugAndroidTest UP-TO-DATE
+> Task :app:writeRekindleDebugAndroidTestSigningConfigVersions UP-TO-DATE
+> Task :app:packageRekindleDebugAndroidTest UP-TO-DATE
+> Task :app:createRekindleDebugAndroidTestApkListingFileRedirect UP-TO-DATE
+[EmulatorConsole]: Failed to start Emulator console for 5554
+
+> Task :app:connectedRekindleDebugAndroidTest
+Starting 10 tests on emulator-5554 - 14
+
+emulator-5554 - 14 Tests 4/10 completed. (0 skipped) (0 failed)
+emulator-5554 - 14 Tests 8/10 completed. (0 skipped) (0 failed)
+Finished 10 tests on emulator-5554 - 14
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__reactivecircus_android-emulator-runner-1795268742545.json
+
+BUILD SUCCESSFUL in 2m
+77 actionable tasks: 2 executed, 75 up-to-date

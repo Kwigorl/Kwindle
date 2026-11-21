@@ -1,0 +1,62 @@
+11-21 13:46:10.864  4217  4306 I TestRunner: started: lectureTorrent(fr.kwigorl.kwindle.FumeeTest)
+11-21 13:46:10.867  1637  2693 I AiAiEcho: Settings changed for uri: content://settings/secure/autofill_service_search_uri
+11-21 13:46:10.867  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.868  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.868  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.869  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.870  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.870  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.870  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.870  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.871  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-21 13:46:10.873   833   833 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-21 13:46:10.873  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+11-21 13:46:10.878  1637  2693 I AiAiEcho: Settings changed for uri: content://settings/secure/facelock_detection_threshold
+11-21 13:46:10.880  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.880  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.880  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.880  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.881  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.883  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.883  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.884  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.885  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-21 13:46:10.886   833   833 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-21 13:46:10.887  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+11-21 13:46:10.904  1637  2693 I AiAiEcho: Settings changed for uri: content://settings/secure/pubkey_blacklist
+11-21 13:46:10.920  1637  2693 I AiAiEcho: Settings changed for uri: content://settings/secure/serial_blacklist
+11-21 13:46:10.921  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.921  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.921  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.922  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.922  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.923  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.923  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.924  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.925  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-21 13:46:10.925  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.925   833   833 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-21 13:46:10.926  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.926  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.926  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.926  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.926  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.926  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.927  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.927  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+11-21 13:46:10.929  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-21 13:46:10.929   833   833 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-21 13:46:10.930  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+11-21 13:46:10.938  1637  2693 I AiAiEcho: Settings changed for uri: content://settings/secure/facelock_liveliness_recognition_threshold
+11-21 13:46:10.941  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.941  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.941  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.942  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.943  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.944  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.944  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.945  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.948  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-21 13:46:10.949   833   833 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-21 13:46:10.950  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+11-21 13:46:10.952  4217  4306 I TestRunner: finished: lectureTorrent(fr.kwigorl.kwindle.FumeeTest)

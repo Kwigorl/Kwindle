@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuite name="fr.kwigorl.kwindle.FumeeTest" tests="10" failures="0" errors="0" skipped="0" time="92.577" timestamp="2026-11-21T13:47:40" hostname="localhost">
+  <properties>
+    <property name="device" value="emulator-5554 - 14" />
+    <property name="flavor" value="rekindle" />
+    <property name="project" value=":app" />
+  </properties>
+  <testcase name="telechargementTorrent" classname="fr.kwigorl.kwindle.FumeeTest" time="2.978" />
+  <testcase name="modulesPython" classname="fr.kwigorl.kwindle.FumeeTest" time="0.415" />
+  <testcase name="lectureTorrent" classname="fr.kwigorl.kwindle.FumeeTest" time="0.077" />
+  <testcase name="effacementApresEnvoi" classname="fr.kwigorl.kwindle.FumeeTest" time="0.084" />
+  <testcase name="trackerHttps" classname="fr.kwigorl.kwindle.FumeeTest" time="83.272" />
+  <testcase name="reparationEpub" classname="fr.kwigorl.kwindle.FumeeTest" time="0.077" />
+  <testcase name="conversionKepub" classname="fr.kwigorl.kwindle.FumeeTest" time="0.026" />
+  <testcase name="sessionTorrent" classname="fr.kwigorl.kwindle.FumeeTest" time="0.756" />
+  <testcase name="ecranPrincipal" classname="fr.kwigorl.kwindle.FumeeTest" time="3.447" />
+  <testcase name="tomeDansTitre" classname="fr.kwigorl.kwindle.FumeeTest" time="0.079" />
+</testsuite>

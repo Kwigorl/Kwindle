@@ -1,0 +1,30 @@
+11-21 13:46:10.956  4217  4306 I TestRunner: started: effacementApresEnvoi(fr.kwigorl.kwindle.FumeeTest)
+11-21 13:46:10.962  1460  3106 I Icing   : Indexing com.google.android.gms-apps from com.google.android.gms
+11-21 13:46:10.965  1640  1712 W MediaProvider: isAppCloneUserPair for user 0: false
+11-21 13:46:10.967  1640  1712 W MediaProvider: isAppCloneUserPair for user 0: false
+11-21 13:46:10.975  1637  2693 I AiAiEcho: Settings changed for uri: content://settings/secure/autofill_field_classification
+11-21 13:46:10.976  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.976  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.976  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.977  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.978  1637  1964 I AiAiEcho: Predicting[0]:
+11-21 13:46:10.979  1637  1964 I AiAiEcho: EchoTargets:
+11-21 13:46:10.979  1637  1964 I AiAiEcho: Filtered by AiAi flag check:
+11-21 13:46:10.980  1637  1964 I AiAiEcho: Ranked targets strategy: SORT, count: 0, ranking metadata:
+11-21 13:46:10.982  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface lockscreen with targets# 0 (types=[])
+11-21 13:46:10.982   833   833 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-21 13:46:10.984  1637  1964 I AiAiEcho: #postPredictionTargets: Sending updates to UISurface home with targets# 0 (types=[])
+11-21 13:46:10.984  1640  1712 I MediaProvider: Open with lower FS for /storage/emulated/0/Download/Rekindle/efface.epub. Uid: 10192
+11-21 13:46:10.987  1640  1712 D MediaProvider: Filtering owner package names took 1 ms
+11-21 13:46:10.992   835  1015 E RoleControllerServiceImpl: Default/fallback role holder package doesn't qualify for the role, package: com.google.android.gms.supervision, role: android.app.role.SYSTEM_SUPERVISION
+11-21 13:46:10.996   835  1015 I Role    : com.google.android.gms not qualified for android.app.role.SYSTEM_CALL_STREAMING due to missing RequiredComponent{mIntentFilterData=IntentFilterData{mAction='android.telecom.CallStreamingService', mCategories='[]', mDataScheme='null', mDataType='null'}, mMinTargetSdkVersion=1, mFlags='0', mPermission='android.permission.BIND_CALL_STREAMING_SERVICE', mQueryFlags=0, mMetaData=[]}
+11-21 13:46:10.996   835  1015 E RoleControllerServiceImpl: Default/fallback role holder package doesn't qualify for the role, package: com.google.android.gms, role: android.app.role.SYSTEM_CALL_STREAMING
+11-21 13:46:10.997   835  1015 W Role    : Default holder doesn't have required signing certificate: com.google.android.apps.work.clouddpc:23962F4B43B9857638EA66F4D419518EAE282491ACDA4B94707BD59003C45E58
+11-21 13:46:10.999  1640  1712 I MediaProvider: Deleted 0 0 0 0 0 0 1 items on external due to fr.kwigorl.kwindle
+11-21 13:46:11.002  1640  1712 D MediaProvider: Filtering owner package names took 0 ms
+11-21 13:46:11.005  1640  1712 W MediaProvider: isAppCloneUserPair for user 0: false
+11-21 13:46:11.010  1640  1712 I MediaProvider: Open with lower FS for /storage/emulated/0/Download/Rekindle/efface.epub. Uid: 10192
+11-21 13:46:11.018  1460  3106 I Icing   : Indexing done com.google.android.gms-apps
+11-21 13:46:11.019  1640  1712 I MediaProvider: Deleted 0 0 0 0 0 0 1 items on external due to fr.kwigorl.kwindle
+11-21 13:46:11.021  1640  1712 D MediaProvider: Filtering owner package names took 0 ms
+11-21 13:46:11.025  4217  4306 I TestRunner: finished: effacementApresEnvoi(fr.kwigorl.kwindle.FumeeTest)

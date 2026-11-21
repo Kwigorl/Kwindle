@@ -1,0 +1,4 @@
+11-21 13:47:34.304  4217  4306 I TestRunner: started: reparationEpub(fr.kwigorl.kwindle.FumeeTest)
+11-21 13:47:34.347  4217  4217 W roidJUnitRunner: type=1400 audit(0.0:235): avc:  granted  { execute } for  path="/data/data/fr.kwigorl.kwindle/files/chaquopy/AssetFinder/requirements/PIL/_imagingmath.so" dev="dm-40" ino=328669 scontext=u:r:untrusted_app:s0:c192,c256,c512,c768 tcontext=u:object_r:app_data_file:s0:c192,c256,c512,c768 tclass=file app=fr.kwigorl.kwindle
+11-21 13:47:34.392  4217  4306 W python.stderr: /data/data/fr.kwigorl.kwindle/files/chaquopy/AssetFinder/requirements/PIL/Image.py:3534: UserWarning: image file could not be identified because WEBP support not installed
+11-21 13:47:34.397  4217  4306 I TestRunner: finished: reparationEpub(fr.kwigorl.kwindle.FumeeTest)

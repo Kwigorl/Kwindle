@@ -1,0 +1,670 @@
+11-21 13:46:07.263  4217  4306 I TestRunner: started: telechargementTorrent(fr.kwigorl.kwindle.FumeeTest)
+11-21 13:46:07.268  1460  1467 I gle.android.gms: Background concurrent copying GC freed 74724(3736KB) AllocSpace objects, 116(5816KB) LOS objects, 49% free, 14MB/28MB, paused 1.547ms,15us total 927.304ms
+11-21 13:46:07.275  1682  1702 I ocess.gservices: Background concurrent copying GC freed 45928(1549KB) AllocSpace objects, 0(0B) LOS objects, 49% free, 2707KB/5415KB, paused 16us,9us total 408.720ms
+11-21 13:46:07.314  1460  4292 I MS_RegUtils: checking registration with Lighter
+11-21 13:46:07.327  1460  1460 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.findmydevice.spot.service.management.START dat=chimera-action:/... cmp=com.google.android.gms/.chimera.GmsApiService }
+11-21 13:46:07.356  1460  3478 I LT_StubFactory: tachyonHostName = instantmessaging-pa.googleapis.com and tachyonPortNumber = 443
+11-21 13:46:07.364  1460  3478 D LT_OkHttpChannelBuilder: Using Spatula header keyless authentication.
+11-21 13:46:07.365  1407  3856 W NearbyMessages: Runnable[subscribe] was delayed for 00:03.464 [CONTEXT service_id=62 ]
+11-21 13:46:07.384  1407  3989 I TetheringManager: registerTetheringEventCallback:com.google.android.gms
+11-21 13:46:07.416   521   530 I system_server: Background young concurrent copying GC freed 745021(27MB) AllocSpace objects, 29(588KB) LOS objects, 45% free, 28MB/52MB, paused 85us,388us total 488.275ms
+11-21 13:46:07.512  1460  3478 E enyj    : *~*~*~ Previous channel {0} was not shutdown properly!!! ~*~*~*
+11-21 13:46:07.512  1460  3478 E enyj    :     Make sure to call shutdown()/shutdownNow() and wait until awaitTermination() returns true.
+11-21 13:46:07.512  1460  3478 E enyj    : java.lang.RuntimeException: ManagedChannel allocation site
+11-21 13:46:07.512  1460  3478 E enyj    : 	at enyi.<init>(:com.google.android.gms@231818047@23.18.18 (190800-535401451):3)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at enyj.<init>(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at enyh.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):21)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at enqe.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at abxw.H(:com.google.android.gms@231818047@23.18.18 (190800-535401451):22)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at abxw.f(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at cdbp.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at cdav.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):1)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at cdav.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at zcr.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):1)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at aced.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at aced.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):7)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at acjn.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at java.lang.Thread.run(Thread.java:1012)
+11-21 13:46:07.512  1460  3478 E enyj    : *~*~*~ Previous channel {0} was not shutdown properly!!! ~*~*~*
+11-21 13:46:07.512  1460  3478 E enyj    :     Make sure to call shutdown()/shutdownNow() and wait until awaitTermination() returns true.
+11-21 13:46:07.512  1460  3478 E enyj    : java.lang.RuntimeException: ManagedChannel allocation site
+11-21 13:46:07.512  1460  3478 E enyj    : 	at enyi.<init>(:com.google.android.gms@231818047@23.18.18 (190800-535401451):3)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at enyj.<init>(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at enyh.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):21)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at enqe.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at abxw.H(:com.google.android.gms@231818047@23.18.18 (190800-535401451):22)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at abxw.f(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at cdbp.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at cdav.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):1)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at cdav.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at zcr.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):1)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at aced.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at aced.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):7)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at acjn.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:07.512  1460  3478 E enyj    : 	at java.lang.Thread.run(Thread.java:1012)
+11-21 13:46:07.521  1460  3478 D LT_LitBstrpCntrl: Initializing BootstrapController Instance
+11-21 13:46:07.522  1407  3989 W MagicTether: [TetherListenerService] Invalid account list. [CONTEXT service_id=276 ]
+11-21 13:46:07.523  1460  4292 W gle.android.gms: Long monitor contention with owner highpool[5] (3478) at cooe cooe.a(android.content.Context)(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2) waiters=0 in cooe cooe.a(android.content.Context) for 208ms
+11-21 13:46:07.529  1460  3812 I MdiSyncModule: initializing module...
+11-21 13:46:07.531  1460  3812 I MdiSyncModule: module initialization completed
+11-21 13:46:07.543  1460  1460 D BoundBrokerSvc: onBind: Intent { act=com.google.android.gms.auth.service.START pkg=com.google.android.gms }
+11-21 13:46:07.543  1460  1460 D BoundBrokerSvc: Loading bound service for intent: Intent { act=com.google.android.gms.auth.service.START pkg=com.google.android.gms }
+11-21 13:46:07.570   336  4352 I resolv  : GetAddrInfoHandler::run: {100 786532 100 983140 10131 0}
+11-21 13:46:07.570  2938  3042 D TrafficStats: tagSocket(105) with statsTag=0x1809, statsUid=-1
+11-21 13:46:07.572  2938  3042 D TrafficStats: tagSocket(105) with statsTag=0x1809, statsUid=-1
+11-21 13:46:07.573  1460  4293 W MDM     : [211] aywf.d: Q+ devices does not need device admin.
+11-21 13:46:07.574  2938  3042 D TrafficStats: tagSocket(105) with statsTag=0x1809, statsUid=-1
+11-21 13:46:07.577  1460  3201 I MlBenchmarkInstaller: Intent: android.intent.action.BOOT_COMPLETED [CONTEXT service_id=340 ]
+11-21 13:46:07.577  1460  3201 I MlBenchmarkInstaller: onInitRuntimeState(), intent action=android.intent.action.BOOT_COMPLETED [CONTEXT service_id=340 ]
+11-21 13:46:07.583  1460  3201 I MlBenchmarkInstaller: Feature is disabled. [CONTEXT service_id=340 ]
+11-21 13:46:07.596  1460  4317 I LSR     : Empty geofences. [CONTEXT service_id=277 ]
+11-21 13:46:07.610  1460  3201 W ChimeraUtils: Module com.google.android.gms.mobiledataplan missing resource null(0)
+11-21 13:46:07.615  1460  4345 D LT_PhenotypeApiImplV12: Retrieve experiment configurations
+11-21 13:46:07.617   521  1933 D WifiApConfigStore: Fallback to use default AP configuration
+11-21 13:46:07.627  1460  1460 I MlBenchmarkInstaller: Feature unrequest success = true [CONTEXT service_id=340 ]
+11-21 13:46:07.630  1460  2860 W Icing   : No valid account for uploading user actions
+11-21 13:46:07.632   521  1933 D CompatibilityChangeReporter: Compat change id reported: 215656264; UID 1000; state: ENABLED
+11-21 13:46:07.634   521  1933 D CompatibilityChangeReporter: Compat change id reported: 213289672; UID 1000; state: ENABLED
+11-21 13:46:07.652  1407  3856 W NearbyMessages: Runnable[subscribe] was delayed for 00:03.172 [CONTEXT service_id=62 ]
+11-21 13:46:07.662  1460  4293 I Nearby  : is blocked device type false, isAuto=false, isIot=false, isLatchsky=false, isChinaWearable=false, isTv=false, isWearable=false (supportWearOs=false), isChromeOsDevice=false (supportChromeOs=false) [CONTEXT service_id=49 ]
+11-21 13:46:07.669  1460  4293 I NearbyDiscovery: Trigger rescan contextual cards [CONTEXT service_id=265 ]
+11-21 13:46:07.671  1460  4293 I NearbyDiscovery: FastPair: HeadsetPieceImage, grant permission files:0 [CONTEXT service_id=265 ]
+11-21 13:46:07.715  1460  4293 I NearbyFastPair: onInitRuntimeState isEnableWearableListener: false [CONTEXT service_id=265 ]
+11-21 13:46:07.717  1460  4293 I NearbyFastPair: FastPairInitIntentOperation: check the Footprints sync tasks. [CONTEXT service_id=265 ]
+11-21 13:46:07.718  1460  4293 I NearbyFastPair: TaskSchedulerUtils cancelTask TAG_FOOTPRINTS_PERIODIC_SCHEDULE success. [CONTEXT service_id=265 ]
+11-21 13:46:07.718  1460  4293 I NearbyFastPair: TSS cancel footprints recon sync [CONTEXT service_id=265 ]
+11-21 13:46:07.719  1460  4293 I NearbyFastPair: TaskSchedulerUtils cancelTask TAG_FOOTPRINTS_RECON_SYNC_SCHEDULE success. [CONTEXT service_id=265 ]
+11-21 13:46:07.720  1460  4293 I NearbyFastPair: TSS scheduleFootprintsOneOffSync: not enable [CONTEXT service_id=265 ]
+11-21 13:46:07.744  2938  3005 D TrafficStats: tagSocket(105) with statsTag=0x1809, statsUid=-1
+11-21 13:46:07.745  2938  3005 D TrafficStats: tagSocket(105) with statsTag=0x1809, statsUid=-1
+11-21 13:46:07.746  1460  2118 I NearbySharing: onBindSlice failed since shareTargets is empty [CONTEXT service_id=194 ]
+11-21 13:46:07.747  2938  3005 D TrafficStats: tagSocket(105) with statsTag=0x1809, statsUid=-1
+11-21 13:46:07.750  1460  2118 I NearbySharing: Granted slice and Uri permissions to android [CONTEXT service_id=194 ]
+11-21 13:46:07.753  1460  4293 I NearbySharing: Runtime state initialization complete. Sharing is enabled. [CONTEXT service_id=194 ]
+11-21 13:46:07.754  1460  3201 W libc    : Access denied finding property "ro.hardware.chipname"
+11-21 13:46:07.754  1460  3201 W ChipsetHelper: Unknown chipset! [CONTEXT service_id=301 ]
+11-21 13:46:07.755  1460  3201 I NnApiDriverManager: Registering application with chipset 'unknown' [CONTEXT service_id=301 ]
+11-21 13:46:07.784   521  1933 W FileUtils: Failed to chmod(/data/misc/apexdata/com.android.wifi/WifiConfigStoreSoftAp.xml, 384):
+11-21 13:46:07.784   521  1933 W FileUtils: android.system.ErrnoException: chmod failed: ENOENT (No such file or directory)
+11-21 13:46:07.784   521  1933 W FileUtils: 	at libcore.io.Linux.chmod(Native Method)
+11-21 13:46:07.784   521  1933 W FileUtils: 	at libcore.io.ForwardingOs.chmod(ForwardingOs.java:165)
+11-21 13:46:07.784   521  1933 W FileUtils: 	at libcore.io.BlockGuardOs.chmod(BlockGuardOs.java:83)
+11-21 13:46:07.784   521  1933 W FileUtils: 	at android.system.Os.chmod(Os.java:119)
+11-21 13:46:07.784   521  1933 W FileUtils: 	at com.android.server.wifi.util.FileUtils.chmod(FileUtils.java:44)
+11-21 13:46:07.784   521  1933 W FileUtils: 	at com.android.server.wifi.WifiConfigStore$StoreFile.writeBufferedRawData(WifiConfigStore.java:941)
+11-21 13:46:07.784   521  1933 W FileUtils: 	at com.android.server.wifi.WifiConfigStore.writeBufferedData(WifiConfigStore.java:506)
+11-21 13:46:07.784   521  1933 W FileUtils: 	at com.android.server.wifi.WifiConfigStore.write(WifiConfigStore.java:430)
+11-21 13:46:07.784   521  1933 W FileUtils: 	at com.android.server.wifi.WifiConfigManager.saveToStore(WifiConfigManager.java:3688)
+11-21 13:46:07.784   521  1933 W FileUtils: 	at com.android.server.wifi.WifiApConfigStore.persistConfigAndTriggerBackupManagerProxy(WifiApConfigStore.java:372)
+11-21 13:46:07.784   521  1933 W FileUtils: 	at com.android.server.wifi.WifiApConfigStore.getApConfiguration(WifiApConfigStore.java:156)
+11-21 13:46:07.784   521  1933 W FileUtils: 	at com.android.server.wifi.WifiServiceImpl.getWifiApConfiguration(WifiServiceImpl.java:2798)
+11-21 13:46:07.784   521  1933 W FileUtils: 	at android.net.wifi.IWifiManager$Stub.onTransact(IWifiManager.java:2240)
+11-21 13:46:07.784   521  1933 W FileUtils: 	at android.os.Binder.execTransactInternal(Binder.java:1339)
+11-21 13:46:07.784   521  1933 W FileUtils: 	at android.os.Binder.execTransact(Binder.java:1275)
+11-21 13:46:07.800   521  1933 D WifiConfigStore: Writing to stores completed in 38 ms.
+11-21 13:46:07.808  2938  3005 W libc    : Access denied finding property "persist.adb.tls_server.enable"
+11-21 13:46:07.808  2938  3005 W libc    : Access denied finding property "service.adb.tls.port"
+11-21 13:46:07.807  2938  2938 W binder:2938_2: type=1400 audit(0.0:187): avc:  denied  { read } for  name="u:object_r:system_adbd_prop:s0" dev="tmpfs" ino=292 scontext=u:r:gmscore_app:s0:c512,c768 tcontext=u:object_r:system_adbd_prop:s0 tclass=file permissive=0 app=com.google.android.gms
+11-21 13:46:07.807  2938  2938 W binder:2938_2: type=1400 audit(0.0:188): avc:  denied  { read } for  name="u:object_r:adbd_prop:s0" dev="tmpfs" ino=60 scontext=u:r:gmscore_app:s0:c512,c768 tcontext=u:object_r:adbd_prop:s0 tclass=file permissive=0 app=com.google.android.gms
+11-21 13:46:07.842  1460  2860 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-21 13:46:07.911  1407  1413 I .gms.persistent: Background concurrent copying GC freed 307456(14MB) AllocSpace objects, 2(104KB) LOS objects, 49% free, 15MB/31MB, paused 75us,24us total 1.234s
+11-21 13:46:07.922  1637  1637 I AiAiEcho: AppFetcherImplV2 updateApps package:[fr.kwigorl.kwindle], userId:[0], reason:[package is added.].
+11-21 13:46:07.931  1460  3201 I NnApiDriverManager: Registering application with GPU 'Android Emulator OpenGL ES Translator (Google SwiftShader)' by 'Google (Google Inc.)' [CONTEXT service_id=301 ]
+11-21 13:46:07.941  1407  1415 W System  : A resource failed to call end.
+11-21 13:46:07.941  1098  1894 D EGL_emulation: app_time_stats: avg=756.43ms min=381.40ms max=1131.46ms count=2
+11-21 13:46:07.945  2938  3042 W SystemServiceRegistry: No service published for: persistent_data_block
+11-21 13:46:08.011  2938  2938 W binder:2938_3: type=1400 audit(0.0:189): avc:  denied  { read } for  name="u:object_r:system_adbd_prop:s0" dev="tmpfs" ino=292 scontext=u:r:gmscore_app:s0:c512,c768 tcontext=u:object_r:system_adbd_prop:s0 tclass=file permissive=0 app=com.google.android.gms
+11-21 13:46:08.019  2938  3042 W libc    : Access denied finding property "persist.adb.tls_server.enable"
+11-21 13:46:08.023  2938  3042 W libc    : Access denied finding property "service.adb.tls.port"
+11-21 13:46:08.015  2938  2938 W binder:2938_3: type=1400 audit(0.0:190): avc:  denied  { read } for  name="u:object_r:adbd_prop:s0" dev="tmpfs" ino=60 scontext=u:r:gmscore_app:s0:c512,c768 tcontext=u:object_r:adbd_prop:s0 tclass=file permissive=0 app=com.google.android.gms
+11-21 13:46:08.027  4217  4217 W roidJUnitRunner: type=1400 audit(0.0:191): avc:  denied  { read } for  name="block" dev="sysfs" ino=3650 scontext=u:r:untrusted_app:s0:c192,c256,c512,c768 tcontext=u:object_r:sysfs:s0 tclass=dir permissive=0 app=fr.kwigorl.kwindle
+11-21 13:46:08.043  1407  2877 I SemanticLocation: [MDD] ModelBundleMetadata: File not found [CONTEXT service_id=173 ]
+11-21 13:46:08.043  1407  2877 I SemanticLocation: java.io.FileNotFoundException: /data/user/0/com.google.android.gms/files/default_model_bundle_metadata.pb: open failed: ENOENT (No such file or directory)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at libcore.io.IoBridge.open(IoBridge.java:574)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at java.io.FileInputStream.<init>(FileInputStream.java:160)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at android.app.ContextImpl.openFileInput(ContextImpl.java:745)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at android.content.ContextWrapper.openFileInput(ContextWrapper.java:249)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at android.content.ContextWrapper.openFileInput(ContextWrapper.java:249)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at android.content.ContextWrapper.openFileInput(ContextWrapper.java:249)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at bzxt.h(:com.google.android.gms@231818047@23.18.18 (190800-535401451):1)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at bzxd.d(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at bzxd.<init>(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at cadn.j(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at cadn.h(:com.google.android.gms@231818047@23.18.18 (190800-535401451):36)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at cadn.b(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at com.google.android.gms.semanticlocation.service.SemanticLocationChimeraService.k(:com.google.android.gms@231818047@23.18.18 (190800-535401451):9)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at com.google.android.gms.semanticlocation.service.SemanticLocationChimeraService.h(:com.google.android.gms@231818047@23.18.18 (190800-535401451):17)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at cacs.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):68)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:487)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at aced.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at aced.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):7)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at acjn.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at java.lang.Thread.run(Thread.java:1012)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at libcore.io.Linux.open(Native Method)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at libcore.io.ForwardingOs.open(ForwardingOs.java:563)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at libcore.io.BlockGuardOs.open(BlockGuardOs.java:274)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at libcore.io.ForwardingOs.open(ForwardingOs.java:563)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at android.app.ActivityThread$AndroidOs.open(ActivityThread.java:8063)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	at libcore.io.IoBridge.open(IoBridge.java:560)
+11-21 13:46:08.043  1407  2877 I SemanticLocation: 	... 22 more
+11-21 13:46:08.046  1460  3201 I Pay     : Requested immediate check to see whether to show pay module downloading complete notification. [CONTEXT service_id=198 ]
+11-21 13:46:08.047  1460  3201 I Pay     : Closed loop HCE not migrated and campus id not enabled. [CONTEXT service_id=198 ]
+11-21 13:46:08.049  1637  2026 I AiAiEcho: EchoSearch: WidgetFetcherImpl is initialized with [28] widgets [reason=package added for userId: 0]
+11-21 13:46:08.056  1407  1407 I MagicTether: [AutoDisconnectIntentOperation] Canceling task. [CONTEXT service_id=276 ]
+11-21 13:46:08.067  1407  1407 I NearbySharing: ReceiveSurfaceService started [CONTEXT service_id=194 ]
+11-21 13:46:08.068  1407  3115 I MagicTether: [AutoDisconnectIntentOperation] Canceling task. [CONTEXT service_id=276 ]
+11-21 13:46:08.073  1407  1407 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.contextmanager.service.ContextManagerService.START pkg=com.google.android.gms }
+11-21 13:46:08.079  1407  4330 W ChimeraUtils: Module com.google.android.gms.nearby_en missing resource null(0)
+11-21 13:46:08.091   336  4369 I resolv  : GetAddrInfoHandler::run: {100 786532 100 983140 10131 0}
+11-21 13:46:08.095  1460  3201 I Pay     : Requested check of feature migrations. [CONTEXT service_id=198 ]
+11-21 13:46:08.100   336  4371 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-21 13:46:08.102   336  4370 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-21 13:46:08.129   336  4370 I resolv  : res_nsend: used send_dg 264 terrno: 0
+11-21 13:46:08.130   336  4370 I resolv  : doQuery: rcode=0, ancount=8, return value=264
+11-21 13:46:08.130   336  4371 I resolv  : res_nsend: used send_dg 168 terrno: 0
+11-21 13:46:08.130   336  4371 I resolv  : doQuery: rcode=0, ancount=8, return value=168
+11-21 13:46:08.131  1407  1475 D TrafficStats: tagSocket(130) with statsTag=0x30000401, statsUid=10131
+11-21 13:46:08.144   835  1015 E RoleControllerServiceImpl: Default/fallback role holder package doesn't qualify for the role, package: com.google.android.gms.supervision, role: android.app.role.SYSTEM_SUPERVISION
+11-21 13:46:08.147  1407  1475 W Conscrypt: Could not set socket write timeout: java.net.SocketException: Socket closed
+11-21 13:46:08.147  1407  1475 W Conscrypt: 	at com.google.android.gms.org.conscrypt.Platform.setSocketWriteTimeout(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:08.147  1407  1475 W Conscrypt: 	at com.google.android.gms.org.conscrypt.ConscryptFileDescriptorSocket.setSoWriteTimeout(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:08.152   835  1015 I Role    : com.google.android.gms not qualified for android.app.role.SYSTEM_CALL_STREAMING due to missing RequiredComponent{mIntentFilterData=IntentFilterData{mAction='android.telecom.CallStreamingService', mCategories='[]', mDataScheme='null', mDataType='null'}, mMinTargetSdkVersion=1, mFlags='0', mPermission='android.permission.BIND_CALL_STREAMING_SERVICE', mQueryFlags=0, mMetaData=[]}
+11-21 13:46:08.155   835  1015 E RoleControllerServiceImpl: Default/fallback role holder package doesn't qualify for the role, package: com.google.android.gms, role: android.app.role.SYSTEM_CALL_STREAMING
+11-21 13:46:08.159   835  1015 W Role    : Default holder doesn't have required signing certificate: com.google.android.apps.work.clouddpc:23962F4B43B9857638EA66F4D419518EAE282491ACDA4B94707BD59003C45E58
+11-21 13:46:08.168  1407  4330 W ChimeraUtils: Module com.google.android.gms.nearby_en missing resource null(0)
+11-21 13:46:08.230   833   903 D EGL_emulation: app_time_stats: avg=1260.17ms min=1260.17ms max=1260.17ms count=1
+11-21 13:46:08.236  1522  1547 I .apps.wellbeing: Background young concurrent copying GC freed 29282(1497KB) AllocSpace objects, 0(0B) LOS objects, 16% free, 7961KB/9559KB, paused 26us,14us total 127.594ms
+11-21 13:46:08.248  1407  2877 I SemanticLocation: [MDD] ModelBundleMetadata: File not found [CONTEXT service_id=173 ]
+11-21 13:46:08.248  1407  2877 I SemanticLocation: java.io.FileNotFoundException: /data/user/0/com.google.android.gms/files/model_bundle_metadata.pb: open failed: ENOENT (No such file or directory)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at libcore.io.IoBridge.open(IoBridge.java:574)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at java.io.FileInputStream.<init>(FileInputStream.java:160)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at android.app.ContextImpl.openFileInput(ContextImpl.java:745)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at android.content.ContextWrapper.openFileInput(ContextWrapper.java:249)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at android.content.ContextWrapper.openFileInput(ContextWrapper.java:249)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at android.content.ContextWrapper.openFileInput(ContextWrapper.java:249)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at bzxt.h(:com.google.android.gms@231818047@23.18.18 (190800-535401451):1)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at bzxd.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):9)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at bzxd.<init>(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at cadn.j(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at cadn.h(:com.google.android.gms@231818047@23.18.18 (190800-535401451):36)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at cadn.b(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at com.google.android.gms.semanticlocation.service.SemanticLocationChimeraService.k(:com.google.android.gms@231818047@23.18.18 (190800-535401451):9)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at com.google.android.gms.semanticlocation.service.SemanticLocationChimeraService.h(:com.google.android.gms@231818047@23.18.18 (190800-535401451):17)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at cacs.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):68)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:487)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at aced.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at aced.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):7)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at acjn.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at java.lang.Thread.run(Thread.java:1012)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at libcore.io.Linux.open(Native Method)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at libcore.io.ForwardingOs.open(ForwardingOs.java:563)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at libcore.io.BlockGuardOs.open(BlockGuardOs.java:274)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at libcore.io.ForwardingOs.open(ForwardingOs.java:563)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at android.app.ActivityThread$AndroidOs.open(ActivityThread.java:8063)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	at libcore.io.IoBridge.open(IoBridge.java:560)
+11-21 13:46:08.248  1407  2877 I SemanticLocation: 	... 22 more
+11-21 13:46:08.277  1407  1480 I Nearby  : is blocked device type false, isAuto=false, isIot=false, isLatchsky=false, isChinaWearable=false, isTv=false, isWearable=false (supportWearOs=false), isChromeOsDevice=false (supportChromeOs=false) [CONTEXT service_id=49 ]
+11-21 13:46:08.277  1407  3856 W NearbyMessages: Runnable[NearbyMessagesService.stopServiceIfIdle] was delayed for 00:03.435 [CONTEXT service_id=62 ]
+11-21 13:46:08.277  1407  4330 W ChimeraUtils: Module com.google.android.gms.nearby_en missing resource null(0)
+11-21 13:46:08.284  1407  3759 I Nearby  : is blocked device type false, isAuto=false, isIot=false, isLatchsky=false, isChinaWearable=false, isTv=false, isWearable=false (supportWearOs=false), isChromeOsDevice=false (supportChromeOs=false) [CONTEXT service_id=49 ]
+11-21 13:46:08.284  1407  3759 I NearbyDiscovery: DiscoveryController, showNotification, itemSize=0 [CONTEXT service_id=265 ]
+11-21 13:46:08.285  1407  3759 I NearbyDiscovery: Show notifications: 0 total, no changes since last shown, no-op. [CONTEXT service_id=265 ]
+11-21 13:46:08.285  1407  1480 I NearbyShared: FastPairSlice: enableBindServiceForDiscoveryItem called, isBind = false
+11-21 13:46:08.290  1460  3220 I FastPair: ServiceBindHelper.onSlicePinned, slice already pinned, uri = content://com.google.android.gms.nearby.fastpair/method_bind_service_for_discovery_item?is_bind=false
+11-21 13:46:08.298  1407  1407 D BoundBrokerSvc: onBind: Intent { act=com.google.android.gms.tapandpay.service.BIND dat=chimera-action:/... cmp=com.google.android.gms/.chimera.PersistentApiService }
+11-21 13:46:08.299  1407  1407 D BoundBrokerSvc: Loading bound service for intent: Intent { act=com.google.android.gms.tapandpay.service.BIND dat=chimera-action:/... cmp=com.google.android.gms/.chimera.PersistentApiService }
+11-21 13:46:08.301  1407  1475 W Conscrypt: Could not set socket write timeout: java.net.SocketException: Socket closed
+11-21 13:46:08.313  1460  3815 I Checkin : [CheckinOperation] Starting Checkin: Default Task Reason : 5 Force : false UserId : 0 Start time : 70057
+11-21 13:46:08.313  1460  2860 W Icing   : No valid account for uploading user actions
+11-21 13:46:08.329  1460  2860 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-21 13:46:08.331  1407  1475 W Conscrypt: 	at com.google.android.gms.org.conscrypt.Platform.setSocketWriteTimeout(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:08.331  1407  1475 W Conscrypt: 	at com.google.android.gms.org.conscrypt.ConscryptFileDescriptorSocket.setSoWriteTimeout(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:08.333   521   535 I RemoteProvisionSysSvc: getRegistration(android.hardware.security.keymint.IRemotelyProvisionedComponent/default)
+11-21 13:46:08.338   521   521 I RegistrationProxy: onServiceConnected: com.android.rkpdapp.service.RemoteProvisioningService
+11-21 13:46:08.344   521  1715 I RegistrationProxy: IGetRegistrationCallback.onSuccess
+11-21 13:46:08.346   521  1715 I RemoteProvisionSysSvc: Fetching key 10131 for client 163419564
+11-21 13:46:08.346   521  1715 I RegistrationProxy: getKeyAsync operation started with callback 140202613
+11-21 13:46:08.346  3728  3822 I RkpdRegistrationBinder: Key requested for : android.hardware.security.keymint.IRemotelyProvisionedComponent/default, clientUid: 1017, keyId: 10131, callback: 42520860
+11-21 13:46:08.347  3728  3822 I RkpdRegistrationBinder: Key successfully assigned to client
+11-21 13:46:08.348   521   521 I RemoteProvisionSysSvc: Successfully fetched key for client 163419564
+11-21 13:46:08.369  1637  1637 I AiAiEcho: AppFetcherImpl onPackageChanged fr.kwigorl.kwindle.
+11-21 13:46:08.370  1637  2857 I AiAiEcho: AppIndexer Package:[fr.kwigorl.kwindle] UserProfile:[0] Enabled:[true].
+11-21 13:46:08.370  1637  2857 I AiAiEcho: AppFetcherImplV2 updateApps package:[fr.kwigorl.kwindle], userId:[0], reason:[package is updated.].
+11-21 13:46:08.390  1407  1475 W GLSUser : [AppCertManager] Exception while requesting key:
+11-21 13:46:08.390  1407  1475 W GLSUser : java.io.IOException: Invalid device key response.
+11-21 13:46:08.390  1407  1475 W GLSUser : 	at oub.b(:com.google.android.gms@231818047@23.18.18 (190800-535401451):40)
+11-21 13:46:08.390  1407  1475 W GLSUser : 	at otz.b(:com.google.android.gms@231818047@23.18.18 (190800-535401451):4)
+11-21 13:46:08.390  1407  1475 W GLSUser : 	at otu.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:08.390  1407  1475 W GLSUser : 	at otx.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-21 13:46:08.390  1407  1475 W GLSUser : 	at lzq.call(:com.google.android.gms@231818047@23.18.18 (190800-535401451):14)
+11-21 13:46:08.390  1407  1475 W GLSUser : 	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+11-21 13:46:08.390  1407  1475 W GLSUser : 	at aced.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-21 13:46:08.390  1407  1475 W GLSUser : 	at aced.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):7)
+11-21 13:46:08.390  1407  1475 W GLSUser : 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-21 13:46:08.390  1407  1475 W GLSUser : 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-21 13:46:08.390  1407  1475 W GLSUser : 	at acjn.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:08.390  1407  1475 W GLSUser : 	at java.lang.Thread.run(Thread.java:1012)
+11-21 13:46:08.413  1460  3815 I CheckinUtil: Classify the device as Phone. [CONTEXT service_id=130 ]
+11-21 13:46:08.420  1460  4293 I GmsDebugLogger: [53] +tflite_dynamite:-1
+11-21 13:46:08.435  1637  1637 I AiAiEcho: AppFetcherImplV2 updateApps package:[fr.kwigorl.kwindle.test], userId:[0], reason:[package is added.].
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: Retrieving snapshot for com.google.android.gms.playlog.uploader failed
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: java.util.concurrent.TimeoutException: Timed out waiting for Task
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: 	at cfsz.o(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: 	at bwch.e(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: 	at bwch.j(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: 	at bwch.h(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: 	at com.google.android.gms.clearcut.init.ClearcutInitChimeraIntentService.b(:com.google.android.gms@231818047@23.18.18 (190800-535401451):5)
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: 	at zdm.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: 	at com.google.android.gms.clearcut.init.DefaultPriorityClearcutInitChimeraIntentService.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: 	at com.google.android.chimera.IntentOperation.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: 	at zhv.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):4)
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: 	at hjm.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):3)
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: 	at hjl.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):11)
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: 	at dfhf.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-21 13:46:08.463  1460  3164 E PhenotypeFlagCommitter: 	at java.lang.Thread.run(Thread.java:1012)
+11-21 13:46:08.470  1637  2026 I AiAiEcho: EchoSearch: WidgetFetcherImpl is initialized with [28] widgets [reason=package added for userId: 0]
+11-21 13:46:08.518  1788  2533 E Search.IcingConnection: Could not connect to Icing. Error code 14.
+11-21 13:46:08.549  1407  2673 W .gms.persistent: Long monitor contention with owner highpool[0] (1475) at boolean oub.b()(:com.google.android.gms@231818047@23.18.18 (190800-535401451):89) waiters=0 in java.lang.String otz.a(java.lang.String) for 825ms
+11-21 13:46:08.549  1407  2673 W GLSUser : [DeviceKeyStore] Cannot load key: Device key file not found.
+11-21 13:46:08.549  1407  2673 W GLSUser : [DeviceKeyStore] Cannot load key: Device key file not found.
+11-21 13:46:08.554  1460  1460 D LT_ClntIntrcptrFctryV12: Spatula header: CjYKFmNvbS5nb29nbGUuYW5kcm9pZC5nbXMaHFdPSEVFejkwUWV3OUxDY0NjS0ZJQXRwSHVnND0YAA==
+11-21 13:46:08.567  1460  4293 W PeoplePU: getServiceInfo failed.
+11-21 13:46:08.567  1460  4293 W PeoplePU: android.content.pm.PackageManager$NameNotFoundException: ComponentInfo{com.google.android.gms/com.google.android.gms.people.sync.focus.ContactsSyncAdapterService}
+11-21 13:46:08.567  1460  4293 W PeoplePU: 	at android.app.ApplicationPackageManager.getServiceInfo(ApplicationPackageManager.java:616)
+11-21 13:46:08.567  1460  4293 W PeoplePU: 	at android.app.ApplicationPackageManager.getServiceInfo(ApplicationPackageManager.java:599)
+11-21 13:46:08.567  1460  4293 W PeoplePU: 	at bvox.b(:com.google.android.gms@231818047@23.18.18 (190800-535401451):3)
+11-21 13:46:08.567  1460  4293 W PeoplePU: 	at com.google.android.gms.people.sync.focus.ContactsSyncIntentOperation.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):43)
+11-21 13:46:08.567  1460  4293 W PeoplePU: 	at com.google.android.chimera.IntentOperation.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:08.567  1460  4293 W PeoplePU: 	at zhv.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):4)
+11-21 13:46:08.567  1460  4293 W PeoplePU: 	at hjm.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):3)
+11-21 13:46:08.567  1460  4293 W PeoplePU: 	at hjl.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):11)
+11-21 13:46:08.567  1460  4293 W PeoplePU: 	at dfhf.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:08.567  1460  4293 W PeoplePU: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-21 13:46:08.567  1460  4293 W PeoplePU: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-21 13:46:08.567  1460  4293 W PeoplePU: 	at java.lang.Thread.run(Thread.java:1012)
+11-21 13:46:08.569  1460  4293 I FSA2_ContactsSyncIntentOp: Sync is disabled. Skip prepareToSync
+11-21 13:46:08.569  1460  2860 W Icing   : No valid account for uploading user actions
+11-21 13:46:08.572  1460  3164 W PeoplePU: getComponentEnabledSetting failed.
+11-21 13:46:08.572  1460  3164 W PeoplePU: java.lang.IllegalArgumentException: Unknown component: ComponentInfo{com.google.android.syncadapters.contacts/com.google.android.syncadapters.contacts.ProxyGalProvider}
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at android.os.Parcel.createExceptionOrNull(Parcel.java:3061)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at android.os.Parcel.createException(Parcel.java:3041)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at android.os.Parcel.readException(Parcel.java:3024)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at android.os.Parcel.readException(Parcel.java:2966)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at android.content.pm.IPackageManager$Stub$Proxy.getComponentEnabledSetting(IPackageManager.java:6034)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at android.app.ApplicationPackageManager.getComponentEnabledSetting(ApplicationPackageManager.java:3097)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at bvox.b(:com.google.android.gms@231818047@23.18.18 (190800-535401451):1)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at buru.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at com.google.android.gms.people.api.init.PeopleModuleInitIntentOperation.b(:com.google.android.gms@231818047@23.18.18 (190800-535401451):5)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at zdm.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at com.google.android.chimera.IntentOperation.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at zhv.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):4)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at hjm.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):3)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at hjl.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):11)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at dfhf.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at java.lang.Thread.run(Thread.java:1012)
+11-21 13:46:08.572  1460  3164 W PeoplePU: Caused by: android.os.RemoteException: Remote stack trace:
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at com.android.server.pm.ComputerEngine.getComponentEnabledSettingInternal(ComputerEngine.java:5159)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at com.android.server.pm.ComputerEngine.getComponentEnabledSetting(ComputerEngine.java:5141)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at com.android.server.pm.IPackageManagerBase.getComponentEnabledSetting(IPackageManagerBase.java:388)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at android.content.pm.IPackageManager$Stub.onTransact(IPackageManager.java:3012)
+11-21 13:46:08.572  1460  3164 W PeoplePU: 	at com.android.server.pm.PackageManagerService$IPackageManagerImpl.onTransact(PackageManagerService.java:6334)
+11-21 13:46:08.572  1460  3164 W PeoplePU:
+11-21 13:46:08.582  1407  2877 I SemanticLocation: [MDD] ModelBundleMetadata: File not found [CONTEXT service_id=173 ]
+11-21 13:46:08.582  1407  2877 I SemanticLocation: java.io.FileNotFoundException: /data/user/0/com.google.android.gms/files/model_bundle_metadata.pb: open failed: ENOENT (No such file or directory)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at libcore.io.IoBridge.open(IoBridge.java:574)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at java.io.FileInputStream.<init>(FileInputStream.java:160)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at android.app.ContextImpl.openFileInput(ContextImpl.java:745)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at android.content.ContextWrapper.openFileInput(ContextWrapper.java:249)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at android.content.ContextWrapper.openFileInput(ContextWrapper.java:249)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at android.content.ContextWrapper.openFileInput(ContextWrapper.java:249)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at bzxt.h(:com.google.android.gms@231818047@23.18.18 (190800-535401451):1)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at bzxd.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):9)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at cadb.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at aced.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at aced.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):8)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at acjn.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at java.lang.Thread.run(Thread.java:1012)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at libcore.io.Linux.open(Native Method)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at libcore.io.ForwardingOs.open(ForwardingOs.java:563)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at libcore.io.BlockGuardOs.open(BlockGuardOs.java:274)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at libcore.io.ForwardingOs.open(ForwardingOs.java:563)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at android.app.ActivityThread$AndroidOs.open(ActivityThread.java:8063)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	at libcore.io.IoBridge.open(IoBridge.java:560)
+11-21 13:46:08.582  1407  2877 I SemanticLocation: 	... 14 more
+11-21 13:46:08.590  1460  3164 I PeopleGalProvider: Gal directories started.
+11-21 13:46:08.590  1460  3164 I PeopleGalProvider: Method 1 completed.
+11-21 13:46:08.590  1460  3164 I PeopleGalProvider: Method 1 finished successfully.
+11-21 13:46:08.592  2262  4337 D CompatibilityChangeReporter: Compat change id reported: 150939131; UID 10155; state: ENABLED
+11-21 13:46:08.594  1024  1024 D BluetoothPbapService:  onChange on contact uri
+11-21 13:46:08.603  1460  3164 I GalProviderController: setting component enabled=1 for com.google.android.gms.people.service.galprovider.PeopleGalProvider
+11-21 13:46:08.606  1460  3164 I GalProviderController: Setting component enabled succeeds.
+11-21 13:46:08.609  1460  3164 I PeopleGalProvider: Gal directories started.
+11-21 13:46:08.609  1460  3164 I PeopleGalProvider: Method 1 completed.
+11-21 13:46:08.610  1460  3164 I PeopleGalProvider: Method 1 finished successfully.
+11-21 13:46:08.611  1024  4378 D BluetoothPbapUtils: primaryVersionCounter = 0, secondaryVersionCounter=0
+11-21 13:46:08.636  1460  3164 I DeletedNullContactsCleanup: Scheduling the service.
+11-21 13:46:08.649   336  4382 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10192 0}
+11-21 13:46:08.653   336  4385 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-21 13:46:08.656   336  4384 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-21 13:46:08.665  1460  3164 I BackupAndSyncValidation: Scheduling the service.
+11-21 13:46:08.669  1460  3815 I Checkin : [AndroidCheckinProtoModule] Checkin reason type: 5 attempt count: 1.
+11-21 13:46:08.673  1460  2860 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-21 13:46:08.683  2938  3042 W libc    : Access denied finding property "persist.adb.tls_server.enable"
+11-21 13:46:08.683  2938  3042 W libc    : Access denied finding property "service.adb.tls.port"
+11-21 13:46:08.685  2196  2257 I .android.as.oss: Background concurrent copying GC freed 41372(1829KB) AllocSpace objects, 0(0B) LOS objects, 49% free, 2730KB/5460KB, paused 27us,7us total 214.016ms
+11-21 13:46:08.710  1460  3164 I PeopleInitIntentOp: Not initializing debuggability [CONTEXT service_id=5 ]
+11-21 13:46:08.732  1460  1460 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.findmydevice.spot.service.locationreport.START dat=chimera-action:/... cmp=com.google.android.gms/.chimera.GmsApiService }
+11-21 13:46:08.734  1460  2860 W Icing   : No valid account for uploading user actions
+11-21 13:46:08.740  1460  3164 I SnapshotHandler: Unable to retrieve flag snapshot for com.google.android.gms.personalsafety, using defaults.
+11-21 13:46:08.744   336   363 I netd    : tetherGetStats() -> {[]} <0.35ms>
+11-21 13:46:08.751   336   363 I netd    : bandwidthSetGlobalAlert(2097152) <0.09ms>
+11-21 13:46:08.755  1460  3812 W ChimeraUtils: Module com.google.android.gms.phonesky_recovery missing resource null(0)
+11-21 13:46:08.756  1460  3812 I SnapshotHandler: Unable to retrieve flag snapshot for com.google.android.gms.phonesky_recovery, using defaults.
+11-21 13:46:08.761  1460  1460 D BoundBrokerSvc: onBind: Intent { act=com.google.android.gms.common.BIND_SHARED_PREFS pkg=com.google.android.gms }
+11-21 13:46:08.762  1460  1460 D BoundBrokerSvc: Loading bound service for intent: Intent { act=com.google.android.gms.common.BIND_SHARED_PREFS pkg=com.google.android.gms }
+11-21 13:46:08.780  1460  2860 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-21 13:46:08.787  1637  1637 I AiAiEcho: AppFetcherImpl onPackageChanged com.google.android.googlequicksearchbox.
+11-21 13:46:08.788  1637  3557 I AiAiEcho: AppIndexer Package:[com.google.android.googlequicksearchbox] UserProfile:[0] Enabled:[true].
+11-21 13:46:08.789  1637  3557 I AiAiEcho: AppFetcherImplV2 updateApps package:[com.google.android.googlequicksearchbox], userId:[0], reason:[package is updated.].
+11-21 13:46:08.810   336  4384 I resolv  : res_nsend: used send_dg 64 terrno: 0
+11-21 13:46:08.810   336  4384 I resolv  : doQuery: rcode=0, ancount=1, return value=64
+11-21 13:46:08.820  1460  1460 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.common.BIND_SHARED_PREFS pkg=com.google.android.gms }
+11-21 13:46:08.822  1460  2860 W Icing   : No valid account for uploading user actions
+11-21 13:46:08.826  1460  1460 D BoundBrokerSvc: onBind: Intent { act=com.google.android.gms.common.BIND_SHARED_PREFS pkg=com.google.android.gms }
+11-21 13:46:08.827  1460  1460 D BoundBrokerSvc: Loading bound service for intent: Intent { act=com.google.android.gms.common.BIND_SHARED_PREFS pkg=com.google.android.gms }
+11-21 13:46:08.828   336  4385 I resolv  : res_nsend: used send_dg 52 terrno: 0
+11-21 13:46:08.829   336  4385 I resolv  : doQuery: rcode=0, ancount=1, return value=52
+11-21 13:46:08.830  1460  1460 D BoundBrokerSvc: onUnbind: Intent { act=com.google.android.gms.common.BIND_SHARED_PREFS pkg=com.google.android.gms }
+11-21 13:46:08.832  1460  2860 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-21 13:46:08.832  1460  3164 I SnapshotHandler: Unable to retrieve flag snapshot for com.google.android.gms.vision, using defaults.
+11-21 13:46:08.836   336  4388 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10192 0}
+11-21 13:46:08.839   336  4390 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-21 13:46:08.840  1460  3812 I GmsDebugLogger: [53] +mlkit.barcode.ui:0
+11-21 13:46:08.845   336  4389 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-21 13:46:08.850  1460  2860 W Icing   : No valid account for uploading user actions
+11-21 13:46:08.860  2938  3042 W SystemServiceRegistry: No service published for: persistent_data_block
+11-21 13:46:08.865   521   550 E system_server: No package ID 7f found for resource ID 0x7f08060c.
+11-21 13:46:08.900  2938  3042 D TrafficStats: tagSocket(113) with statsTag=0x1809, statsUid=-1
+11-21 13:46:08.903  2938  3042 D TrafficStats: tagSocket(113) with statsTag=0x1809, statsUid=-1
+11-21 13:46:08.905  2938  3042 D TrafficStats: tagSocket(113) with statsTag=0x1809, statsUid=-1
+11-21 13:46:08.907   336  4390 I resolv  : res_nsend: used send_dg 55 terrno: 0
+11-21 13:46:08.908   336  4390 I resolv  : doQuery: rcode=0, ancount=1, return value=55
+11-21 13:46:08.915   336  4389 I resolv  : res_nsend: used send_dg 121 terrno: 0
+11-21 13:46:08.916   336  4389 I resolv  : doQuery: rcode=0, ancount=0, return value=121
+11-21 13:46:08.916  1407  4330 I TapAndPay: Disabling TapAndPay HCE service [CONTEXT service_id=79 ]
+11-21 13:46:08.917   521   550 E system_server: No package ID 7f found for resource ID 0x7f15043b.
+11-21 13:46:08.918  1407  1407 I rcs     : [RcsBindingManager] Checking if we should rebind to previous service. Attempt 0
+11-21 13:46:08.919  1407  1407 I rcs     : [RcsBindingManager] No valid settings for binding.
+11-21 13:46:08.922   336  4392 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10192 0}
+11-21 13:46:08.925   336  4394 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-21 13:46:08.927  1460  2860 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-21 13:46:08.928   336  4393 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-21 13:46:08.930  1460  3164 I AlarmManager: setExactAndAllowWhileIdle [name: RemindersNSREFRESH_TIME_REMINDERS_ALARM type: 0 triggerAtMillis: 1795305600000]
+11-21 13:46:08.938  1460  2860 I Icing   : doRemovePackageData com.android.nfc
+11-21 13:46:08.974  1637  1637 I AiAiEcho: AppFetcherImpl onPackageChanged com.google.android.gm.
+11-21 13:46:08.974  1637  2857 I AiAiEcho: AppIndexer Package:[com.google.android.gm] UserProfile:[0] Enabled:[true].
+11-21 13:46:08.974  1637  2857 I AiAiEcho: AppFetcherImplV2 updateApps package:[com.google.android.gm], userId:[0], reason:[package is updated.].
+11-21 13:46:08.976  1460  2860 I Icing   : Indexing done com.google.android.gms-apps
+11-21 13:46:08.981   336  4394 I resolv  : res_nsend: used send_dg 53 terrno: 0
+11-21 13:46:08.981   336  4394 I resolv  : doQuery: rcode=0, ancount=1, return value=53
+11-21 13:46:08.998   336  4393 I resolv  : res_nsend: used send_dg 119 terrno: 0
+11-21 13:46:08.998   336  4393 I resolv  : doQuery: rcode=0, ancount=0, return value=119
+11-21 13:46:09.000  1001  1209 D DhcpClient: Received packet: 02:15:b2:00:00:00 OFFER, ip /10.0.2.16, mask /255.255.255.0, DNS servers: /10.0.2.3 , gateways [/10.0.2.2], lease time 86400, domain null
+11-21 13:46:09.000  1001  1209 D DhcpClient: Received packet: 02:15:b2:00:00:00 ACK: your new IP /10.0.2.16, netmask /255.255.255.0, gateways [/10.0.2.2] DNS servers: /10.0.2.3 , lease time 86400
+11-21 13:46:09.009  1460  3201 W Pay     : Active account was null, notification task will be cancelled. [CONTEXT service_id=198 ]
+11-21 13:46:09.010  1460  3201 W Pay     : [eMoney card recovery task] exiting without init: active tapandpay account not found! [CONTEXT service_id=198 ]
+11-21 13:46:09.015   336  4398 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10192 0}
+11-21 13:46:09.018   336  4399 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-21 13:46:09.023   336  4400 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-21 13:46:09.024  1460  3814 I SemanticLocation: [Scheduler] Periodic Task com.google.android.gms.semanticlocationhistory.geller.GellerCleanupService.GellerCleanup is scheduled to run EVERY_DAY [CONTEXT service_id=173 ]
+11-21 13:46:09.029  1098  1894 D EGL_emulation: app_time_stats: avg=543.55ms min=472.34ms max=614.77ms count=2
+11-21 13:46:09.038  1407  4330 I TapAndPay: Disabling TapAndPay HCE service [CONTEXT service_id=79 ]
+11-21 13:46:09.045  1460  3201 W Pay     : Active account was null, notification task will be cancelled. [CONTEXT service_id=198 ]
+11-21 13:46:09.046  1460  3201 W Pay     : [eMoney txn sync] exiting without init: active tapandpay account not found! [CONTEXT service_id=198 ]
+11-21 13:46:09.047  1460  3201 I Pay     : Closed loop HCE not migrated or access is not enabled. [CONTEXT service_id=198 ]
+11-21 13:46:09.055  1460  3201 W Pay     : Mdl not supported. Not triggering periodic MSO refresh task. [CONTEXT service_id=198 ]
+11-21 13:46:09.063   336  4400 I resolv  : res_nsend: used send_dg 72 terrno: 0
+11-21 13:46:09.064   336  4400 I resolv  : doQuery: rcode=0, ancount=2, return value=72
+11-21 13:46:09.069  1460  3164 V SmartDevice: [ModuleInitializer] ModuleInitializer got intent Intent { act=android.intent.action.BOOT_COMPLETED flg=0x89000010 pkg=com.google.android.gms cmp=com.google.android.gms/.chimera.GmsIntentOperationService (has extras) } with flag 2
+11-21 13:46:09.070  1460  3164 W ChimeraUtils: Module com.google.android.gms.smartdevice missing resource null(0)
+11-21 13:46:09.077   336  4399 I resolv  : res_nsend: used send_dg 68 terrno: 0
+11-21 13:46:09.077   336  4399 I resolv  : doQuery: rcode=0, ancount=1, return value=68
+11-21 13:46:09.170  1460  3164 D SmartDevice: [ModuleInitializer] Module init - scheduling buffered logs cleanup task
+11-21 13:46:09.171  1460  3164 I SmartDevice: [CleanBufferedLogsService] Periodic task upload_buffered_logs_periodic scheduled!
+11-21 13:46:09.185  1407  3115 I TapAndPay: Disabling TapAndPay HCE service [CONTEXT service_id=79 ]
+11-21 13:46:09.188  1460  4292 I TelephonySpamInit: On boot completed TelephonySpam module initialized [CONTEXT service_id=150 ]
+11-21 13:46:09.189  1460  4292 I TelephonySpamInit: onModuleUpdated TelephonySpam module initialized [CONTEXT service_id=150 ]
+11-21 13:46:09.189  1460  4292 I SpamListSync: scheduleSyncTasks [CONTEXT service_id=150 ]
+11-21 13:46:09.190  1460  4292 I SpamListSync: schedulePeriodicTask [CONTEXT service_id=150 ]
+11-21 13:46:09.195  1460  4292 I SpamListSync: scheduleOneTimeTask [CONTEXT service_id=150 ]
+11-21 13:46:09.197  1460  3164 I ThreadNetworkModuleInit: Initializing runtime states: 2 [CONTEXT service_id=305 ]
+11-21 13:46:09.200  1460  3164 I ThreadNetworkModuleInit: Enabled component com.google.android.gms.threadnetwork.ui.ShareCredentialsActivity [CONTEXT service_id=305 ]
+11-21 13:46:09.235  1460  3814 I TrustedTime: Skip initializing when trusted time feature disabled. [CONTEXT service_id=326 ]
+11-21 13:46:09.251  1460  3201 W ActiveUnlock: Tried to set empty triggers [CONTEXT service_id=327 ]
+11-21 13:46:09.252  1460  3201 W ChimeraUtils: Module com.google.android.gms.activeunlock_primary missing resource null(0)
+11-21 13:46:09.279  1460  3201 I SystemUpdate: [Control,UpdateReminderDialogControl] Received action: android.intent.action.BOOT_COMPLETED
+11-21 13:46:09.290  1460  3164 I ThreadBrSynchronizer: Scheduled periodic Border Router sync task: PeriodicBrSync [CONTEXT service_id=305 ]
+11-21 13:46:09.346  1407  1407 I Thunderbird: starting outgoing sms listener [CONTEXT service_id=226 ]
+11-21 13:46:09.430  1460  4292 I Wear_Controller: Wearable module requires a companion app to be installed.
+11-21 13:46:09.430  1460  4292 I Wear_Controller: onStartup - Wear is not available on this device.
+11-21 13:46:09.451  1407  3115 W SystemServiceRegistry: No service published for: contexthub
+11-21 13:46:09.460  1407  1480 I SemanticLocation: [MDD] ModelBundleMetadata: File not found [CONTEXT service_id=173 ]
+11-21 13:46:09.460  1407  1480 I SemanticLocation: java.io.FileNotFoundException: /data/user/0/com.google.android.gms/files/model_bundle_metadata.pb: open failed: ENOENT (No such file or directory)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at libcore.io.IoBridge.open(IoBridge.java:574)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at java.io.FileInputStream.<init>(FileInputStream.java:160)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at android.app.ContextImpl.openFileInput(ContextImpl.java:745)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at android.content.ContextWrapper.openFileInput(ContextWrapper.java:249)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at android.content.ContextWrapper.openFileInput(ContextWrapper.java:249)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at android.content.ContextWrapper.openFileInput(ContextWrapper.java:249)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at bzxt.h(:com.google.android.gms@231818047@23.18.18 (190800-535401451):1)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at bzxd.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):9)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at bzxd.<init>(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at cadn.j(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at cadn.h(:com.google.android.gms@231818047@23.18.18 (190800-535401451):36)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at cadn.b(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at com.google.android.gms.semanticlocation.service.SemanticLocationChimeraService.k(:com.google.android.gms@231818047@23.18.18 (190800-535401451):9)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at com.google.android.gms.semanticlocation.service.SemanticLocationChimeraService.h(:com.google.android.gms@231818047@23.18.18 (190800-535401451):17)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at cacs.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):68)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:487)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at aced.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at aced.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):7)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at acjn.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at java.lang.Thread.run(Thread.java:1012)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at libcore.io.Linux.open(Native Method)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at libcore.io.ForwardingOs.open(ForwardingOs.java:563)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at libcore.io.BlockGuardOs.open(BlockGuardOs.java:274)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at libcore.io.ForwardingOs.open(ForwardingOs.java:563)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at android.app.ActivityThread$AndroidOs.open(ActivityThread.java:8063)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	at libcore.io.IoBridge.open(IoBridge.java:560)
+11-21 13:46:09.460  1407  1480 I SemanticLocation: 	... 22 more
+11-21 13:46:09.531   835  1015 E RoleControllerServiceImpl: Default/fallback role holder package doesn't qualify for the role, package: com.google.android.gms.supervision, role: android.app.role.SYSTEM_SUPERVISION
+11-21 13:46:09.533   835  1015 I Role    : com.google.android.gms not qualified for android.app.role.SYSTEM_CALL_STREAMING due to missing RequiredComponent{mIntentFilterData=IntentFilterData{mAction='android.telecom.CallStreamingService', mCategories='[]', mDataScheme='null', mDataType='null'}, mMinTargetSdkVersion=1, mFlags='0', mPermission='android.permission.BIND_CALL_STREAMING_SERVICE', mQueryFlags=0, mMetaData=[]}
+11-21 13:46:09.533   835  1015 E RoleControllerServiceImpl: Default/fallback role holder package doesn't qualify for the role, package: com.google.android.gms, role: android.app.role.SYSTEM_CALL_STREAMING
+11-21 13:46:09.534   835  1015 W Role    : Default holder doesn't have required signing certificate: com.google.android.apps.work.clouddpc:23962F4B43B9857638EA66F4D419518EAE282491ACDA4B94707BD59003C45E58
+11-21 13:46:09.556  1407  1480 I SemanticLocation: [MDD] ModelBundleMetadata: File not found [CONTEXT service_id=173 ]
+11-21 13:46:09.556  1407  1480 I SemanticLocation: java.io.FileNotFoundException: /data/user/0/com.google.android.gms/files/model_bundle_metadata.pb: open failed: ENOENT (No such file or directory)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at libcore.io.IoBridge.open(IoBridge.java:574)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at java.io.FileInputStream.<init>(FileInputStream.java:160)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at android.app.ContextImpl.openFileInput(ContextImpl.java:745)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at android.content.ContextWrapper.openFileInput(ContextWrapper.java:249)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at android.content.ContextWrapper.openFileInput(ContextWrapper.java:249)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at android.content.ContextWrapper.openFileInput(ContextWrapper.java:249)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at bzxt.h(:com.google.android.gms@231818047@23.18.18 (190800-535401451):1)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at bzxd.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):9)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at cadb.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at aced.c(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at aced.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):8)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at acjn.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at java.lang.Thread.run(Thread.java:1012)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at libcore.io.Linux.open(Native Method)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at libcore.io.ForwardingOs.open(ForwardingOs.java:563)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at libcore.io.BlockGuardOs.open(BlockGuardOs.java:274)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at libcore.io.ForwardingOs.open(ForwardingOs.java:563)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at android.app.ActivityThread$AndroidOs.open(ActivityThread.java:8063)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	at libcore.io.IoBridge.open(IoBridge.java:560)
+11-21 13:46:09.556  1407  1480 I SemanticLocation: 	... 14 more
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: Retrieving snapshot for com.google.lighter.android#com.google.android.gms failed
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: java.util.concurrent.TimeoutException: Timed out waiting for Task
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at cfsz.o(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at bwch.e(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at bwch.j(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at bwch.h(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at crqn.apply(:com.google.android.gms@231818047@23.18.18 (190800-535401451):10)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at dlny.d(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at dlnz.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):9)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at dlpk.execute(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at dlnv.h(:com.google.android.gms@231818047@23.18.18 (190800-535401451):1)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at dlnv.l(:com.google.android.gms@231818047@23.18.18 (190800-535401451):10)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at dlnv.o(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at dlrs.e(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at dlqs.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at dlrt.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at crqq.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at crri.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:09.618  1460  4345 E PhenotypeFlagCommitter: 	at java.lang.Thread.run(Thread.java:1012)
+11-21 13:46:09.620  1407  2597 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.auth.account.be.legacy.AuthCronService finished executing. cause:5 result: 3 elapsed_millis: 3076 uptime_millis: 3075 exec_start_elapsed_seconds: 67 [CONTEXT service_id=218 ]
+11-21 13:46:09.622  1460  2860 W Icing   : No valid account for uploading user actions
+11-21 13:46:09.641  1460  2860 I Icing   : Usage reports ok 0, Failed Usage reports 0, indexed 0, rejected 0
+11-21 13:46:09.699  1407  3295 I NetworkScheduler: ignoring stale queue check message
+11-21 13:46:09.708  1460  2860 I Icing   : Indexing com.google.android.gms-internal.3p:MobileApplication from com.google.android.gms
+11-21 13:46:09.710  1407  2065 I GCoreUlr: WorldUpdater received intent Intent { act=com.google.android.location.reporting.ACTION_UPDATE_WORLD cmp=com.google.android.gms/com.google.android.location.reporting.service.DispatchingService (has extras) } with receiverAction init
+11-21 13:46:09.752  1460  2860 I Icing   : Indexing done com.google.android.gms-internal.3p:MobileApplication
+11-21 13:46:09.753  1407  1407 D BoundBrokerSvc: onBind: Intent { act=com.google.android.gms.pseudonymous.service.START dat=chimera-action:/... cmp=com.google.android.gms/.chimera.PersistentApiService }
+11-21 13:46:09.753  1407  1407 D BoundBrokerSvc: Loading bound service for intent: Intent { act=com.google.android.gms.pseudonymous.service.START dat=chimera-action:/... cmp=com.google.android.gms/.chimera.PersistentApiService }
+11-21 13:46:09.771   521   535 I RemoteProvisionSysSvc: getRegistration(android.hardware.security.keymint.IRemotelyProvisionedComponent/default)
+11-21 13:46:09.776   521   521 I RegistrationProxy: onServiceConnected: com.android.rkpdapp.service.RemoteProvisioningService
+11-21 13:46:09.779   521   534 I RegistrationProxy: IGetRegistrationCallback.onSuccess
+11-21 13:46:09.779   336  4426 I resolv  : GetAddrInfoHandler::run: {100 786532 100 983140 10131 0}
+11-21 13:46:09.781   521   534 I RemoteProvisionSysSvc: Fetching key 10131 for client 189201117
+11-21 13:46:09.781   521   534 I RegistrationProxy: getKeyAsync operation started with callback 26629714
+11-21 13:46:09.782  3728  3822 I RkpdRegistrationBinder: Key requested for : android.hardware.security.keymint.IRemotelyProvisionedComponent/default, clientUid: 1017, keyId: 10131, callback: 100438187
+11-21 13:46:09.782  3728  3822 I RkpdRegistrationBinder: Key successfully assigned to client
+11-21 13:46:09.783   521   521 I RemoteProvisionSysSvc: Successfully fetched key for client 189201117
+11-21 13:46:09.784   336  4428 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-21 13:46:09.785   336  4428 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x72ae79c83610
+11-21 13:46:09.785   336  4428 I resolv  : doQuery: rcode=0, ancount=8, return value=168
+11-21 13:46:09.788  1407  2065 I GCoreUlr: WorldUpdater:init: Ensuring that reporting is stopped because of reasons: (no Google accounts)
+11-21 13:46:09.793  1407  2065 I GCoreUlr: Unbound from all signal providers.
+11-21 13:46:09.793   336  4427 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-21 13:46:09.793   336  4427 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x72ad69c7e810
+11-21 13:46:09.793   336  4427 I resolv  : doQuery: rcode=0, ancount=8, return value=264
+11-21 13:46:09.794  1460  3815 D TrafficStats: tagSocket(137) with statsTag=0x30000408, statsUid=-1
+11-21 13:46:09.810  1407  1407 I GCoreUlr: Unbound from all signal providers.
+11-21 13:46:09.810  1407  1407 I GCoreUlr: Stopping handler for UlrDispSvcFast
+11-21 13:46:09.820  1460  3815 W Conscrypt: Could not set socket write timeout: java.net.SocketException: Socket closed
+11-21 13:46:09.820  1460  3815 W Conscrypt: 	at com.google.android.gms.org.conscrypt.Platform.setSocketWriteTimeout(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:09.820  1460  3815 W Conscrypt: 	at com.google.android.gms.org.conscrypt.ConscryptFileDescriptorSocket.setSoWriteTimeout(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:09.855  1460  3815 W Conscrypt: Could not set socket write timeout: java.net.SocketException: Socket closed
+11-21 13:46:09.856  1460  3815 W Conscrypt: 	at com.google.android.gms.org.conscrypt.Platform.setSocketWriteTimeout(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 13:46:09.856  1460  3815 W Conscrypt: 	at com.google.android.gms.org.conscrypt.ConscryptFileDescriptorSocket.setSoWriteTimeout(:com.google.android.gms@231818047@23.18.18 (190800-535401451):0)
+11-21 13:46:09.939  1460  3106 I Icing   : Indexing com.google.android.gms-apps from com.google.android.gms
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: Failed to apply ContentProviderOperation(type=insert uri=content://media/internal/file values={instance_id=null, compilation=null, disc_number=null, duration=3000, is_ringtone=1, album_artist=null, resolution=null, orientation=null, artist=<unknown>, author=null, height=null, is_drm=0, is_audiobook=0, date_modified=1720722121, writer=null, composer=null, _modifier=3, is_recording=0, datetaken=null, mime_type=audio/ogg, is_notification=0, bitrate=80000, cd_track_number=null, xmp=[], year=null, _data=/product/media/audio/ringtones/Andromeda.ogg, _size=24973, album=ringtones, genre=null, is_alarm=0, title=Andromeda, track=null, width=null, is_music=0, document_id=null, is_podcast=0, capture_framerate=null, num_tracks=1, original_document_id=null, media_type=2} exceptionAllowed)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: android.database.sqlite.SQLiteConstraintException: UNIQUE constraint failed: files._data (code 2067 SQLITE_CONSTRAINT_UNIQUE)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at android.database.sqlite.SQLiteConnection.nativeExecuteForLastInsertedRowId(Native Method)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at android.database.sqlite.SQLiteConnection.executeForLastInsertedRowId(SQLiteConnection.java:961)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at android.database.sqlite.SQLiteSession.executeForLastInsertedRowId(SQLiteSession.java:790)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at android.database.sqlite.SQLiteStatement.executeInsert(SQLiteStatement.java:89)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.util.DatabaseUtils.executeInsert(DatabaseUtils.java:456)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.util.SQLiteQueryBuilder.insert(SQLiteQueryBuilder.java:611)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.util.SQLiteQueryBuilder.lambda$insert$1(SQLiteQueryBuilder.java:575)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.util.SQLiteQueryBuilder.$r8$lambda$z6PmNgi8nEawad46M5nyYc14aRM(SQLiteQueryBuilder.java:0)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.util.SQLiteQueryBuilder$$ExternalSyntheticLambda4.apply(R8$$SyntheticClass:0)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.DatabaseHelper.runWithTransaction(DatabaseHelper.java:850)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.util.SQLiteQueryBuilder.insert(SQLiteQueryBuilder.java:574)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.MediaProvider.lambda$insertAllowingUpsert$20(MediaProvider.java:4846)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.MediaProvider.$r8$lambda$A8_bSAcDGkyGiCcvRo57xoMQkf8(MediaProvider.java:0)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.MediaProvider$$ExternalSyntheticLambda39.apply(R8$$SyntheticClass:0)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.DatabaseHelper.runWithTransaction(DatabaseHelper.java:850)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.MediaProvider.insertAllowingUpsert(MediaProvider.java:4836)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.MediaProvider.insertFile(MediaProvider.java:4818)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.MediaProvider.insertInternal(MediaProvider.java:5287)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.MediaProvider.insert(MediaProvider.java:4980)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at android.content.ContentProviderOperation.applyInternal(ContentProviderOperation.java:375)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at android.content.ContentProviderOperation.apply(ContentProviderOperation.java:347)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at android.content.ContentProvider.applyBatch(ContentProvider.java:2653)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.MediaProvider.applyBatch(MediaProvider.java:5339)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at android.content.ContentProvider.applyBatch(ContentProvider.java:2644)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at android.content.ContentResolver.applyBatch(ContentResolver.java:2246)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.scan.ModernMediaScanner$Scan.applyPending(ModernMediaScanner.java:938)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.scan.ModernMediaScanner$Scan.maybeApplyPending(ModernMediaScanner.java:928)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.scan.ModernMediaScanner$Scan.visitFile(ModernMediaScanner.java:834)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.scan.ModernMediaScanner$Scan.visitFile(ModernMediaScanner.java:319)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at java.nio.file.Files.walkFileTree(Files.java:2670)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at java.nio.file.Files.walkFileTree(Files.java:2742)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.scan.ModernMediaScanner$Scan.walkFileTree(ModernMediaScanner.java:435)
+11-21 13:46:10.003  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.scan.ModernMediaScanner$Scan.runInternal(ModernMediaScanner.java:398)
+11-21 13:46:10.005  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.scan.ModernMediaScanner$Scan.run(ModernMediaScanner.java:387)
+11-21 13:46:10.005  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.scan.ModernMediaScanner.scanDirectory(ModernMediaScanner.java:246)
+11-21 13:46:10.005  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.MediaProvider.scanDirectory(MediaProvider.java:1939)
+11-21 13:46:10.005  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.MediaService.onScanVolume(MediaService.java:204)
+11-21 13:46:10.005  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.MediaService.onScanVolume(MediaService.java:172)
+11-21 13:46:10.005  1640  2397 W ModernMediaScanner: 	at com.android.providers.media.MediaService.onHandleWork(MediaService.java:95)
+11-21 13:46:10.005  1640  2397 W ModernMediaScanner: 	at androidx.core.app.JobIntentService$CommandProcessor.doInBackground(JobIntentService.java:396)
+11-21 13:46:10.005  1640  2397 W ModernMediaScanner: 	at androidx.core.app.JobIntentService$CommandProcessor.doInBackground(JobIntentService.java:387)
+11-21 13:46:10.005  1640  2397 W ModernMediaScanner: 	at android.os.AsyncTask$3.call(AsyncTask.java:394)
+11-21 13:46:10.005  1640  2397 W ModernMediaScanner: 	at java.util.concurrent.FutureTask.run(FutureTask.java:264)
+11-21 13:46:10.005  1640  2397 W ModernMediaScanner: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-21 13:46:10.005  1640  2397 W ModernMediaScanner: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-21 13:46:10.005  1640  2397 W ModernMediaScanner: 	at java.lang.Thread.run(Thread.java:1012)
+11-21 13:46:10.006   833   903 D EGL_emulation: app_time_stats: avg=1775.93ms min=1775.93ms max=1775.93ms count=1
+11-21 13:46:10.015  1460  3106 I Icing   : Indexing done com.google.android.gms-apps
+11-21 13:46:10.049   835  1015 E RoleControllerServiceImpl: Default/fallback role holder package doesn't qualify for the role, package: com.google.android.gms.supervision, role: android.app.role.SYSTEM_SUPERVISION
+11-21 13:46:10.052   835  1015 I Role    : com.google.android.gms not qualified for android.app.role.SYSTEM_CALL_STREAMING due to missing RequiredComponent{mIntentFilterData=IntentFilterData{mAction='android.telecom.CallStreamingService', mCategories='[]', mDataScheme='null', mDataType='null'}, mMinTargetSdkVersion=1, mFlags='0', mPermission='android.permission.BIND_CALL_STREAMING_SERVICE', mQueryFlags=0, mMetaData=[]}
+11-21 13:46:10.052   835  1015 E RoleControllerServiceImpl: Default/fallback role holder package doesn't qualify for the role, package: com.google.android.gms, role: android.app.role.SYSTEM_CALL_STREAMING
+11-21 13:46:10.053   835  1015 W Role    : Default holder doesn't have required signing certificate: com.google.android.apps.work.clouddpc:23962F4B43B9857638EA66F4D419518EAE282491ACDA4B94707BD59003C45E58
+11-21 13:46:10.159  2938  2938 W binder:2938_6: type=1400 audit(0.0:195): avc:  denied  { read } for  name="u:object_r:system_adbd_prop:s0" dev="tmpfs" ino=292 scontext=u:r:gmscore_app:s0:c512,c768 tcontext=u:object_r:system_adbd_prop:s0 tclass=file permissive=0 app=com.google.android.gms
+11-21 13:46:10.167  2938  4335 W libc    : Access denied finding property "persist.adb.tls_server.enable"
+11-21 13:46:10.169   336   363 I netd    : tetherGetStats() -> {[]} <0.35ms>
+11-21 13:46:10.167  2938  2938 W binder:2938_6: type=1400 audit(0.0:196): avc:  denied  { read } for  name="u:object_r:adbd_prop:s0" dev="tmpfs" ino=60 scontext=u:r:gmscore_app:s0:c512,c768 tcontext=u:object_r:adbd_prop:s0 tclass=file permissive=0 app=com.google.android.gms
+11-21 13:46:10.173  2938  4335 W libc    : Access denied finding property "service.adb.tls.port"
+11-21 13:46:10.180   336   363 I netd    : bandwidthSetGlobalAlert(2097152) <0.08ms>
+11-21 13:46:10.184   336   363 I netd    : bandwidthRemoveInterfaceQuota(eth0) <0.59ms>
+11-21 13:46:10.185   336   363 I netd    : bandwidthSetInterfaceQuota(eth0, 9223372036854775807) <0.45ms>
+11-21 13:46:10.189   336   363 I netd    : bandwidthRemoveInterfaceQuota(eth0) <0.27ms>
+11-21 13:46:10.190   336   363 I netd    : bandwidthSetInterfaceQuota(eth0, 9223372036854775807) <0.38ms>
+11-21 13:46:10.192   521   832 D NetworkStatsObservers: Unregistering RequestInfo from pid/uid:521/1000(android) for DataUsageRequest [ requestId=6, networkTemplate=NetworkTemplate: matchRule=MOBILE, matchSubscriberIds=[310260...], matchWifiNetworkKeys=[], metered=YES, defaultNetwork=NO, thresholdInBytes=3567014 ] accessLevel:3
+11-21 13:46:10.193   521   755 D NetworkStatsObservers: Registering observer for RequestInfo from pid/uid:521/1000(android) for DataUsageRequest [ requestId=7, networkTemplate=NetworkTemplate: matchRule=MOBILE, matchSubscriberIds=[310260...], matchWifiNetworkKeys=[], metered=YES, defaultNetwork=NO, thresholdInBytes=3562979 ] accessLevel:3
+11-21 13:46:10.203  2938  4335 W SystemServiceRegistry: No service published for: persistent_data_block
+11-21 13:46:10.208   336   363 I netd    : tetherGetStats() -> {[]} <0.33ms>
+11-21 13:46:10.216   336  4429 I resolv  : GetAddrInfoHandler::run: {100 786532 100 983140 10131 0}
+11-21 13:46:10.216  2938  4335 D TrafficStats: tagSocket(111) with statsTag=0x1809, statsUid=-1
+11-21 13:46:10.219  2938  4335 D TrafficStats: tagSocket(111) with statsTag=0x1809, statsUid=-1
+11-21 13:46:10.220  2938  4335 D TrafficStats: tagSocket(111) with statsTag=0x1809, statsUid=-1
+11-21 13:46:10.225  1460  3815 I GoogleSettingsUtils: Updated ID in checkin_id_token file [CONTEXT service_id=130 ]
+11-21 13:46:10.241  1460  3815 I CheckinResponseProcess: From server: 1495 gservices [full] [CONTEXT service_id=130 ]
+11-21 13:46:10.242  1407  2597 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.icing.proxy.IcingInternalCorporaUpdateService started execution. cause:7 exec_start_elapsed_seconds: 71 [CONTEXT service_id=218 ]
+11-21 13:46:10.252   835  1015 E RoleControllerServiceImpl: Default/fallback role holder package doesn't qualify for the role, package: com.google.android.gms.supervision, role: android.app.role.SYSTEM_SUPERVISION
+11-21 13:46:10.253   835  1015 I Role    : com.google.android.gms not qualified for android.app.role.SYSTEM_CALL_STREAMING due to missing RequiredComponent{mIntentFilterData=IntentFilterData{mAction='android.telecom.CallStreamingService', mCategories='[]', mDataScheme='null', mDataType='null'}, mMinTargetSdkVersion=1, mFlags='0', mPermission='android.permission.BIND_CALL_STREAMING_SERVICE', mQueryFlags=0, mMetaData=[]}
+11-21 13:46:10.253   835  1015 E RoleControllerServiceImpl: Default/fallback role holder package doesn't qualify for the role, package: com.google.android.gms, role: android.app.role.SYSTEM_CALL_STREAMING
+11-21 13:46:10.256   835  1015 W Role    : Default holder doesn't have required signing certificate: com.google.android.apps.work.clouddpc:23962F4B43B9857638EA66F4D419518EAE282491ACDA4B94707BD59003C45E58
+11-21 13:46:10.269  1407  2597 I NetworkScheduler.Stats: Task com.google.android.gms/com.google.android.gms.icing.proxy.IcingInternalCorporaUpdateService finished executing. cause:7 result: 1 elapsed_millis: 38 uptime_millis: 38 exec_start_elapsed_seconds: 71 [CONTEXT service_id=218 ]
+11-21 13:46:10.275  1682  3246 D GservicesProvider: Update with URI content://com.google.android.gsf.gservices/main
+11-21 13:46:10.412  4217  4306 I TestRunner: finished: telechargementTorrent(fr.kwigorl.kwindle.FumeeTest)

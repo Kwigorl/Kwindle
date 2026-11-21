@@ -1,0 +1,55 @@
+11-21 13:47:34.410  4217  4306 I TestRunner: started: sessionTorrent(fr.kwigorl.kwindle.FumeeTest)
+11-21 13:47:34.414   336  5882 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10192 0}
+11-21 13:47:34.414   336  5883 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-21 13:47:34.414   336  5883 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x72adb9c83150
+11-21 13:47:34.414   336  5883 I resolv  : doQuery: rcode=0, ancount=1, return value=64
+11-21 13:47:34.415   336  5884 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-21 13:47:34.415   336  5884 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x72ada9c875d0
+11-21 13:47:34.415   336  5884 I resolv  : doQuery: rcode=0, ancount=1, return value=52
+11-21 13:47:34.416   336  5885 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10192 0}
+11-21 13:47:34.416   336  5887 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-21 13:47:34.416   336  5887 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x72ada9c86b50
+11-21 13:47:34.416   336  5887 I resolv  : doQuery: rcode=0, ancount=1, return value=55
+11-21 13:47:34.417   336  5886 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-21 13:47:34.417   336  5886 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x72ad09c815b0
+11-21 13:47:34.417   336  5886 I resolv  : doQuery: rcode=0, ancount=0, return value=121
+11-21 13:47:34.417   336  5888 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10192 0}
+11-21 13:47:34.417   336  5890 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-21 13:47:34.417   336  5890 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x72ada9c87c90
+11-21 13:47:34.417   336  5890 I resolv  : doQuery: rcode=0, ancount=1, return value=53
+11-21 13:47:34.418   336  5889 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-21 13:47:34.418   336  5889 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x72ad09c85810
+11-21 13:47:34.418   336  5889 I resolv  : doQuery: rcode=0, ancount=0, return value=119
+11-21 13:47:34.418   336  5891 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10192 0}
+11-21 13:47:34.418   336  5893 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-21 13:47:34.418   336  5893 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x72adb9c835b0
+11-21 13:47:34.418   336  5893 I resolv  : doQuery: rcode=0, ancount=2, return value=72
+11-21 13:47:34.419   336  5892 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-21 13:47:34.419   336  5892 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x72adb9c82970
+11-21 13:47:34.419   336  5892 I resolv  : doQuery: rcode=0, ancount=1, return value=68
+11-21 13:47:34.798  1024  1024 V MediaPlayerList: mPackageChangedBroadcastReceiver: action: android.intent.action.PACKAGE_CHANGED
+11-21 13:47:34.798  1024  1024 V MediaPlayerList: mPackageChangedBroadcastReceiver: action: android.intent.action.PACKAGE_CHANGED
+11-21 13:47:34.801  1048  1048 D CarrierSvcBindHelper: onPackageModified: com.google.android.contacts
+11-21 13:47:34.801  1048  1048 D CarrierSvcBindHelper: No carrier app for: 0
+11-21 13:47:34.802   833   833 D ControlsListingControllerImpl: ServiceConfig reloaded, count: 0
+11-21 13:47:34.803   521   624 I InputReader: Reconfiguring input devices, changes=KEYBOARD_LAYOUTS
+11-21 13:47:34.805   521   550 E system_server: No package ID 7f found for resource ID 0x7f080107.
+11-21 13:47:34.805   521   550 E system_server: No package ID 7f found for resource ID 0x7f150560.
+11-21 13:47:34.810   833   901 D StylusManager: Stylus InputDevice changed: 7 virtio_input_multi_touch_4
+11-21 13:47:34.814  1048  1346 D ImsResolver: maybeAddedImsService, packageName: com.google.android.contacts
+11-21 13:47:34.815  1637  1637 I AiAiEcho: AppFetcherImpl onPackageChanged com.google.android.contacts.
+11-21 13:47:34.816   835  4689 I PermissionControllerServiceImpl: Updating user sensitive for uid 10155
+11-21 13:47:34.817   833   901 D StylusManager: Stylus InputDevice changed: 11 virtio_input_multi_touch_8
+11-21 13:47:34.819  1637  3557 I AiAiEcho: AppIndexer Package:[com.google.android.contacts] UserProfile:[0] Enabled:[true].
+11-21 13:47:34.820  1637  3557 I AiAiEcho: AppFetcherImplV2 updateApps package:[com.google.android.contacts], userId:[0], reason:[package is updated.].
+11-21 13:47:34.820   833   901 D StylusManager: Stylus InputDevice changed: 9 virtio_input_multi_touch_6
+11-21 13:47:34.821   833   901 D StylusManager: Stylus InputDevice changed: 13 virtio_input_multi_touch_10
+11-21 13:47:34.822   833   901 D StylusManager: Stylus InputDevice changed: 12 virtio_input_multi_touch_9
+11-21 13:47:34.822   833   901 D StylusManager: Stylus InputDevice changed: 8 virtio_input_multi_touch_5
+11-21 13:47:34.822   833   901 D StylusManager: Stylus InputDevice changed: 6 virtio_input_multi_touch_3
+11-21 13:47:34.823   833   901 D StylusManager: Stylus InputDevice changed: 14 virtio_input_multi_touch_11
+11-21 13:47:34.823   833   901 D StylusManager: Stylus InputDevice changed: 5 virtio_input_multi_touch_2
+11-21 13:47:34.823   833   901 D StylusManager: Stylus InputDevice changed: 4 virtio_input_multi_touch_1
+11-21 13:47:34.823   833   901 D StylusManager: Stylus InputDevice changed: 10 virtio_input_multi_touch_7
+11-21 13:47:34.845  1098  1894 D EGL_emulation: app_time_stats: avg=6931.23ms min=15.91ms max=13846.55ms count=2
+11-21 13:47:35.164  4217  4306 I TestRunner: finished: sessionTorrent(fr.kwigorl.kwindle.FumeeTest)

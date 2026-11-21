@@ -1,0 +1,3 @@
+11-21 13:47:38.618  4217  4306 I TestRunner: started: tomeDansTitre(fr.kwigorl.kwindle.FumeeTest)
+11-21 13:47:38.622   521   917 W InputManager-JNI: Input channel object '126c3cb fr.kwigorl.kwindle/fr.kwigorl.kwindle.MainActivity (client)' was disposed without first being removed with the input manager!
+11-21 13:47:38.642  4217  4306 I TestRunner: finished: tomeDansTitre(fr.kwigorl.kwindle.FumeeTest)

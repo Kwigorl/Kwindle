@@ -1,0 +1,2 @@
+11-21 13:47:34.398  4217  4306 I TestRunner: started: conversionKepub(fr.kwigorl.kwindle.FumeeTest)
+11-21 13:47:34.409  4217  4306 I TestRunner: finished: conversionKepub(fr.kwigorl.kwindle.FumeeTest)

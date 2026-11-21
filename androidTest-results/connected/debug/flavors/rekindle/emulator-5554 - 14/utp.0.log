@@ -1,0 +1,49 @@
+INFO: Constructing runner from config.
+INFO: Configuring Android Instrumentation driver: android_instrumentation_runtime {
+  instrumentation_info {
+    app_package: "fr.kwigorl.kwindle"
+    test_package: "fr.kwigorl.kwindle.test"
+    test_runner_class: "androidx.test.runner.AndroidJUnitRunner"
+  }
+  instrumentation_args {
+    args_map {
+      key: "additionalTestOutputDir"
+      value: "/sdcard/Android/media/fr.kwigorl.kwindle/additional_test_output"
+    }
+  }
+}
+am_instrument_timeout: 31536000
+
+INFO: Configuring AndroidTestApkInstallerPlugin: apks_to_install {
+  apk_paths: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/apk/rekindle/debug/app-rekindle-debug.apk"
+  install_options {
+  }
+  uninstall_after_test: true
+}
+apks_to_install {
+  apk_paths: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/apk/androidTest/rekindle/debug/app-rekindle-debug-androidTest.apk"
+  install_options {
+  }
+  uninstall_after_test: true
+}
+instrumentation_target_package_id: "fr.kwigorl.kwindle"
+
+INFO: No installables found in test fixture. Nothing to install.
+INFO: Installing [/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/apk/rekindle/debug/app-rekindle-debug.apk] on device emulator-5554.
+INFO: Installing [/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/apk/androidTest/rekindle/debug/app-rekindle-debug-androidTest.apk] on device emulator-5554.
+INFO: Start logcat streaming.
+INFO: Running Android Instrumentation driver.
+INFO: Copying files from device to host: /sdcard/Android/media/fr.kwigorl.kwindle/additional_test_output to /home/runner/work/Kwindle/Kwindle/android/app/build/outputs/connected_android_test_additional_output/rekindleDebugAndroidTest/connected/emulator-5554 - 14
+INFO: Stop logcat streaming.
+INFO: Uninstalling fr.kwigorl.kwindle for device emulator-5554.
+INFO: Uninstalling fr.kwigorl.kwindle.test for device emulator-5554.
+INFO: Execute fr.kwigorl.kwindle.FumeeTest.telechargementTorrent: PASSED
+INFO: Execute fr.kwigorl.kwindle.FumeeTest.modulesPython: PASSED
+INFO: Execute fr.kwigorl.kwindle.FumeeTest.lectureTorrent: PASSED
+INFO: Execute fr.kwigorl.kwindle.FumeeTest.effacementApresEnvoi: PASSED
+INFO: Execute fr.kwigorl.kwindle.FumeeTest.trackerHttps: PASSED
+INFO: Execute fr.kwigorl.kwindle.FumeeTest.reparationEpub: PASSED
+INFO: Execute fr.kwigorl.kwindle.FumeeTest.conversionKepub: PASSED
+INFO: Execute fr.kwigorl.kwindle.FumeeTest.sessionTorrent: PASSED
+INFO: Execute fr.kwigorl.kwindle.FumeeTest.ecranPrincipal: PASSED
+INFO: Execute fr.kwigorl.kwindle.FumeeTest.tomeDansTitre: PASSED
