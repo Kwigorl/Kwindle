@@ -15,6 +15,7 @@ import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.File
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 
@@ -55,7 +56,12 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
     var alerte by mutableStateOf<String?>(null)
     var permissionDemandee = false
 
+    /** Torrents en cours de téléchargement (ils démarrent dès qu'on les ajoute). */
+    val telechargements = mutableStateListOf<Long>()
+
     private val arret = AtomicBoolean(false)
+    private val arretsTorrents = ConcurrentHashMap<Long, AtomicBoolean>()
+    private var travaux = 0      // réparations + téléchargements en cours (service au premier plan)
     private val compteur = AtomicLong(1)
     private val dossierSortie = File(app.filesDir, "sortie")
     private val dossierTorrents = File(app.filesDir, "torrents")
@@ -89,7 +95,10 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
                     } else {
                         Element(compteur.getAndIncrement(), Type.LIVRE, f, f.name)
                     }
-                    withContext(Dispatchers.Main) { elements.add(el) }
+                    withContext(Dispatchers.Main) {
+                        elements.add(el)
+                        if (el.type == Type.TORRENT) telecharger(el.id)
+                    }
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) { annonce = "Impossible de lire ce fichier (${e.message})" }
                 }
@@ -98,13 +107,72 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
     }
 
     fun retirer(id: Long) {
-        if (enCours) return
+        val telechargeEncore = id in telechargements
+        if (enCours && !telechargeEncore) return
+        arretsTorrents[id]?.set(true)      // annule le téléchargement s'il tourne
         elements.removeAll { it.id == id || it.parent == id }
     }
 
     fun vider() {
-        if (!enCours) elements.clear()
+        if (enCours) return
+        for (a in arretsTorrents.values) a.set(true)
+        elements.clear()
     }
+
+    fun enTelechargement(id: Long) = id in telechargements
+
+    // ------------------------------------------- service au premier plan
+    /** À appeler sur le fil principal. */
+    private fun debutTravail(texte: String) {
+        if (travaux++ == 0) TravailService.demarrer(ctx, texte) else TravailService.maj(ctx, texte)
+    }
+
+    private fun finTravail() {
+        if (--travaux <= 0) {
+            travaux = 0
+            TravailService.arreter(ctx)
+        }
+    }
+
+    // ------------------------------------------------------- téléchargements
+    /** Lance (ou relance) le téléchargement d'un torrent de la liste. */
+    fun telecharger(id: Long) {
+        if (id in telechargements) return
+        val el = elements.firstOrNull { it.id == id && it.type == Type.TORRENT } ?: return
+        val stop = AtomicBoolean(false)
+        arretsTorrents[id] = stop
+        telechargements += id
+        debutTravail("Téléchargement du torrent…")
+        val i = elements.indexOfFirst { it.id == id }
+        if (i >= 0) elements[i] = elements[i].copy(
+            phase = Phase.ATTENTE, statut = "Recherche de sources…", ton = Ton.EN_COURS, progression = 0f, lignes = emptyList(),
+        )
+        viewModelScope.launch(Dispatchers.IO) {
+            var nouveaux = 0
+            try {
+                nouveaux = travailTorrent(el, stop)
+            } catch (e: Exception) {
+                maj(id) {
+                    it.copy(
+                        phase = Phase.ERREUR, statut = "✗ Échec", ton = Ton.KO, progression = null,
+                        lignes = it.lignes + ("erreur" to "Erreur inattendue : ${e.message}"),
+                    )
+                }
+            } finally {
+                withContext(NonCancellable + Dispatchers.Main) {
+                    telechargements.remove(id)
+                    arretsTorrents.remove(id)
+                    finTravail()
+                    if (nouveaux > 0 && !enCours) {
+                        annonce = if (nouveaux > 1) "$nouveaux livres récupérés : appuie sur « ${texteBouton()} »."
+                        else "Livre récupéré : appuie sur « ${texteBouton()} »."
+                    }
+                }
+            }
+        }
+    }
+
+    private fun texteBouton() = if (envoyer) "Réparer et envoyer" else "Réparer"
 
     private suspend fun trouver(id: Long): Element? =
         withContext(Dispatchers.Main) { elements.firstOrNull { it.id == id } }
@@ -124,9 +192,14 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
         val envoi = envoyer
         val etats = mutableSetOf(Phase.ATTENTE, Phase.ERREUR, Phase.ECHEC_ENVOI)
         if (envoi) etats += Phase.PRET
-        val aFaire = elements.filter { it.phase in etats }.map { it.id }
+        val aFaire = elements.filter { it.type == Type.LIVRE && it.phase in etats }.map { it.id }
         if (aFaire.isEmpty()) {
-            annonce = if (elements.isEmpty()) "Ajoute d'abord un livre ou un fichier .torrent." else "Tout est déjà traité."
+            annonce = when {
+                elements.isEmpty() -> "Ajoute d'abord un livre ou un fichier .torrent."
+                telechargements.isNotEmpty() ->
+                    "Le torrent est en cours de téléchargement : ses livres apparaîtront dans la liste."
+                else -> "Tout est déjà traité."
+            }
             return
         }
         if (envoi) reglages.probleme()?.let {
@@ -136,7 +209,7 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
         arret.set(false)
         arretDemande = false
         enCours = true
-        TravailService.demarrer(ctx, "Rekindle travaille…")
+        debutTravail("Rekindle travaille…")
 
         viewModelScope.launch(Dispatchers.IO) {
             var bloque: String? = null
@@ -149,12 +222,8 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
                     val id = file.removeFirst()
                     val el = trouver(id) ?: continue
                     try {
-                        if (el.type == Type.TORRENT) {
-                            file.addAll(0, travailTorrent(el))
-                        } else {
-                            val phase = travailLivre(el)
-                            if (phase == Phase.PRET || phase == Phase.ECHEC_ENVOI) aEnvoyer += id
-                        }
+                        val phase = travailLivre(el)
+                        if (phase == Phase.PRET || phase == Phase.ECHEC_ENVOI) aEnvoyer += id
                     } catch (e: Exception) {
                         maj(id) {
                             it.copy(
@@ -174,7 +243,7 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
                 withContext(NonCancellable + Dispatchers.Main) {
                     enCours = false
                     arretDemande = false
-                    TravailService.arreter(ctx)
+                    finTravail()
                     when {
                         bloque != null -> alerte = bloque
                         arrete -> annonce = "Arrêté. Appuie à nouveau sur le bouton pour reprendre."
@@ -192,12 +261,11 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    private suspend fun travailTorrent(el: Element): List<Long> {
-        maj(el.id) { it.copy(statut = "Recherche de sources…", ton = Ton.EN_COURS, progression = 0f) }
+    private suspend fun travailTorrent(el: Element, stop: AtomicBoolean): Int {
         TravailService.maj(ctx, "Torrent : recherche de sources…")
         var dernier = 0L
         val recus = try {
-            Torrents.telecharger(el.fichier, File(dossierTorrents, el.id.toString()), { arret.get() }) { e ->
+            Torrents.telecharger(el.fichier, File(dossierTorrents, el.id.toString()), { stop.get() }) { e ->
                 val t = System.currentTimeMillis()
                 if (t - dernier > 400) {
                     dernier = t
@@ -221,7 +289,7 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
                 }
             }
         } catch (e: Torrents.ErreurTorrent) {
-            val arrete = arret.get()
+            val arrete = stop.get()
             maj(el.id) {
                 it.copy(
                     phase = Phase.ERREUR, statut = if (arrete) "■ Arrêté" else "✗ Échec", ton = Ton.KO, progression = null,
@@ -229,8 +297,9 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
                     else listOf("erreur" to "Torrent : ${e.message}") + e.details.map { d -> "info" to d },
                 )
             }
-            return emptyList()
+            return 0
         }
+        if (stop.get()) return 0
         val n = recus.size
         val s = if (n > 1) "s" else ""
         maj(el.id) {
@@ -243,9 +312,9 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
         withContext(Dispatchers.Main) {
             var pos = elements.indexOfFirst { it.id == el.id } + 1
             while (pos < elements.size && elements[pos].parent == el.id) pos++
-            elements.addAll(pos, nouveaux)
+            if (pos > 0) elements.addAll(pos, nouveaux)   // pos = 0 : torrent retiré entre-temps
         }
-        return nouveaux.map { it.id }
+        return nouveaux.size
     }
 
     /** Répare un livre (si ce n'est pas déjà fait) et renvoie sa nouvelle phase. */

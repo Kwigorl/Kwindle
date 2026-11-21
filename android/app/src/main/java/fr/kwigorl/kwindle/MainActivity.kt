@@ -328,18 +328,18 @@ fun EcranPrincipal(vm: RekindleVM, ouvrirReglages: () -> Unit) {
 
     // ce que l'en-tête raconte
     val hauts = vm.elements.filter { it.parent == null }
-    val aFaire = hauts.filter { it.phase in setOf(Phase.ATTENTE, Phase.ERREUR, Phase.ECHEC_ENVOI) ||
-        (vm.envoyer && it.phase == Phase.PRET) }
-    val nLivres = aFaire.count { it.type == Type.LIVRE }
-    val nTorrents = aFaire.count { it.type == Type.TORRENT }
-    val enAttente = listOfNotNull(
-        if (nLivres > 0) pluriel(nLivres, "livre") else null,
-        if (nTorrents > 0) pluriel(nTorrents, "torrent") else null,
-    ).joinToString(" et ")
+    val livresAFaire = vm.elements.count {
+        it.type == Type.LIVRE && (it.phase in setOf(Phase.ATTENTE, Phase.ERREUR, Phase.ECHEC_ENVOI) ||
+            (vm.envoyer && it.phase == Phase.PRET))
+    }
+    val nDl = vm.telechargements.size
+    val dlEnCours = pluriel(nDl, "torrent") + " en cours"
     val (surTitre, titre) = when {
         vm.enCours -> "Au travail" to (if (vm.envoyer) "Réparation et envoi…" else "Réparation…")
         hauts.isEmpty() -> "Bienvenue" to "Aucun livre pour l'instant"
-        aFaire.isNotEmpty() -> (if (vm.envoyer) "Prêt à envoyer" else "Prêt à réparer") to enAttente
+        livresAFaire > 0 -> (if (vm.envoyer) "Prêt à envoyer" else "Prêt à réparer") to
+            (pluriel(livresAFaire, "livre") + if (nDl > 0) " · $dlEnCours" else "")
+        nDl > 0 -> "Téléchargement" to dlEnCours
         else -> "Tout est fait" to (pluriel(hauts.size, "élément") + " traité" + if (hauts.size > 1) "s" else "")
     }
     val kindle = vm.reglages.kindle
@@ -387,9 +387,14 @@ fun EcranPrincipal(vm: RekindleVM, ouvrirReglages: () -> Unit) {
 
     val choisi = detail?.let { id -> vm.elements.firstOrNull { it.id == id } }
     if (choisi != null) {
+        val dl = vm.enTelechargement(choisi.id)
         Details(
             el = choisi,
-            retirable = !vm.enCours,
+            retirable = !vm.enCours || dl,
+            enTelechargement = dl,
+            onReessayer = if (choisi.type == Type.TORRENT && choisi.phase == Phase.ERREUR && !dl) {
+                { vm.telecharger(choisi.id); detail = null }
+            } else null,
             onFermer = { detail = null },
             onRetirer = { vm.retirer(choisi.id); detail = null },
             onPartager = { choisi.sortie?.let { Fichiers.partager(ctx, File(it)) } },
@@ -489,7 +494,7 @@ fun Vide(modifier: Modifier) {
         )
         Spacer(Modifier.height(6.dp))
         Text(
-            "Bouton +, ou depuis une autre appli : Partager › Rekindle.\nEPUB, MOBI, AZW3, PDF et .torrent.",
+            "Bouton +, ou depuis une autre appli : Partager › Rekindle.\nEPUB, MOBI, AZW3, PDF et .torrent (téléchargé dès l'ajout).",
             style = MaterialTheme.typography.bodyMedium, color = pal.texteDoux, textAlign = TextAlign.Center,
         )
     }
@@ -668,7 +673,15 @@ fun BarreBas(vm: RekindleVM, lancer: () -> Unit, ajouter: () -> Unit) {
 }
 
 @Composable
-fun Details(el: Element, retirable: Boolean, onFermer: () -> Unit, onRetirer: () -> Unit, onPartager: () -> Unit) {
+fun Details(
+    el: Element,
+    retirable: Boolean,
+    enTelechargement: Boolean,
+    onReessayer: (() -> Unit)?,
+    onFermer: () -> Unit,
+    onRetirer: () -> Unit,
+    onPartager: () -> Unit,
+) {
     AlertDialog(
         onDismissRequest = onFermer,
         title = { Text(titreAffiche(el), maxLines = 3, overflow = TextOverflow.Ellipsis) },
@@ -687,9 +700,15 @@ fun Details(el: Element, retirable: Boolean, onFermer: () -> Unit, onRetirer: ()
                         Text(msg, color = couleur, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
-                if (retirable) {
+                if (onReessayer != null) {
                     Spacer(Modifier.height(8.dp))
-                    TextButton(onClick = onRetirer) { Text("Retirer de la liste") }
+                    TextButton(onClick = onReessayer) { Text("Réessayer le téléchargement") }
+                }
+                if (retirable) {
+                    if (onReessayer == null) Spacer(Modifier.height(8.dp))
+                    TextButton(onClick = onRetirer) {
+                        Text(if (enTelechargement) "Annuler le téléchargement" else "Retirer de la liste")
+                    }
                 }
             }
         },
