@@ -547,7 +547,9 @@ def interface():
             self.b_vider = ttk.Button(barre, text="Vider la liste", command=self.vider)
             self.b_vider.pack(side="left", padx=(8, 0))
             self.var_envoyer = tk.BooleanVar(value=bool(self.cfg.get("envoyer", True)))
-            self.b_go = ttk.Button(barre, style="Primaire.TButton", command=self.lancer)
+            # le requin transformé (doré, lunettes de soleil) sur le bouton principal
+            self.img_go = image("requin_transforme", int(26 * echelle))
+            self.b_go = ttk.Button(barre, style="Primaire.TButton", command=self.lancer, compound="left")
             self.b_go.pack(side="right")
             ttk.Checkbutton(barre, text="Envoyer à ma Kindle", variable=self.var_envoyer,
                             command=self.envoi_change).pack(side="right", padx=(0, 14))
@@ -577,7 +579,7 @@ def interface():
                 self.ecrire("Bienvenue !", "titre")
                 self.ecrire("Commence par « Réglages » (en haut à droite) pour indiquer ton adresse Kindle et la "
                             "messagerie qui enverra les livres. Ensuite, ajoute un livre et clique sur "
-                            "« Réparer et envoyer ».", "neutre")
+                            "« Transformer et envoyer ».", "neutre")
             root.after(100, self.pomper)
 
         # -------------------------------------------------------- en-tête
@@ -731,7 +733,8 @@ def interface():
 
         def envoi_change(self, sauver=True):
             if not self.en_cours:
-                self.b_go.configure(text="Réparer et envoyer" if self.var_envoyer.get() else "Réparer")
+                self.b_go.configure(text="Transformer et envoyer" if self.var_envoyer.get() else "Transformer",
+                                    image=self.img_go or "", style="Primaire.TButton")
             if sauver:
                 self.cfg["envoyer"] = bool(self.var_envoyer.get())
                 self.cfg.enregistrer()
@@ -775,7 +778,7 @@ def interface():
             self.arret = threading.Event()
             for b in (self.b_ajout, self.b_retirer, self.b_vider):
                 b.configure(state="disabled")
-            self.b_go.configure(text="Arrêter", style="Stop.TButton")
+            self.b_go.configure(text="Arrêter", style="Stop.TButton", image="")
             threading.Thread(target=self.travail, args=(a_faire, envoyer), daemon=True).start()
 
         def position(self, iid):
@@ -926,7 +929,7 @@ def interface():
         def travail_livre(self, iid, l):
             if l["etat"] not in ("attente", "erreur"):
                 return
-            self.q.put(("etat", iid, "Réparation…", "encours", None))
+            self.q.put(("etat", iid, "Transformation…", "encours", None))
             res = traiter_livre(l["chemin"], self.cfg["dossier_sortie"],
                                 {"langue": self.cfg.get("langue") or "fr", "sorties_prises": self.sorties_prises,
                                  "tome_dans_titre": self.cfg.get("tome_dans_titre", True)})
@@ -971,7 +974,7 @@ def interface():
                         n = m[1]
                         self.ecrire("→  %s : clique sur « %s »." % (
                             "%d livres récupérés" % n if n > 1 else "Livre récupéré",
-                            "Réparer et envoyer" if self.var_envoyer.get() else "Réparer"), "neutre")
+                            "Transformer et envoyer" if self.var_envoyer.get() else "Transformer"), "neutre")
                     elif m[0] == "rapport":
                         self.afficher_rapport(m[1])
                     elif m[0] == "log":

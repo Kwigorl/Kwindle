@@ -348,9 +348,9 @@ fun EcranPrincipal(vm: RekindleVM, ouvrirReglages: () -> Unit) {
     val nDl = vm.telechargements.size
     val dlEnCours = pluriel(nDl, "torrent") + " en cours"
     val (surTitre, titre) = when {
-        vm.enCours -> "Au travail" to (if (vm.envoyer) "Réparation et envoi…" else "Réparation…")
+        vm.enCours -> "Au travail" to (if (vm.envoyer) "Transformation et envoi…" else "Transformation…")
         hauts.isEmpty() -> "Bienvenue" to "Aucun livre pour l'instant"
-        livresAFaire > 0 -> (if (vm.envoyer) "Prêt à envoyer" else "Prêt à réparer") to
+        livresAFaire > 0 -> (if (vm.envoyer) "Prêt à envoyer" else "Prêt à transformer") to
             (pluriel(livresAFaire, "livre") + if (nDl > 0) " · $dlEnCours" else "")
         nDl > 0 -> "Téléchargement" to dlEnCours
         else -> "Tout est fait" to (pluriel(hauts.size, "élément") + " traité" + if (hauts.size > 1) "s" else "")
@@ -668,15 +668,19 @@ fun BarreBas(vm: RekindleVM, lancer: () -> Unit, ajouter: () -> Unit) {
                 modifier = Modifier.weight(1f).height(58.dp),
             ) {
                 if (!vm.enCours) {
-                    Image(painterResource(R.drawable.ic_aileron_bouton), contentDescription = null, modifier = Modifier.size(24.dp, 20.dp))
+                    // le requin, transformé (doré, lunettes de soleil)
+                    Image(
+                        painterResource(R.drawable.ic_requin_transforme), contentDescription = null,
+                        modifier = Modifier.size(27.dp, 30.dp),
+                    )
                     Spacer(Modifier.width(10.dp))
                 }
                 Text(
                     when {
                         vm.arretDemande -> "Arrêt…"
                         vm.enCours -> "Arrêter"
-                        vm.envoyer -> "Réparer et envoyer"
-                        else -> "Réparer"
+                        vm.envoyer -> "Transformer et envoyer"
+                        else -> "Transformer"
                     },
                     fontWeight = FontWeight.ExtraBold, fontSize = 17.sp,
                 )

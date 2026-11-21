@@ -37,10 +37,10 @@ adb shell am start -W -a android.intent.action.VIEW -t application/x-bittorrent 
 sleep 4
 adb exec-out screencap -p > $D/2_liste.png
 
-# on décoche « Envoyer à ma Kindle » puis « Réparer »
+# on décoche « Envoyer à ma Kindle » puis « Transformer »
 toucher 'checkable="true"'
 sleep 1
-toucher 'text="Réparer"'
+toucher 'text="Transformer"'
 sleep 8
 adb exec-out screencap -p > $D/3_repare.png
 

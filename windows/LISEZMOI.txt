@@ -55,7 +55,7 @@ Windows, pas dans un fichier. Les réglages sont dans
 UTILISATION
 -----------
 Glisse tes livres dans la fenêtre (ou « Ajouter des livres… »), puis
-« Réparer et envoyer ». Les livres réparés sont gardés dans
+« Transformer et envoyer ». Les livres réparés sont gardés dans
 Documents\Rekindle. Décoche « Envoyer à ma Kindle » pour seulement
 les réparer.
 Double-clic sur un livre de la liste : revoir son rapport et l'ouvrir
@@ -78,8 +78,9 @@ activé).
 
 TORRENTS
 --------
-Glisse un fichier .torrent dans la fenêtre comme un livre, puis
-« Réparer et envoyer ». Rekindle :
+Glisse un fichier .torrent dans la fenêtre comme un livre : le
+téléchargement démarre tout de suite. Quand ses livres apparaissent
+dans la liste, clique sur « Transformer et envoyer ». Rekindle :
 - ne télécharge QUE les livres du torrent (EPUB, MOBI, AZW3, PDF),
   pas les images, cartes, fichiers texte…
 - les range dans Documents\Rekindle\Torrents\<nom du torrent>,

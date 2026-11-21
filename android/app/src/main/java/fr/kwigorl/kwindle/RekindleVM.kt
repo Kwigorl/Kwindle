@@ -186,7 +186,7 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    private fun texteBouton() = if (envoyer) "Réparer et envoyer" else "Réparer"
+    private fun texteBouton() = if (envoyer) "Transformer et envoyer" else "Transformer"
 
     private suspend fun trouver(id: Long): Element? =
         withContext(Dispatchers.Main) { elements.firstOrNull { it.id == id } }
@@ -335,8 +335,8 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
     /** Répare un livre (si ce n'est pas déjà fait) et renvoie sa nouvelle phase. */
     private suspend fun travailLivre(el: Element): Phase {
         if (el.phase != Phase.ATTENTE && el.phase != Phase.ERREUR) return el.phase
-        maj(el.id) { it.copy(statut = "Réparation…", ton = Ton.EN_COURS) }
-        TravailService.maj(ctx, "Réparation : ${el.nom}")
+        maj(el.id) { it.copy(statut = "Transformation…", ton = Ton.EN_COURS) }
+        TravailService.maj(ctx, "Transformation : ${el.nom}")
         val r = Moteur.traiter(ctx, el.fichier, dossierSortie, reglages.langue, reglages.tomeDansTitre)
         val tab = r.optJSONArray("lignes")
         val lignes = (0 until (tab?.length() ?: 0)).map { i ->

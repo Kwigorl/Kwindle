@@ -37,7 +37,7 @@ object Moteur {
         return json(module.callAttr("envoyer", cfg.toString(), chemin, titre ?: "", auteur ?: ""))
     }
 
-    /** Début d'un passage « Réparer et envoyer ». */
+    /** Début d'un passage « Transformer et envoyer ». */
     fun debut(context: Context) {
         init(context)
         module.callAttr("debut")
