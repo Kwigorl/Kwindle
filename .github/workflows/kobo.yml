@@ -1,0 +1,74 @@
+name: Rekobo (Kobo)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "kobo/**"
+      - ".github/workflows/kobo.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  rekobo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: kobo
+    steps:
+      - uses: actions/checkout@v4
+
+      # Go 1.23 : la dernière version qui accepte les noyaux Linux 2.6/3.0 des vieilles Kobo
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+          cache: false
+
+      - name: Vérifications
+        run: |
+          go version
+          test -z "$(gofmt -l .)" || { gofmt -l .; exit 1; }
+          go vet ./...
+
+      - name: Tests (PC)
+        run: go test -count=1 -v ./...
+
+      - name: Tests sur processeur ARM (émulé, comme sur la Kobo)
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y -qq qemu-user-static
+          CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=7 go test -c -o rekobo-arm.test .
+          qemu-arm-static ./rekobo-arm.test -test.v -test.count=1
+
+      - name: Fabriquer Rekobo.zip
+        run: |
+          ./fabriquer.sh
+          go version construction/racine/usr/local/rekobo/rekobo
+          file construction/racine/usr/local/rekobo/rekobo
+          unzip -l construction/Rekobo.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Rekobo
+          path: kobo/construction/Rekobo.zip
+          retention-days: 30
+
+      - name: Publier la release « kobo »
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete kobo --yes --cleanup-tag || true
+          gh release create kobo construction/Rekobo.zip \
+            --title "Rekobo pour Kobo (build ${{ github.run_number }})" \
+            --notes "Recevoir des livres par e-mail sur une Kobo. Mode d'emploi dans LISEZ-MOI.txt. Compilé depuis ${{ github.sha }}." \
+            --latest=false
+
+      - name: Mettre le zip sur la branche rekobo
+        run: |
+          mkdir /tmp/branche && cp construction/Rekobo.zip /tmp/branche/ && cd /tmp/branche
+          git init -q && git checkout -q -b rekobo && git add Rekobo.zip
+          git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" \
+            commit -qm "Rekobo build ${{ github.run_number }} (${{ github.sha }})"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" rekobo

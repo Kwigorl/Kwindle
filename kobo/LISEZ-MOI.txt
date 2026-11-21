@@ -1,0 +1,69 @@
+REKOBO : recevoir des livres par e-mail sur une Kobo
+====================================================
+
+On envoie un livre en pièce jointe à une adresse e-mail, et il arrive tout
+seul sur la Kobo à la connexion Wi-Fi suivante, comme sur une Kindle.
+Formats : EPUB, KEPUB, PDF, MOBI, CBZ, CBR, TXT, RTF, HTML.
+
+Pour quelles Kobo ? Toutes celles à écran tactile (Touch, Glo, Mini, Aura,
+Aura HD, H2O, Glo HD, Clara, Libra, Forma, Sage…). Pas les toutes premières
+Kobo à boutons.
+
+
+1. PRÉPARER LA BOÎTE MAIL
+-------------------------
+Le plus simple : un compte Gmail. La Kobo n'a pas le droit d'utiliser le mot
+de passe habituel, il faut un « mot de passe d'application » :
+  - activer la validation en 2 étapes du compte Google ;
+  - créer le mot de passe sur https://myaccount.google.com/apppasswords
+    (16 lettres, à recopier).
+
+Astuce Gmail : un e-mail envoyé à prenom+kobo@gmail.com arrive dans la boîte
+prenom@gmail.com. Rekobo ne prend que ceux-là : les autres e-mails ne sont
+jamais touchés. Avec une adresse réservée à la Kobo, on peut enlever ce filtre.
+
+
+2. INSTALLER
+------------
+a. Brancher la Kobo à l'ordinateur avec le câble USB.
+b. Copier TOUT le contenu du dossier « A copier sur la Kobo » à la racine
+   de la Kobo : les dossiers .kobo, .adds et Rekobo (s'ils existent déjà,
+   on les fusionne). Sur Mac, les dossiers qui commencent par un point
+   sont cachés : Cmd + Maj + . pour les voir.
+c. Ouvrir Rekobo/reglages.ini (sur la Kobo) avec le Bloc-notes et remplir
+   « adresse » et « mot_de_passe ». Enregistrer.
+d. Éjecter la Kobo : elle redémarre et installe Rekobo.
+
+
+3. UTILISER
+-----------
+Envoyer un e-mail avec le livre en pièce jointe à prenom+kobo@gmail.com.
+Sur la Kobo, allumer le Wi-Fi (ou lancer une synchronisation) : Rekobo relève
+la boîte, range les livres dans le dossier Rekobo/Livres et les ajoute à la
+bibliothèque. L'e-mail est ensuite marqué comme lu.
+
+La première fois, Rekobo ne prend que les e-mails des 30 derniers jours.
+
+En option (recommandé) :
+  - NickelMenu (https://pgaskin.net/NickelMenu/) ajoute deux boutons :
+    « Rekobo - relever les livres » et « Rekobo - journal ».
+  - NickelDBus (https://github.com/shermp/NickelDBus) affiche un message
+    « 2 nouveaux livres reçus » et ajoute les livres sans faire comme si
+    un câble USB était branché.
+
+
+4. EN CAS DE SOUCI
+------------------
+Tout est noté dans Rekobo/journal.log sur la Kobo (à ouvrir sur l'ordinateur,
+ou avec le bouton « Rekobo - journal » de NickelMenu).
+  - « identification refusée » : adresse ou mot de passe d'application faux.
+  - « horloge » : la Kobo n'est pas à l'heure ; faire une synchronisation Kobo.
+  - Plus rien n'arrive après une mise à jour de la Kobo : recopier le dossier
+    .kobo (le fichier KoboRoot.tgz) et éjecter, pour réinstaller Rekobo.
+
+
+5. DÉSINSTALLER
+---------------
+Créer un fichier vide nommé DESINSTALLER (sans extension) dans le dossier
+Rekobo de la Kobo, éjecter, puis allumer le Wi-Fi : Rekobo se retire.
+Les livres reçus restent sur la Kobo.
