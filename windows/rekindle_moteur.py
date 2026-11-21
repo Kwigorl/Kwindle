@@ -477,6 +477,154 @@ def mettre_namespace_xhtml(root):
 # Détection du format
 # --------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Séries : numéro de tome dans le titre, pour que la Kindle les range dans l'ordre
+# ---------------------------------------------------------------------------
+_ROMAINS = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100}
+
+
+def _romain(s):
+    if not s or any(c not in _ROMAINS for c in s):
+        return None
+    total = 0
+    for i, c in enumerate(s):
+        v = _ROMAINS[c]
+        total += -v if i + 1 < len(s) and _ROMAINS[s[i + 1]] > v else v
+    return total if 0 < total < 200 else None
+
+
+def _nombre(s):
+    """« 3 », « 03 », « 2.5 », « 2,5 », « IV » -> nombre ; sinon None."""
+    s = (s or "").strip()
+    try:
+        v = float(s.replace(",", "."))
+    except ValueError:
+        v = _romain(s)
+    if v is None or v != v or v < 0 or v >= 1000:
+        return None
+    return v
+
+
+def _norm(s):
+    return re.sub(r"[^0-9a-z]+", " ", sans_accents(s or "").lower()).strip()
+
+
+_NUM = r"(?P<n>\d{1,3}(?:[.,]\d+)?|(?-i:[IVXLC]{1,7})\b)"
+_FIN = r"\s*[)\]]?\s*(?:[:\-–—.,]\s*(?P<titre>.+?))?\s*$"
+_MOTIFS_TOME = [
+    # « Série, tome 3 : Titre », « Série - Vol. 2 », « Série (n° 4) »
+    re.compile(r"^(?P<serie>.+?)[\s,:\-–—(\[]+(?:tome|vol\.?|volume|n°|no\.)\s*" + _NUM + _FIN, re.I),
+    # « Série T3 - Titre », « Série, T.3 »
+    re.compile(r"^(?P<serie>.+?)[\s,:\-–—(\[]+t\.?\s*(?P<n>\d{1,3}(?:[.,]\d+)?)" + _FIN, re.I),
+    # « Série #4 »
+    re.compile(r"^(?P<serie>.+?)\s*#\s*(?P<n>\d{1,3}(?:[.,]\d+)?)" + _FIN, re.I),
+    # « Série - Livre 2 : Titre », « Série, Book 3 », « Série (Cycle 2) »
+    re.compile(r"^(?P<serie>.+?)\s*[,:\-–—(\[]\s*(?:livre|book|partie|part|[ée]pisode|cycle)\s*" + _NUM + _FIN,
+               re.I),
+]
+# « Tome 3 : Titre » (la série vient alors des métadonnées)
+_MOTIF_TOME_SEUL = re.compile(r"^(?:tome|t\.?|vol\.?|volume|livre|book)\s*" + _NUM + r"\s*[:\-–—.,]\s*(?P<titre>.+)$",
+                              re.I)
+
+
+def _decouper(texte):
+    """Cherche « série + numéro (+ titre du tome) » dans un texte. Renvoie (série, n, titre) ou None."""
+    for motif in _MOTIFS_TOME:
+        m = motif.match(texte)
+        if m:
+            n = _nombre(m.group("n"))
+            serie = m.group("serie").strip(" ,:-–—([")
+            if n is not None and serie:
+                return serie, n, (m.group("titre") or "").strip(" ,:-–—") or None
+    return None
+
+
+def _format_num(n):
+    entier = int(n)
+    largeur = 3 if entier >= 100 else 2
+    if n == entier:
+        return "%0*d" % (largeur, entier)
+    return "%0*d.%s" % (largeur, entier, ("%g" % (n - entier))[2:])
+
+
+def serie_metadonnees(md):
+    """Série et numéro d'après les métadonnées (calibre, ou EPUB 3 belongs-to-collection)."""
+    serie = index = None
+    metas = list(md.iter(q(OPF, "meta")))
+    for m in metas:
+        if m.get("name") == "calibre:series" and (m.get("content") or "").strip():
+            serie = m.get("content").strip()
+        elif m.get("name") == "calibre:series_index":
+            index = m.get("content")
+    if not serie:
+        for m in metas:
+            if m.get("property") != "belongs-to-collection" or not (m.text or "").strip():
+                continue
+            ident, genre, pos = m.get("id"), None, None
+            for r2 in metas:
+                if ident and r2.get("refines") == "#" + ident:
+                    if r2.get("property") == "collection-type":
+                        genre = (r2.text or "").strip()
+                    elif r2.get("property") == "group-position":
+                        pos = r2.text
+            if genre in (None, "", "series"):
+                serie, index = m.text.strip(), pos
+                break
+    return (" ".join(serie.split()) if serie else None), index
+
+
+def titre_pour_classement(titre, serie=None, index=None, nom_fichier=None):
+    """
+    Titre où le numéro de tome suit le nom de la série, pour qu'un classement par titre
+    range les tomes dans l'ordre : « Le Trône de fer, Tome 3 : La Bataille des rois »
+    -> « Le Trône de fer 03 — La Bataille des rois ». Renvoie None s'il n'y a rien à changer.
+    """
+    titre = " ".join((titre or "").split())
+    if not titre:
+        return None
+    trouve = _decouper(titre)
+    if serie:
+        num = _nombre(index) if index not in (None, "") else None
+        if num is None and trouve:
+            num = trouve[1]
+        if num is None:
+            return None
+        # déjà au bon format (livre déjà passé par Rekindle)
+        if re.match(r"^" + re.escape(serie) + r"\s+\d+(?:\.\d+)?(?:\s+—\s+|$)", titre, re.I):
+            return None
+        if trouve and _norm(trouve[0]) == _norm(serie):
+            base = trouve[2]
+        else:
+            seul = _MOTIF_TOME_SEUL.match(titre)
+            if seul:
+                base = seul.group("titre").strip()
+            elif _norm(titre) == _norm(serie):
+                base = None
+            elif titre.lower().startswith(serie.lower()):
+                reste = titre[len(serie):].strip(" ,:-–—")
+                mots = reste.split()
+                if mots and _nombre(mots[0]) is not None:           # « Série 3 : Titre »
+                    reste = " ".join(mots[1:]).strip(" ,:-–—")
+                base = reste or None
+            else:
+                base = titre
+    elif trouve:
+        serie, num, base = trouve
+    else:
+        dans_nom = _decouper(" ".join(os.path.splitext(nom_fichier or "")[0].replace("_", " ").split()))
+        if not dans_nom:
+            return None
+        serie, num, _ = dans_nom
+        serie = re.split(r"\s+[-–—]\s+", serie)[-1]      # « Auteur - Série T04 - Titre »
+        base = None if _norm(titre) == _norm(serie) else titre
+    nouveau = "%s %s" % (serie, _format_num(num))
+    if base and _norm(base) != _norm(serie):
+        nouveau += " — " + base
+    if nouveau == titre:
+        return None
+    return nouveau
+
+
 def detecter_format(chemin):
     with open(chemin, "rb") as f:
         tete = f.read(128)
@@ -1331,6 +1479,26 @@ class Reparateur:
                 for m in mods[1:]:
                     md.remove(m)
 
+    def numeroter_tome(self, nom_source):
+        """Option « tome_dans_titre » : numéro de tome juste après le nom de la série."""
+        if not self.opt.get("tome_dans_titre"):
+            return
+        md = self.metadata
+        serie, index = serie_metadonnees(md)
+        nouveau = titre_pour_classement(self.titre, serie, index, os.path.basename(nom_source))
+        if not nouveau:
+            return
+        t = next(e for e in md.iter(q(DC, "title")) if e.text and e.text.strip())
+        t.text = nouveau
+        for m in list(md.iter(q(OPF, "meta"))):
+            # un titre de tri (calibre ou EPUB 3) contredirait le nouveau titre
+            if m.get("name") == "calibre:title_sort":
+                m.set("content", nouveau)
+            elif t.get("id") and m.get("refines") == "#" + t.get("id") and m.get("property") == "file-as":
+                m.text = nouveau
+        self.r.corrige("Titre renommé pour que la Kindle range la série dans l'ordre : « %s »." % nouveau)
+        self.titre = nouveau
+
     def textes_echantillon(self):
         textes = []
         total = 0
@@ -1511,6 +1679,12 @@ class Reparateur:
                 for e in list(root):
                     if e is not head and e is not body:
                         body.append(e)
+            corps_doc = root.find(q(XHTML, "body"))
+            if corps_doc is not None:
+                # restes d'un <head> égaré dans le texte (documents collés bout à bout)
+                for nom in ("title", "meta", "base"):
+                    for e in list(corps_doc.iter(q(XHTML, nom))):
+                        retirer_element(e)
             titre = head.find(q(XHTML, "title"))
             if titre is None:
                 titre = etree.Element(q(XHTML, "title"))
@@ -1920,6 +2094,7 @@ class Reparateur:
         self.rebuild_lower()
         self.reparer_manifeste()
         self.reparer_metadonnees(nom_source)
+        self.numeroter_tome(nom_source)
         self.reparer_spine()
         self.reparer_documents()
         self.reparer_sommaires()

@@ -62,6 +62,16 @@ class FumeeTest {
         assertTrue(File(r.getString("sortie")).length() > 0)
     }
 
+    /** Numéro de tome mis dans le titre (série calibre « Les Annales du Disque-monde », tome 5). */
+    @Test
+    fun tomeDansTitre() {
+        val avec = Moteur.traiter(ctx, asset("test_serie.epub"), File(ctx.cacheDir, "test/serie1"), "fr", true)
+        assertTrue(avec.toString(), avec.getBoolean("ok"))
+        assertEquals("Les Annales du Disque-monde 05 — Sourcellerie", avec.getString("titre"))
+        val sans = Moteur.traiter(ctx, asset("test_serie.epub"), File(ctx.cacheDir, "test/serie2"), "fr", false)
+        assertEquals("Sourcellerie", sans.getString("titre"))
+    }
+
     @Test
     fun lectureTorrent() {
         val f = asset("test.torrent")

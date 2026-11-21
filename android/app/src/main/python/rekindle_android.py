@@ -25,9 +25,10 @@ def init(dossier_temp):
     return "ok"
 
 
-def traiter(chemin, dossier_sortie, langue):
+def traiter(chemin, dossier_sortie, langue, tome_dans_titre=True):
     from rekindle_moteur import traiter_livre
-    res = traiter_livre(chemin, dossier_sortie, {"langue": langue or "fr", "sorties_prises": _PRISES})
+    res = traiter_livre(chemin, dossier_sortie, {"langue": langue or "fr", "sorties_prises": _PRISES,
+                                                 "tome_dans_titre": bool(tome_dans_titre)})
     return json.dumps({
         "ok": res.ok,
         "sortie": res.sortie or "",

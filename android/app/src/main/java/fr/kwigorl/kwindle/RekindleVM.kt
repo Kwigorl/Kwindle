@@ -337,7 +337,7 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
         if (el.phase != Phase.ATTENTE && el.phase != Phase.ERREUR) return el.phase
         maj(el.id) { it.copy(statut = "Réparation…", ton = Ton.EN_COURS) }
         TravailService.maj(ctx, "Réparation : ${el.nom}")
-        val r = Moteur.traiter(ctx, el.fichier, dossierSortie, reglages.langue)
+        val r = Moteur.traiter(ctx, el.fichier, dossierSortie, reglages.langue, reglages.tomeDansTitre)
         val tab = r.optJSONArray("lignes")
         val lignes = (0 until (tab?.length() ?: 0)).map { i ->
             val l = tab!!.getJSONArray(i)

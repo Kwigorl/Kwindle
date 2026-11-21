@@ -817,6 +817,7 @@ fun EcranReglages(vm: RekindleVM, retour: () -> Unit) {
     var securite by rememberSaveable { mutableStateOf(r.securite) }
     var identifiant by rememberSaveable { mutableStateOf(r.identifiant) }
     var langue by rememberSaveable { mutableStateOf(r.langue) }
+    var tome by rememberSaveable { mutableStateOf(r.tomeDansTitre) }
     var supprimer by rememberSaveable { mutableStateOf(r.supprimerApresEnvoi) }
     var supprimerOrigine by rememberSaveable { mutableStateOf(r.supprimerOrigine) }
     var avance by rememberSaveable { mutableStateOf(false) }
@@ -845,6 +846,7 @@ fun EcranReglages(vm: RekindleVM, retour: () -> Unit) {
         r.securite = securite
         r.identifiant = identifiant.trim()
         r.langue = langue.trim().ifBlank { "fr" }
+        r.tomeDansTitre = tome
         r.supprimerApresEnvoi = supprimer
         r.supprimerOrigine = supprimer && supprimerOrigine
         retour()
@@ -949,6 +951,15 @@ fun EcranReglages(vm: RekindleVM, retour: () -> Unit) {
             if (f.lien.isNotEmpty()) {
                 OutlinedButton(onClick = { ouvrirLien(ctx, f.lien) }) { Text("Créer le mot de passe d'application") }
             }
+
+            Section("Livres")
+            LigneInterrupteur(
+                "Numéro de tome dans le titre",
+                "Pour que la Kindle range les séries dans l'ordre quand elle trie par titre : « Le Trône de " +
+                    "fer, Tome 3 : La Bataille des rois » devient « Le Trône de fer 03 — La Bataille des rois ». " +
+                    "Le numéro vient des informations du livre (calibre) ou de son titre.",
+                tome,
+            ) { tome = it }
 
             Section("Après l'envoi")
             LigneInterrupteur(

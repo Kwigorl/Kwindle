@@ -78,6 +78,7 @@ DEFAUTS = {
     "dossier_sortie": "",
     "envoyer": True,
     "langue": "fr",
+    "tome_dans_titre": True,
 }
 
 

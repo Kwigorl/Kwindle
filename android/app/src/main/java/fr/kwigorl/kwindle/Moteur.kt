@@ -26,10 +26,10 @@ object Moteur {
 
     private fun json(o: PyObject): JSONObject = JSONObject(o.toString())
 
-    fun traiter(context: Context, livre: File, dossierSortie: File, langue: String): JSONObject {
+    fun traiter(context: Context, livre: File, dossierSortie: File, langue: String, tomeDansTitre: Boolean = true): JSONObject {
         init(context)
         dossierSortie.mkdirs()
-        return json(module.callAttr("traiter", livre.absolutePath, dossierSortie.absolutePath, langue))
+        return json(module.callAttr("traiter", livre.absolutePath, dossierSortie.absolutePath, langue, tomeDansTitre))
     }
 
     fun envoyer(context: Context, cfg: JSONObject, chemin: String, titre: String?, auteur: String?): JSONObject {

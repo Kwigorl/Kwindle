@@ -89,6 +89,11 @@ class Reglages(context: Context) {
         get() = p.getBoolean("envoyer", true)
         set(v) = p.edit { putBoolean("envoyer", v) }
 
+    /** Numéro de tome juste après le nom de la série, pour le classement par titre de la Kindle. */
+    var tomeDansTitre: Boolean
+        get() = p.getBoolean("tome_dans_titre", true)
+        set(v) = p.edit { putBoolean("tome_dans_titre", v) }
+
     /** Après un envoi réussi : effacer les copies faites par Rekindle (livre réparé, téléchargements). */
     var supprimerApresEnvoi: Boolean
         get() = p.getBoolean("supprimer_apres_envoi", false)

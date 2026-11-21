@@ -87,7 +87,8 @@ def ligne_de_commande(args):
     prets = []
     prises = set()
     for chemin in livres:
-        res = traiter_livre(chemin, sortie, {"langue": cfg.get("langue", "fr"), "sorties_prises": prises})
+        res = traiter_livre(chemin, sortie, {"langue": cfg.get("langue", "fr"), "sorties_prises": prises,
+                                             "tome_dans_titre": cfg.get("tome_dans_titre", True)})
         print(("✓ " if res.ok else "✗ ") + os.path.basename(chemin))
         for niv, msg in res.rapport.lignes():
             print("    %s %s" % (SYMBOLES[niv], msg))
@@ -355,6 +356,16 @@ def interface():
             ttk.Button(f, text="Parcourir…", command=self.choisir_dossier).grid(row=r, column=2, sticky="w",
                                                                                padx=(8, 0))
             r += 1
+            self.var_tome = tk.BooleanVar(value=bool(cfg.get("tome_dans_titre", True)))
+            ttk.Checkbutton(f, text="Mettre le numéro de tome dans le titre",
+                            variable=self.var_tome).grid(row=r, column=0, columnspan=3, sticky="w", pady=(6, 0))
+            r += 1
+            ttk.Label(f, style="Aide.TLabel", wraplength=470, justify="left",
+                      text="Pour que la Kindle range les séries dans l'ordre quand elle trie par titre : "
+                           "« Le Trône de fer, Tome 3 : La Bataille des rois » devient « Le Trône de fer 03 — "
+                           "La Bataille des rois ». Le numéro vient des informations du livre (calibre) "
+                           "ou de son titre.").grid(row=r, column=0, columnspan=3, sticky="w")
+            r += 1
 
             b = ttk.Frame(f)
             b.grid(row=r, column=0, columnspan=3, sticky="we", pady=(18, 0))
@@ -448,6 +459,7 @@ def interface():
                 c["port"] = 465
             if self.v["mdp"].get():
                 c.definir_mot_de_passe(self.v["mdp"].get())
+            c["tome_dans_titre"] = bool(self.var_tome.get())
             c.enregistrer()
             self.app.maj_barre()
             self.destroy()
@@ -916,7 +928,8 @@ def interface():
                 return
             self.q.put(("etat", iid, "Réparation…", "encours", None))
             res = traiter_livre(l["chemin"], self.cfg["dossier_sortie"],
-                                {"langue": self.cfg.get("langue") or "fr", "sorties_prises": self.sorties_prises})
+                                {"langue": self.cfg.get("langue") or "fr", "sorties_prises": self.sorties_prises,
+                                 "tome_dans_titre": self.cfg.get("tome_dans_titre", True)})
             l["res"] = res
             self.q.put(("rapport", res))
             fmt = FORMATS.get(res.format_source, "?")
