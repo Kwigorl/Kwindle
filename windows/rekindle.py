@@ -461,6 +461,7 @@ def interface():
             self.livres = {}
             self.en_cours = False
             self.arret = threading.Event()
+            self.telechargements = {}        # iid du torrent -> Event d'arrêt (téléchargements en cours)
             self.bloque = None
             root.title("Rekindle — tes livres vers ta Kindle")
             root.geometry("920x680")
@@ -624,6 +625,7 @@ def interface():
                     iid = self.arbre.insert("", "end", values=(nom, "Torrent", "En attente"), open=True)
                     self.livres[iid] = {"chemin": c, "etat": "attente", "res": None, "type": "torrent",
                                         "nom": nom}
+                    self.telecharger(iid)        # un torrent se télécharge dès qu'on l'ajoute
                 else:
                     iid = self.arbre.insert("", "end", values=(os.path.basename(c), "", "En attente"))
                     self.livres[iid] = {"chemin": c, "etat": "attente", "res": None, "type": "livre"}
@@ -643,6 +645,9 @@ def interface():
             self.ajouter(self.root.tk.splitlist(event.data))
 
         def oublier(self, iid):
+            stop = self.telechargements.get(iid)
+            if stop is not None:
+                stop.set()                   # annule le téléchargement en cours
             for enfant in self.arbre.get_children(iid):
                 self.livres.pop(enfant, None)
             self.livres.pop(iid, None)
@@ -678,6 +683,10 @@ def interface():
             if l["type"] == "torrent":
                 if l.get("recus"):
                     ouvrir(l["recus"][0], selectionner=True)
+                elif l["etat"] == "erreur" and iid not in self.telechargements:
+                    if messagebox.askyesno("Rekindle", "Réessayer le téléchargement de ce torrent ?",
+                                           parent=self.root):
+                        self.telecharger(iid)
             elif l["res"] is not None:
                 self.afficher_rapport(l["res"])
                 if l["res"].sortie:
@@ -732,11 +741,15 @@ def interface():
                 return
             envoyer = bool(self.var_envoyer.get())
             etats = {"attente", "erreur", "echec_envoi"} | ({"pret"} if envoyer else set())
-            a_faire = [i for i, l in self.livres.items() if l["etat"] in etats]
+            a_faire = [i for i, l in self.livres.items() if l["type"] == "livre" and l["etat"] in etats]
             a_faire.sort(key=lambda i: self.position(i))
             if not a_faire:
                 if not self.livres:
                     self.ajouter_dialogue()
+                elif self.telechargements:
+                    messagebox.showinfo("Rekindle", "Le torrent est en cours de téléchargement : ses livres "
+                                        "apparaîtront dans la liste, il suffira alors de cliquer ici.",
+                                        parent=self.root)
                 else:
                     messagebox.showinfo("Rekindle", "Tous les livres de la liste sont déjà traités.",
                                         parent=self.root)
@@ -773,12 +786,9 @@ def interface():
                 if l is None:
                     continue
                 try:
-                    if l["type"] == "torrent":
-                        file[0:0] = self.travail_torrent(iid, l)
-                    else:
-                        self.travail_livre(iid, l)
-                        if l["etat"] in ("pret", "echec_envoi"):
-                            a_envoyer.append(iid)
+                    self.travail_livre(iid, l)
+                    if l["etat"] in ("pret", "echec_envoi"):
+                        a_envoyer.append(iid)
                 except Exception as exc:  # filet de sécurité : on passe au suivant
                     l["etat"] = "erreur"
                     self.q.put(("etat", iid, "✗ Impossible", "ko", None))
@@ -829,15 +839,39 @@ def interface():
                     if getattr(exc, "bloquant", False):
                         self.bloque = exc
 
-        def travail_torrent(self, iid, l):
+        def telecharger(self, iid):
+            """Lance le téléchargement d'un torrent de la liste, dans son propre fil."""
+            l = self.livres.get(iid)
+            if l is None or iid in self.telechargements:
+                return
+            stop = threading.Event()
+            self.telechargements[iid] = stop
+            l["etat"] = "attente"
+            vals = list(self.arbre.item(iid, "values"))
+            vals[2] = "Recherche de sources…"
+            self.arbre.item(iid, values=vals, tags=("encours",))
+            threading.Thread(target=self.travail_torrent, args=(iid, l, stop), daemon=True).start()
+
+        def travail_torrent(self, iid, l, stop):
+            try:
+                self._travail_torrent(iid, l, stop)
+            except Exception as exc:  # filet de sécurité
+                l["etat"] = "erreur"
+                self.q.put(("etat", iid, "✗ Échec", "ko", "Torrent"))
+                self.q.put(("log", "✗  Torrent : erreur inattendue : %s" % exc, "erreur"))
+            finally:
+                self.q.put(("fin_torrent", iid))
+
+        def _travail_torrent(self, iid, l, stop):
             if not kt.disponible():
                 l["etat"] = "erreur"
                 self.q.put(("etat", iid, "✗ Impossible", "ko", "Torrent"))
                 self.q.put(("log", "▸ " + l["nom"], "titre"))
                 self.q.put(("log", "✗  " + kt.raison_indisponible(), "erreur"))
-                return []
+                return
             self.q.put(("etat", iid, "Recherche de sources…", "encours", "Torrent"))
             dernier = [0.0]
+            debut = time.time()
 
             def prog(frac, pairs, debit, verif):
                 maintenant = time.time()
@@ -847,36 +881,35 @@ def interface():
                 if verif:
                     txt = "Vérification…"
                 elif pairs == 0 and frac == 0:
-                    txt = "Recherche de sources…"
+                    minutes = int(maintenant - debut) // 60
+                    txt = "Recherche de sources…" + (" (%d min)" % minutes if minutes else "")
                 else:
                     txt = "⇣ %d %%  ·  %d source%s" % (frac * 100, pairs, "s" if pairs > 1 else "")
                 self.q.put(("etat", iid, txt, "encours", "Torrent"))
             try:
-                recus = kt.Telechargeur.get().telecharger(l["chemin"], dossier_torrents(self.cfg), prog,
-                                                          self.arret)
+                recus = kt.Telechargeur.get().telecharger(l["chemin"], dossier_torrents(self.cfg), prog, stop)
             except kt.ErreurTorrent as exc:
                 l["etat"] = "erreur"
-                arrete = self.arret.is_set()
+                arrete = stop.is_set()
                 self.q.put(("etat", iid, "■ Arrêté" if arrete else "✗ Échec", "ko", "Torrent"))
                 if not arrete:
                     self.q.put(("log", "▸ " + l["nom"], "titre"))
-                    self.q.put(("log", "✗  Torrent : %s" % exc, "erreur"))
-                return []
+                    self.q.put(("log", "✗  Torrent : %s  (double-clic sur la ligne pour réessayer)" % exc,
+                                "erreur"))
+                return
+            if stop.is_set():
+                return
             l["etat"] = "telecharge"
             l["recus"] = recus
-            self.q.put(("etat", iid, "✓ %d livre%s récupéré%s" % (len(recus), "s" if len(recus) > 1 else "",
-                                                                    "s" if len(recus) > 1 else ""), "ok", "Torrent"))
+            n = len(recus)
+            self.q.put(("etat", iid, "✓ %d livre%s récupéré%s" % (n, "s" if n > 1 else "", "s" if n > 1 else ""),
+                        "ok", "Torrent"))
             self.q.put(("log", "▸ " + l["nom"], "titre"))
             self.q.put(("log", "⇣  Téléchargé dans %s — le torrent reste partagé tant que Rekindle est ouvert."
                         % os.path.dirname(recus[0]), "info"))
-            nouveaux = []
-            for n, chemin in enumerate(recus):
-                niid = "%s_%d" % (iid, n)
-                self.livres[niid] = {"chemin": chemin, "etat": "attente", "res": None, "type": "livre",
-                                     "parent": iid}
-                self.q.put(("ajout", niid, iid, os.path.basename(chemin)))
-                nouveaux.append(niid)
-            return nouveaux
+            for k, chemin in enumerate(recus):
+                self.q.put(("ajout", "%s_%d" % (iid, k), iid, chemin))
+            self.q.put(("recus", n))
 
         def travail_livre(self, iid, l):
             if l["etat"] not in ("attente", "erreur"):
@@ -912,11 +945,20 @@ def interface():
                                     ("  —  " + res.auteur if res.auteur else "")
                             self.arbre.item(iid, values=vals, tags=(tag,))
                     elif m[0] == "ajout":
-                        _, niid, parent, nom = m
-                        if self.arbre.exists(parent):
+                        _, niid, parent, chemin = m
+                        if self.arbre.exists(parent) and parent in self.livres and not self.arbre.exists(niid):
+                            self.livres[niid] = {"chemin": chemin, "etat": "attente", "res": None,
+                                                 "type": "livre", "parent": parent}
                             self.arbre.insert(parent, "end", iid=niid,
-                                              values=("      ↳  " + nom, "", "En attente"))
+                                              values=("      ↳  " + os.path.basename(chemin), "", "En attente"))
                             self.arbre.item(parent, open=True)
+                    elif m[0] == "fin_torrent":
+                        self.telechargements.pop(m[1], None)
+                    elif m[0] == "recus":
+                        n = m[1]
+                        self.ecrire("→  %s : clique sur « %s »." % (
+                            "%d livres récupérés" % n if n > 1 else "Livre récupéré",
+                            "Réparer et envoyer" if self.var_envoyer.get() else "Réparer"), "neutre")
                     elif m[0] == "rapport":
                         self.afficher_rapport(m[1])
                     elif m[0] == "log":

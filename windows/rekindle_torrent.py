@@ -162,7 +162,13 @@ class Telechargeur:
         if not infos["livres"]:
             raise ErreurTorrent("ce torrent ne contient aucun livre (EPUB, MOBI, AZW3 ou PDF)")
         try:
-            ti = lt.torrent_info(chemin_torrent)
+            if hasattr(lt, "load_torrent_file"):
+                # libtorrent 2.1 : les trackers et sources web sont dans add_torrent_params
+                atp = lt.load_torrent_file(chemin_torrent)
+                ti = atp.ti
+            else:
+                atp = lt.add_torrent_params()
+                ti = atp.ti = lt.torrent_info(chemin_torrent)
         except Exception:
             raise ErreurTorrent("ce fichier .torrent est illisible")
         fs = ti.files()
@@ -180,8 +186,6 @@ class Telechargeur:
         cle = str(ti.info_hashes())
         h = self.handles.get(cle)
         if h is None or not h.is_valid():
-            atp = lt.add_torrent_params()
-            atp.ti = ti
             atp.save_path = dossier
             atp.file_priorities = prios
             h = self.ses.add_torrent(atp)
