@@ -665,6 +665,7 @@ fun BarreBas(vm: RekindleVM, lancer: () -> Unit, ajouter: () -> Unit) {
                     containerColor = if (vm.enCours) Rouge else pal.bouton,
                     contentColor = if (vm.enCours) Color.White else pal.texteBouton,
                 ),
+                contentPadding = PaddingValues(horizontal = 14.dp),
                 modifier = Modifier.weight(1f).height(58.dp),
             ) {
                 if (!vm.enCours) {
@@ -682,7 +683,9 @@ fun BarreBas(vm: RekindleVM, lancer: () -> Unit, ajouter: () -> Unit) {
                         vm.envoyer -> "Transformer et envoyer"
                         else -> "Transformer"
                     },
-                    fontWeight = FontWeight.ExtraBold, fontSize = 17.sp,
+                    // tient sur une ligne dès ~360 dp de large ; en dessous, passe à la ligne
+                    fontWeight = FontWeight.ExtraBold, fontSize = 17.sp, lineHeight = 19.sp,
+                    textAlign = TextAlign.Center,
                 )
             }
         }
