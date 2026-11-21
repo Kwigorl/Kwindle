@@ -221,8 +221,12 @@ def limites(cfg):
     limite = FOURNISSEURS.get(cfg.get("fournisseur"), {}).get("limite")
     if limite:
         m = min(MAX_AMAZON, int(limite * 1024 * 1024 / 1.37))   # +37 % une fois encodé
-        return m, m
-    return MAX_AMAZON, MAX_LOT_INCONNU
+        fichier, lot = m, m
+    else:
+        fichier, lot = MAX_AMAZON, MAX_LOT_INCONNU
+    if getattr(saveur, "MAX_LOT", None):     # e-mails groupés plus petits (Koboa : relève sur Wi-Fi)
+        lot = min(lot, saveur.MAX_LOT)
+    return fichier, lot
 
 
 def faire_lots(livres, cfg):

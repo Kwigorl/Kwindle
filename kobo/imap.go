@@ -45,6 +45,16 @@ type ClientIMAP struct {
 	delai time.Duration
 }
 
+// lecteurPatient repousse l'échéance à chaque lecture : on n'abandonne qu'après
+// « delai » sans rien recevoir. Un gros e-mail sur un Wi-Fi lent peut donc mettre
+// plusieurs minutes à arriver, tant que les données continuent d'affluer.
+type lecteurPatient struct{ c *ClientIMAP }
+
+func (l lecteurPatient) Read(p []byte) (int, error) {
+	l.c.conn.SetReadDeadline(time.Now().Add(l.c.delai))
+	return l.c.conn.Read(p)
+}
+
 // Connecter ouvre une connexion IMAP chiffrée (port 993 en général).
 func Connecter(serveur string, port int, racines *x509.CertPool, delai time.Duration) (*ClientIMAP, error) {
 	d := &net.Dialer{Timeout: delai}
@@ -53,8 +63,8 @@ func Connecter(serveur string, port int, racines *x509.CertPool, delai time.Dura
 	if err != nil {
 		return nil, err
 	}
-	c := &ClientIMAP{conn: conn, r: bufio.NewReaderSize(conn, 64*1024), delai: delai}
-	c.conn.SetDeadline(time.Now().Add(delai))
+	c := &ClientIMAP{conn: conn, delai: delai}
+	c.r = bufio.NewReaderSize(lecteurPatient{c}, 64*1024)
 	salut, err := c.lireLigne()
 	if err != nil {
 		conn.Close()
@@ -69,7 +79,7 @@ func Connecter(serveur string, port int, racines *x509.CertPool, delai time.Dura
 
 func (c *ClientIMAP) Fermer() {
 	if c.conn != nil {
-		c.conn.SetDeadline(time.Now().Add(5 * time.Second))
+		c.delai = 5 * time.Second // pour dire au revoir, inutile d'attendre longtemps
 		c.Commande("LOGOUT")
 		c.conn.Close()
 		c.conn = nil
@@ -140,7 +150,7 @@ func (c *ClientIMAP) Commande(nom string, args ...argument) ([]*Reponse, error) 
 	}
 	c.tag++
 	tag := fmt.Sprintf("R%03d", c.tag)
-	c.conn.SetDeadline(time.Now().Add(c.delai))
+	c.conn.SetWriteDeadline(time.Now().Add(c.delai)) // (lectures : voir lecteurPatient)
 
 	envoyer := func(s string) error {
 		_, err := io.WriteString(c.conn, s)

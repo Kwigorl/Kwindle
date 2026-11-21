@@ -42,6 +42,7 @@ type fauxServeur struct {
 	motDePasse string
 	ecoute     net.Listener
 	commandes  []string
+	lenteur    time.Duration // > 0 : les grosses réponses arrivent par petits bouts, avec cette pause entre deux
 }
 
 func certificatDeTest(t *testing.T) (tls.Certificate, *x509.CertPool) {
@@ -90,7 +91,17 @@ func (s *fauxServeur) servir(conn net.Conn) {
 	defer conn.Close()
 	r := bufio.NewReader(conn)
 	w := bufio.NewWriter(conn)
-	ecrire := func(f string, a ...interface{}) { fmt.Fprintf(w, f, a...); w.Flush() }
+	ecrire := func(f string, a ...interface{}) {
+		texte := fmt.Sprintf(f, a...)
+		for s.lenteur > 0 && len(texte) > 32*1024 { // connexion lente : par bouts de 32 Ko
+			w.WriteString(texte[:32*1024])
+			w.Flush()
+			texte = texte[32*1024:]
+			time.Sleep(s.lenteur)
+		}
+		w.WriteString(texte)
+		w.Flush()
+	}
 	ecrire("* OK Gimap ready for requests\r\n")
 	connecte := false
 	for {
@@ -501,6 +512,52 @@ func TestReleveComplete(t *testing.T) {
 	}
 	if !strings.Contains(journal.String(), "déjà reçu") {
 		t.Errorf("journal : %s", journal)
+	}
+}
+
+// Un gros e-mail sur un Wi-Fi lent : le téléchargement prend plus longtemps que le délai,
+// mais les données arrivent sans cesse. KoboaExpress ne doit abandonner qu'après un silence.
+func TestGrosEmailLent(t *testing.T) {
+	gros := bytes.Repeat([]byte("PK un livre qui arrive lentement. "), 20000) // ≈ 680 Ko
+	brut := strings.Replace(mailLivre(), b64(epub1), b64(gros), 1)
+	s := &fauxServeur{validite: 7, motDePasse: "abcd efgh ijkl mnop", lenteur: 40 * time.Millisecond}
+	s.ajouter(101, brut, time.Hour)
+	rk, _, journal := preparer(t, s, reglagesTest)
+	rk.Delai = 400 * time.Millisecond // le téléchargement entier prend plus d'une seconde
+	debut := time.Now()
+	bilan, err := rk.Executer()
+	if err != nil {
+		t.Fatalf("relève lente abandonnée au bout de %v : %v\n%s", time.Since(debut), err, journal)
+	}
+	if time.Since(debut) < rk.Delai {
+		t.Fatalf("le faux serveur n'a pas été assez lent (%v)", time.Since(debut))
+	}
+	b, err := os.ReadFile(filepath.Join(rk.Dossier, "Livres", "Légende dorée.epub"))
+	if err != nil || !bytes.Equal(b, gros) || len(bilan.Livres) != 1 {
+		t.Fatalf("livre mal reçu : %d octets sur %d, %v\n%s", len(b), len(gros), err, journal)
+	}
+}
+
+// Un serveur qui ne répond plus du tout : abandon au bout du délai, sans attendre indéfiniment.
+func TestServeurMuet(t *testing.T) {
+	l, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer l.Close()
+	go func() {
+		if conn, err := l.Accept(); err == nil {
+			defer conn.Close()
+			time.Sleep(3 * time.Second) // accepte la connexion mais ne dit jamais bonjour
+		}
+	}()
+	debut := time.Now()
+	_, err = Connecter("127.0.0.1", l.Addr().(*net.TCPAddr).Port, nil, 300*time.Millisecond)
+	if err == nil {
+		t.Fatal("connexion acceptée sans accueil du serveur")
+	}
+	if d := time.Since(debut); d > 2*time.Second {
+		t.Fatalf("abandon trop tardif : %v", d)
 	}
 }
 

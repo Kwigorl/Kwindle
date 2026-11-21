@@ -17,6 +17,8 @@ KEPUB = True                  # livres convertis en KEPUB, le format maison de K
 # envoi par e-mail
 MAX_PJ = 25
 MAX_MAIL = 50 * 1024 * 1024          # Gmail reçoit jusqu'à 50 Mo par e-mail
+MAX_LOT = 11 * 1024 * 1024           # e-mails groupés ≈ 15 Mo une fois encodés : la Kobo
+                                     # les relève vite, même sur un Wi-Fi faible
 NOMS_PJ_ASCII = False                # KoboaExpress garde les accents
 LIBELLE_DESTINATION = "Adresse de la Kobo"
 EXEMPLE_DESTINATION = "prenom+kobo@gmail.com"

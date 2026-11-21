@@ -17,6 +17,7 @@ KEPUB = False                # pas de KEPUB : c'est un format Kobo
 # envoi par e-mail
 MAX_PJ = 25                          # Amazon : 25 pièces jointes maximum par e-mail
 MAX_MAIL = 50 * 1024 * 1024          # Amazon : 50 Mo par e-mail
+MAX_LOT = None                       # pas de limite propre pour les e-mails groupés
 NOMS_PJ_ASCII = True                 # Amazon digère mal les accents dans les noms de pièces jointes
 LIBELLE_DESTINATION = "Adresse Kindle"
 EXEMPLE_DESTINATION = "prenom_xxx@kindle.com"
