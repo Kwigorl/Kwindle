@@ -1,0 +1,87 @@
+KOBOA — tes livres vers ta Kobo
+===============================
+
+Koboa répare tes livres (EPUB abîmés, faux EPUB, anciens fichiers
+Kindle MOBI / AZW3), récupère ceux d'un fichier .torrent, puis les
+envoie par e-mail à ta Kobo. Sur la Kobo, c'est KoboaExpress qui relève
+cette boîte mail et range les livres reçus.
+
+
+AVANT TOUT : KOBOAEXPRESS SUR LA KOBO
+-------------------------------------
+Installe d'abord KoboaExpress sur la liseuse (mode d'emploi dans son
+zip : https://github.com/Kwigorl/Kwindle/releases/tag/kobo).
+Il relève une adresse, par exemple prenom+kobo@gmail.com : c'est
+l'adresse à mettre dans les réglages de Koboa.
+
+
+INSTALLATION (une seule fois)
+-----------------------------
+1. Il faut Python 3.13 (ou 3.10 à 3.12). Les versions plus récentes
+   (3.14…) marchent pour tout SAUF les torrents. S'il n'y a pas de
+   Python, « Lancer Koboa.bat » propose de l'installer (ou ouvre la page
+   de téléchargement : coche alors « Add python.exe to PATH »).
+2. Range le dossier Koboa où tu veux (par ex. dans Documents).
+3. Double-clique sur « Lancer Koboa.bat ». La 1re fois, il installe les
+   composants (une minute environ), puis la fenêtre s'ouvre.
+4. Facultatif : « Creer un raccourci sur le Bureau.bat » pour avoir une
+   icône Koboa sur le Bureau.
+
+
+RÉGLAGES (bouton « Réglages », en haut à droite)
+------------------------------------------------
+- Adresse de la Kobo : celle que relève KoboaExpress
+  (par ex. prenom+kobo@gmail.com).
+- Messagerie qui envoie : n'importe quelle adresse (ça peut être la
+  même boîte Gmail).
+    · Gmail : il faut un « mot de passe d'application » (16 lettres),
+      pas ton mot de passe habituel. Active la validation en 2 étapes,
+      puis crée-le sur myaccount.google.com/apppasswords.
+    · Outlook.com / Hotmail perso : ne marche pas, Microsoft a coupé
+      l'envoi par mot de passe pour ces comptes. Prends une adresse Gmail.
+- « Tester la connexion » vérifie que tout est bon avant d'envoyer.
+
+Le mot de passe est rangé dans le Gestionnaire d'identification de
+Windows, pas dans un fichier. Les réglages sont dans
+%APPDATA%\Koboa\reglages.json.
+
+
+UTILISATION
+-----------
+Glisse tes livres dans la fenêtre (ou « Ajouter des livres… »), puis
+« Transformer et envoyer ». Les livres arrivent sur la Kobo à sa
+prochaine connexion Wi-Fi. Les livres réparés sont aussi gardés dans
+Documents\Koboa. Décoche « Envoyer à ma Kobo » pour seulement les
+réparer (et les copier toi-même avec un câble USB).
+
+La Kobo range elle-même les séries (informations de série du livre) :
+l'option « Mettre le numéro de tome dans le titre » est donc désactivée
+au départ ; active-la si tu préfères trier par titre.
+
+
+TORRENTS
+--------
+Glisse un fichier .torrent dans la fenêtre comme un livre : le
+téléchargement démarre tout de suite, et seuls les livres du torrent
+sont récupérés (EPUB, MOBI, AZW3, PDF). Quand ils apparaissent dans la
+liste, clique sur « Transformer et envoyer ».
+Le torrent reste partagé tant que Koboa est ouvert. Si personne ne le
+partage, Koboa abandonne au bout de 10 minutes.
+La 1re fois, le pare-feu de Windows peut demander d'autoriser Python à
+communiquer : accepte (réseaux privés).
+
+
+CE QUE KOBOA RÉPARE
+-------------------
+- Faux EPUB : fichier MOBI ou AZW3 renommé en .epub
+- MOBI / AZW3 → EPUB (bien mieux lu par la Kobo)
+- Langue absente ou invalide, fichiers mal encodés (latin-1…)
+- HTML mal formé, polices « obfusquées », manifeste faux
+- Images WebP / BMP / TIFF, images énormes
+- Sommaire absent, couverture mal déclarée, archive mal rangée
+
+CE QU'IL NE FAIT PAS
+--------------------
+- Les livres protégés par DRM : il les signale et n'y touche pas.
+- Les fichiers trop gros pour un e-mail (25 Mo avec Gmail) : copie-les
+  sur la Kobo avec un câble USB.

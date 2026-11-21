@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Rekindle — réglages et envoi vers l'adresse Send to Kindle."""
+"""Réglages et envoi des livres par e-mail vers la liseuse (Kindle ou Kobo, selon la saveur)."""
 
 import json
 import os
@@ -11,6 +11,7 @@ from collections import OrderedDict
 from email.message import EmailMessage
 from email.utils import formatdate, make_msgid
 
+import saveur
 from rekindle_moteur import nom_fichier_sur
 
 try:
@@ -18,8 +19,8 @@ try:
 except Exception:
     keyring = None
 
-SERVICE = "Rekindle"
-ANCIENS_NOMS = ("Kwindle", "Kindlixo")
+SERVICE = saveur.NOM
+ANCIENS_NOMS = tuple(saveur.ANCIENS_NOMS)
 
 FOURNISSEURS = OrderedDict([
     ("Gmail", dict(serveur="smtp.gmail.com", port=465, securite="SSL",
@@ -49,7 +50,7 @@ FOURNISSEURS = OrderedDict([
                    aide="Renseigne le serveur d'envoi (SMTP) de ta messagerie.", lien="", limite=None)),
 ])
 
-PAGE_AMAZON = "https://www.amazon.fr/mycd"
+PAGE_AMAZON = saveur.PAGE_AIDE
 
 
 def dossier_config():
@@ -57,14 +58,14 @@ def dossier_config():
         base = os.environ.get("APPDATA") or os.path.expanduser("~")
     else:
         base = os.environ.get("XDG_CONFIG_HOME") or os.path.expanduser("~/.config")
-    d = os.path.join(base, "Rekindle")
+    d = os.path.join(base, saveur.NOM)
     os.makedirs(d, exist_ok=True)
     return d
 
 
 def dossier_documents():
     docs = os.path.join(os.path.expanduser("~"), "Documents")
-    return os.path.join(docs if os.path.isdir(docs) else os.path.expanduser("~"), "Rekindle")
+    return os.path.join(docs if os.path.isdir(docs) else os.path.expanduser("~"), saveur.NOM)
 
 
 DEFAUTS = {
@@ -78,7 +79,7 @@ DEFAUTS = {
     "dossier_sortie": "",
     "envoyer": True,
     "langue": "fr",
-    "tome_dans_titre": True,
+    "tome_dans_titre": saveur.TOME_DANS_TITRE,
 }
 
 
@@ -135,11 +136,9 @@ class Reglages(dict):
 
     def probleme(self):
         """Ce qui manque pour pouvoir envoyer (None si tout va bien)."""
-        k = (self.get("kindle") or "").strip().lower()
-        if not k:
-            return "Indique ton adresse Kindle dans les réglages."
-        if not (k.endswith("@kindle.com") or k.endswith("@free.kindle.com")):
-            return "L'adresse Kindle doit finir par @kindle.com."
+        p = saveur.probleme_destination(self.get("kindle"))
+        if p:
+            return p
         if not (self.get("expediteur") or "").strip():
             return "Indique l'adresse e-mail qui envoie les livres."
         if not (self.get("serveur") or "").strip():
@@ -212,8 +211,8 @@ def tester(cfg, mdp=None):
         pass
 
 
-MAX_PJ = 25                      # Amazon : 25 pièces jointes maximum par e-mail
-MAX_AMAZON = 50 * 1024 * 1024    # Amazon : 50 Mo par e-mail
+MAX_PJ = saveur.MAX_PJ           # pièces jointes par e-mail (Amazon : 25)
+MAX_AMAZON = saveur.MAX_MAIL     # taille d'un e-mail côté liseuse (Amazon : 50 Mo)
 MAX_LOT_INCONNU = 18 * 1024 * 1024
 
 
@@ -227,7 +226,7 @@ def limites(cfg):
 
 
 def faire_lots(livres, cfg):
-    """Regroupe des livres en e-mails (un e-mail = une seule vérification Amazon).
+    """Regroupe des livres en e-mails (pour la Kindle : un e-mail = une seule vérification Amazon).
 
     `livres` : liste de dicts avec au moins la clé "chemin".
     Renvoie (lots, trop_gros) : liste de listes de livres, et livres impossibles à envoyer par e-mail.
@@ -255,11 +254,11 @@ def faire_lots(livres, cfg):
 def message_trop_gros(cfg, chemin):
     taille = os.path.getsize(chemin) / 1048576
     limite = FOURNISSEURS.get(cfg.get("fournisseur"), {}).get("limite")
-    if limite and taille <= 50:
-        return ("Fichier de %.0f Mo : trop gros pour %s (pièces jointes limitées à %d Mo). "
-                "Utilise amazon.fr/sendtokindle (jusqu'à 200 Mo)." % (taille, cfg["fournisseur"], limite))
-    return ("Fichier de %.0f Mo : Amazon limite l'e-mail à 50 Mo. "
-            "Utilise amazon.fr/sendtokindle (jusqu'à 200 Mo)." % taille)
+    if limite and taille <= MAX_AMAZON / 1048576:
+        return ("Fichier de %.0f Mo : trop gros pour %s (pièces jointes limitées à %d Mo). %s"
+                % (taille, cfg["fournisseur"], limite, saveur.CONSEIL_GROS_FICHIER))
+    return ("Fichier de %.0f Mo : trop gros pour un e-mail vers la %s (%d Mo au plus). %s"
+            % (taille, saveur.LISEUSE, MAX_AMAZON / 1048576, saveur.CONSEIL_GROS_FICHIER))
 
 
 def envoyer_lot(cfg, livres):
@@ -273,8 +272,8 @@ def envoyer_lot(cfg, livres):
     if len(livres) == 1:
         msg["Subject"] = livres[0][1] or "Livre"
     else:
-        msg["Subject"] = "Rekindle : %d livres" % len(livres)
-    msg.set_content("Livres envoyés par Rekindle :\n" + "\n".join(
+        msg["Subject"] = "%s : %d livres" % (saveur.NOM, len(livres))
+    msg.set_content("Livres envoyés par %s :\n" % saveur.NOM + "\n".join(
         "- %s%s" % (titre or os.path.basename(chemin), " (%s)" % auteur if auteur else "")
         for chemin, titre, auteur in livres) + "\n")
     noms = set()
@@ -284,7 +283,7 @@ def envoyer_lot(cfg, livres):
         base = titre or os.path.splitext(os.path.basename(chemin))[0]
         if auteur:
             base += " - " + auteur
-        base = nom_fichier_sur(base, ascii_seul=True)
+        base = nom_fichier_sur(base, ascii_seul=saveur.NOMS_PJ_ASCII)
         nom_pj, n = base + ext, 2
         while nom_pj.lower() in noms:
             nom_pj = "%s (%d)%s" % (base, n, ext)
@@ -296,7 +295,7 @@ def envoyer_lot(cfg, livres):
     try:
         s.send_message(msg)
     except smtplib.SMTPRecipientsRefused:
-        raise ErreurEnvoi("Adresse Kindle refusée : vérifie-la dans les réglages.")
+        raise ErreurEnvoi(saveur.DESTINATION_REFUSEE)
     except smtplib.SMTPSenderRefused as exc:
         raise ErreurEnvoi("Expéditeur refusé par le serveur (%s)." % exc.smtp_error.decode("utf-8", "ignore"))
     except smtplib.SMTPDataError as exc:
