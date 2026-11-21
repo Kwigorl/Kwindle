@@ -413,7 +413,7 @@ type fausseKobo struct {
 func (k *fausseKobo) Message(t string)                   { k.messages = append(k.messages, t) }
 func (k *fausseKobo) ActualiserBibliotheque(mode string) { k.actualisations++ }
 
-func preparer(t *testing.T, s *fauxServeur, reglages string) (*Rekobo, *fausseKobo, *bytes.Buffer) {
+func preparer(t *testing.T, s *fauxServeur, reglages string) (*KoboaExpress, *fausseKobo, *bytes.Buffer) {
 	port, pool := demarrerServeur(t, s)
 	dossier := t.TempDir()
 	reglages = strings.ReplaceAll(reglages, "PORT", strconv.Itoa(port))
@@ -422,7 +422,7 @@ func preparer(t *testing.T, s *fauxServeur, reglages string) (*Rekobo, *fausseKo
 	}
 	var journal bytes.Buffer
 	k := &fausseKobo{}
-	rk := &Rekobo{Dossier: dossier, Racines: pool, Journal: log.New(&journal, "", 0), Kobo: k,
+	rk := &KoboaExpress{Dossier: dossier, Racines: pool, Journal: log.New(&journal, "", 0), Kobo: k,
 		Delai: 10 * time.Second, Attente: 5 * time.Second}
 	return rk, k, &journal
 }
@@ -557,7 +557,7 @@ func TestChangementDeBoite(t *testing.T) {
 
 func TestPremiereFoisSansReglages(t *testing.T) {
 	dossier := t.TempDir()
-	rk := &Rekobo{Dossier: dossier, Journal: log.New(io.Discard, "", 0), Kobo: &fausseKobo{}}
+	rk := &KoboaExpress{Dossier: dossier, Journal: log.New(io.Discard, "", 0), Kobo: &fausseKobo{}}
 	if _, err := rk.Executer(); err != ErrPasConfigure {
 		t.Fatalf("attendu ErrPasConfigure, reçu %v", err)
 	}

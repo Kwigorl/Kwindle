@@ -1,4 +1,4 @@
-name: Rekobo (Kobo)
+name: KoboaExpress (Kobo)
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
   contents: write
 
 jobs:
-  rekobo:
+  koboaexpress:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     defaults:
@@ -42,20 +42,20 @@ jobs:
           sudo apt-get install -y -qq qemu-user || sudo apt-get install -y -qq qemu-user-static
           QEMU=$(command -v qemu-arm || command -v qemu-arm-static)
           echo "émulateur : $QEMU"
-          CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=7 go test -c -o rekobo-arm.test .
-          "$QEMU" ./rekobo-arm.test -test.v -test.count=1
+          CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=7 go test -c -o koboaexpress-arm.test .
+          "$QEMU" ./koboaexpress-arm.test -test.v -test.count=1
 
-      - name: Fabriquer Rekobo.zip
+      - name: Fabriquer KoboaExpress.zip
         run: |
           ./fabriquer.sh
-          go version construction/racine/usr/local/rekobo/rekobo
-          file construction/racine/usr/local/rekobo/rekobo
-          unzip -l construction/Rekobo.zip
+          go version construction/racine/usr/local/koboaexpress/koboaexpress
+          file construction/racine/usr/local/koboaexpress/koboaexpress
+          unzip -l construction/KoboaExpress.zip
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Rekobo
-          path: kobo/construction/Rekobo.zip
+          name: KoboaExpress
+          path: kobo/construction/KoboaExpress.zip
           retention-days: 30
 
       - name: Publier la release « kobo »
@@ -63,15 +63,15 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release delete kobo --yes --cleanup-tag || true
-          gh release create kobo construction/Rekobo.zip \
-            --title "Rekobo pour Kobo (build ${{ github.run_number }})" \
+          gh release create kobo construction/KoboaExpress.zip \
+            --title "KoboaExpress pour Kobo (build ${{ github.run_number }})" \
             --notes "Recevoir des livres par e-mail sur une Kobo. Mode d'emploi dans LISEZ-MOI.txt. Compilé depuis ${{ github.sha }}." \
             --latest=false
 
-      - name: Mettre le zip sur la branche rekobo
+      - name: Mettre le zip sur la branche koboaexpress
         run: |
-          mkdir /tmp/branche && cp construction/Rekobo.zip /tmp/branche/ && cd /tmp/branche
-          git init -q && git checkout -q -b rekobo && git add Rekobo.zip
+          mkdir /tmp/branche && cp construction/KoboaExpress.zip /tmp/branche/ && cd /tmp/branche
+          git init -q && git checkout -q -b koboaexpress && git add KoboaExpress.zip
           git -c user.name="github-actions" -c user.email="github-actions@users.noreply.github.com" \
-            commit -qm "Rekobo build ${{ github.run_number }} (${{ github.sha }})"
-          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" rekobo
+            commit -qm "KoboaExpress build ${{ github.run_number }} (${{ github.sha }})"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" koboaexpress

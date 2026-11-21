@@ -1,7 +1,7 @@
-// Rekobo : reçoit des livres par e-mail sur une liseuse Kobo.
+// KoboaExpress : reçoit des livres par e-mail sur une liseuse Kobo.
 //
-// À chaque connexion Wi-Fi (ou depuis NickelMenu), Rekobo relève une boîte mail
-// en IMAP, enregistre les livres reçus en pièce jointe dans Rekobo/Livres sur la
+// À chaque connexion Wi-Fi (ou depuis NickelMenu), KoboaExpress relève une boîte mail
+// en IMAP, enregistre les livres reçus en pièce jointe dans KoboaExpress/Livres sur la
 // liseuse, puis demande à la Kobo de les ajouter à sa bibliothèque.
 package main
 
@@ -139,7 +139,7 @@ func lireEtat(chemin string) Etat {
 
 func ecrireEtat(chemin string, e Etat) error {
 	tmp := chemin + ".tmp"
-	contenu := fmt.Sprintf("# état de Rekobo (ne pas modifier)\nuidvalidity=%d\ndernier_uid=%d\n", e.UIDValidity, e.DernierUID)
+	contenu := fmt.Sprintf("# état de KoboaExpress (ne pas modifier)\nuidvalidity=%d\ndernier_uid=%d\n", e.UIDValidity, e.DernierUID)
 	if err := os.WriteFile(tmp, []byte(contenu), 0o644); err != nil {
 		return err
 	}
@@ -219,8 +219,8 @@ type Bilan struct {
 	Ignores []string
 }
 
-type Rekobo struct {
-	Dossier string // dossier Rekobo sur la liseuse (réglages, journal, état, Livres)
+type KoboaExpress struct {
+	Dossier string // dossier KoboaExpress sur la liseuse (réglages, journal, état, Livres)
 	Racines *x509.CertPool
 	Journal *log.Logger
 	Kobo    Kobo
@@ -228,13 +228,13 @@ type Rekobo struct {
 	Attente time.Duration // attente maximale du réseau
 }
 
-func (rk *Rekobo) cheminReglages() string { return filepath.Join(rk.Dossier, "reglages.ini") }
-func (rk *Rekobo) cheminEtat() string     { return filepath.Join(rk.Dossier, ".etat") }
-func (rk *Rekobo) dossierLivres() string  { return filepath.Join(rk.Dossier, "Livres") }
+func (rk *KoboaExpress) cheminReglages() string { return filepath.Join(rk.Dossier, "reglages.ini") }
+func (rk *KoboaExpress) cheminEtat() string     { return filepath.Join(rk.Dossier, ".etat") }
+func (rk *KoboaExpress) dossierLivres() string  { return filepath.Join(rk.Dossier, "Livres") }
 
-var ErrPasConfigure = errors.New("Rekobo n'est pas encore réglé")
+var ErrPasConfigure = errors.New("KoboaExpress n'est pas encore réglé")
 
-func (rk *Rekobo) attendreReseau(serveur string) error {
+func (rk *KoboaExpress) attendreReseau(serveur string) error {
 	limite := time.Now().Add(rk.Attente)
 	for {
 		if _, err := net.LookupHost(serveur); err == nil {
@@ -247,7 +247,7 @@ func (rk *Rekobo) attendreReseau(serveur string) error {
 }
 
 // Executer relève la boîte et range les livres reçus.
-func (rk *Rekobo) Executer() (*Bilan, error) {
+func (rk *KoboaExpress) Executer() (*Bilan, error) {
 	reg, err := lireReglages(rk.cheminReglages())
 	if errors.Is(err, os.ErrNotExist) {
 		os.MkdirAll(rk.Dossier, 0o755)
@@ -355,7 +355,7 @@ func (rk *Rekobo) Executer() (*Bilan, error) {
 	return bilan, nil
 }
 
-func (rk *Rekobo) traiterMessage(c *ClientIMAP, reg *Reglages, uid uint32, bilan *Bilan) error {
+func (rk *KoboaExpress) traiterMessage(c *ClientIMAP, reg *Reglages, uid uint32, bilan *Bilan) error {
 	contenus, err := c.Recuperer([]uint32{uid}, "BODY.PEEK[]")
 	if err != nil {
 		return err
@@ -402,8 +402,8 @@ func (rk *Rekobo) traiterMessage(c *ClientIMAP, reg *Reglages, uid uint32, bilan
 	return nil
 }
 
-// enregistrer range un livre dans Rekobo/Livres (sans écraser un autre livre du même nom).
-func (rk *Rekobo) enregistrer(p PieceJointe) (string, bool, error) {
+// enregistrer range un livre dans KoboaExpress/Livres (sans écraser un autre livre du même nom).
+func (rk *KoboaExpress) enregistrer(p PieceJointe) (string, bool, error) {
 	nom := NomDeFichierSur(p.Nom)
 	ext := filepath.Ext(nom)
 	if strings.HasSuffix(strings.ToLower(nom), ".kepub.epub") {
@@ -466,7 +466,7 @@ func ouvrirJournal(dossier string) (*log.Logger, *os.File) {
 
 // verrou : une seule relève à la fois (Wi-Fi + NickelMenu en même temps, par ex.)
 func verrouiller() (*os.File, bool) {
-	f, err := os.OpenFile("/tmp/rekobo.lock", os.O_CREATE|os.O_RDWR, 0o644)
+	f, err := os.OpenFile("/tmp/koboaexpress.lock", os.O_CREATE|os.O_RDWR, 0o644)
 	if err != nil {
 		return nil, true
 	}
@@ -478,8 +478,8 @@ func verrouiller() (*os.File, bool) {
 }
 
 func main() {
-	dossier := flag.String("dossier", "/mnt/onboard/Rekobo", "dossier de Rekobo sur la liseuse")
-	origine := flag.String("origine", "manuel", "qui lance Rekobo (wifi, manuel)")
+	dossier := flag.String("dossier", "/mnt/onboard/KoboaExpress", "dossier de KoboaExpress sur la liseuse")
+	origine := flag.String("origine", "manuel", "qui lance KoboaExpress (wifi, manuel)")
 	flag.Parse()
 
 	journal, fichier := ouvrirJournal(*dossier)
@@ -495,21 +495,21 @@ func main() {
 		defer verrou.Close()
 	}
 	kobo := vraieKobo{journal: journal}
-	journal.Printf("— Rekobo %s (%s)", version, *origine)
-	rk := &Rekobo{Dossier: *dossier, Racines: racinesCertificats(), Journal: journal, Kobo: kobo,
+	journal.Printf("— KoboaExpress %s (%s)", version, *origine)
+	rk := &KoboaExpress{Dossier: *dossier, Racines: racinesCertificats(), Journal: journal, Kobo: kobo,
 		Delai: 90 * time.Second, Attente: 90 * time.Second}
 	bilan, err := rk.Executer()
 	switch {
 	case errors.Is(err, ErrPasConfigure):
-		journal.Printf("à régler : remplis Rekobo/reglages.ini (adresse et mot de passe)")
+		journal.Printf("à régler : remplis KoboaExpress/reglages.ini (adresse et mot de passe)")
 		if *origine == "manuel" {
-			kobo.Message("Rekobo : remplis d'abord le fichier Rekobo/reglages.ini")
+			kobo.Message("KoboaExpress : remplis d'abord le fichier KoboaExpress/reglages.ini")
 		}
 		return
 	case err != nil:
 		journal.Printf("ERREUR : %v", err)
 		if *origine == "manuel" || !strings.Contains(err.Error(), "pas de connexion") {
-			kobo.Message("Rekobo : " + err.Error())
+			kobo.Message("KoboaExpress : " + err.Error())
 		}
 	}
 	if bilan == nil {
@@ -517,9 +517,9 @@ func main() {
 	}
 	if n := len(bilan.Livres); n > 0 {
 		sort.Strings(bilan.Livres)
-		texte := fmt.Sprintf("Rekobo : %d nouveau livre reçu", n)
+		texte := fmt.Sprintf("KoboaExpress : %d nouveau livre reçu", n)
 		if n > 1 {
-			texte = fmt.Sprintf("Rekobo : %d nouveaux livres reçus", n)
+			texte = fmt.Sprintf("KoboaExpress : %d nouveaux livres reçus", n)
 		}
 		kobo.Message(texte)
 		reg, _ := lireReglages(rk.cheminReglages())
@@ -529,6 +529,6 @@ func main() {
 		}
 		kobo.ActualiserBibliotheque(mode)
 	} else if *origine == "manuel" && err == nil {
-		kobo.Message("Rekobo : pas de nouveau livre")
+		kobo.Message("KoboaExpress : pas de nouveau livre")
 	}
 }

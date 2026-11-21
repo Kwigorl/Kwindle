@@ -1,0 +1,3 @@
+# KoboaExpress : relève les livres reçus par e-mail quand le Wi-Fi s'allume
+KERNEL=="eth*", ACTION=="add", RUN+="/usr/local/koboaexpress/lancer.sh wifi"
+KERNEL=="wlan*", ACTION=="add", RUN+="/usr/local/koboaexpress/lancer.sh wifi"
