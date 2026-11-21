@@ -1,0 +1,200 @@
+11-21 16:41:38.928  4131  4234 I TestRunner: started: ecranPrincipal(fr.kwigorl.kwindle.FumeeTest)
+11-21 16:41:38.932  4131  4234 W Settings: Setting always_finish_activities has moved from android.provider.Settings.System to android.provider.Settings.Global, returning read-only value.
+11-21 16:41:38.970   836   896 D SplashScreenView: Build android.window.SplashScreenView{16f130d V.E...... ......ID 0,0-0,0}
+11-21 16:41:38.970   836   896 D SplashScreenView: Icon: view: null drawable: null size: 0
+11-21 16:41:38.970   836   896 D SplashScreenView: Branding: view: android.view.View{d2742c2 G.ED..... ......I. 0,0-0,0 #10204ef android:id/splashscreen_branding_view} drawable: null size w: 0 h: 0
+11-21 16:41:38.985   399   399 I BpBinder: onLastStrongRef automatically unlinking death recipients:
+11-21 16:41:39.000  4131  5322 D libEGL  : loaded /vendor/lib64/egl/libEGL_emulation.so
+11-21 16:41:39.001  4131  5322 D libEGL  : loaded /vendor/lib64/egl/libGLESv1_CM_emulation.so
+11-21 16:41:39.006  4131  5322 D libEGL  : loaded /vendor/lib64/egl/libGLESv2_emulation.so
+11-21 16:41:39.008  1097  1903 D EGL_emulation: app_time_stats: avg=8841.95ms min=16.95ms max=17666.96ms count=2
+11-21 16:41:39.059  4131  4131 D LifecycleMonitor: Lifecycle status change: fr.kwigorl.kwindle.MainActivity@3618ea4 in: PRE_ON_CREATE
+11-21 16:41:39.059  4131  4131 V ActivityScenario: Activity lifecycle changed event received but ignored because the reported transition was not ON_CREATE while the last known transition was PRE_ON_CREATE
+11-21 16:41:39.092  4683  4683 D BoundBrokerSvc: onBind: Intent { act=com.google.android.contextmanager.service.ContextManagerService.START pkg=com.google.android.gms }
+11-21 16:41:39.092  4683  4683 D BoundBrokerSvc: Loading bound service for intent: Intent { act=com.google.android.contextmanager.service.ContextManagerService.START pkg=com.google.android.gms }
+11-21 16:41:39.097  4131  4131 D LifecycleMonitor: Lifecycle status change: fr.kwigorl.kwindle.MainActivity@3618ea4 in: CREATED
+11-21 16:41:39.097  4131  4131 V ActivityScenario: Update currentActivityStage to CREATED, currentActivity=fr.kwigorl.kwindle.MainActivity@3618ea4
+11-21 16:41:39.098  4131  4131 D LifecycleMonitor: Lifecycle status change: fr.kwigorl.kwindle.MainActivity@3618ea4 in: STARTED
+11-21 16:41:39.098  4131  4131 V ActivityScenario: Update currentActivityStage to STARTED, currentActivity=fr.kwigorl.kwindle.MainActivity@3618ea4
+11-21 16:41:39.100  4131  4131 D LifecycleMonitor: Lifecycle status change: fr.kwigorl.kwindle.MainActivity@3618ea4 in: RESUMED
+11-21 16:41:39.100  4131  4131 V ActivityScenario: Update currentActivityStage to RESUMED, currentActivity=fr.kwigorl.kwindle.MainActivity@3618ea4
+11-21 16:41:39.104  4131  4131 D CompatibilityChangeReporter: Compat change id reported: 237531167; UID 10192; state: DISABLED
+11-21 16:41:39.106  4131  4131 W OpenGLRenderer: Unknown dataspace 0
+11-21 16:41:39.157  5004  5004 W rules.WifiRx: FenceState currentState is not true
+11-21 16:41:39.160  5004  5004 W rules.WifiRx: FenceState currentState is not true
+11-21 16:41:39.197   836   907 D EGL_emulation: app_time_stats: avg=25743.85ms min=25743.85ms max=25743.85ms count=1
+11-21 16:41:39.258  4131  4131 W kwigorl.kwindle: Accessing hidden method Landroid/os/SystemProperties;->addChangeCallback(Ljava/lang/Runnable;)V (unsupported, reflection, allowed)
+11-21 16:41:39.414   399  1081 W ServiceManagerCppClient: Permission failure: android.permission.ROTATE_SURFACE_FLINGER from uid=10192 pid=0
+11-21 16:41:39.414   399  1081 D PermissionCache: checking android.permission.ROTATE_SURFACE_FLINGER for uid=10192 => denied (138 us)
+11-21 16:41:39.414   399  1081 W ServiceManagerCppClient: Permission failure: android.permission.INTERNAL_SYSTEM_WINDOW from uid=10192 pid=0
+11-21 16:41:39.414   399  1081 D PermissionCache: checking android.permission.INTERNAL_SYSTEM_WINDOW for uid=10192 => denied (193 us)
+11-21 16:41:39.415   399  1081 W ServiceManagerCppClient: Permission failure: android.permission.ACCESS_SURFACE_FLINGER from uid=10192 pid=0
+11-21 16:41:39.415   399   416 W ServiceManagerCppClient: Permission failure: android.permission.ACCESS_SURFACE_FLINGER from uid=10192 pid=4131
+11-21 16:41:39.415   399  1081 D PermissionCache: checking android.permission.ACCESS_SURFACE_FLINGER for uid=10192 => denied (579 us)
+11-21 16:41:39.415   399   416 D PermissionCache: checking android.permission.ACCESS_SURFACE_FLINGER for uid=10192 => denied (482 us)
+11-21 16:41:39.425  4131  5320 W OpenGLRenderer: Failed to initialize 101010-2 format, error = EGL_SUCCESS
+11-21 16:41:39.439   134   134 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device VINTF manifest.
+11-21 16:41:39.440  4131  5320 I Gralloc4: mapper 4.x is not supported
+11-21 16:41:39.655  4683  4807 W ctxmgr  : [NetworkStateProducer] No state change for network connection context [CONTEXT service_id=47 ]
+11-21 16:41:39.972  4131  4144 I OpenGLRenderer: Davey! duration=849ms; Flags=1, FrameTimelineVsyncId=4616, IntendedVsync=143851077668, Vsync=143851077668, InputEventId=0, HandleInputStart=143851955389, AnimationStart=143851959524, PerformTraversalsStart=143851961114, DrawStart=144191665618, FrameDeadline=143867744334, FrameInterval=143851936740, FrameStartTime=16666666, SyncQueued=144210067400, SyncStart=144210363257, IssueDrawCommandsStart=144210726764, SwapBuffers=144643947076, FrameCompleted=144701171902, DequeueBufferDuration=3790, QueueBufferDuration=239288, GpuCompleted=144701171902, SwapBuffersCompleted=144700230949, DisplayPresentTime=0, CommandSubmissionCompleted=144643947076,
+11-21 16:41:39.973   523  3968 W ServiceManagerCppClient: Permission failure: android.permission.ROTATE_SURFACE_FLINGER from uid=10192 pid=0
+11-21 16:41:39.973  4131  4131 I Choreographer: Skipped 47 frames!  The application may be doing too much work on its main thread.
+11-21 16:41:39.973   523  3968 D PermissionCache: checking android.permission.ROTATE_SURFACE_FLINGER for uid=10192 => denied (696 us)
+11-21 16:41:39.974   523  3968 W ServiceManagerCppClient: Permission failure: android.permission.INTERNAL_SYSTEM_WINDOW from uid=10192 pid=0
+11-21 16:41:39.974   523  3968 D PermissionCache: checking android.permission.INTERNAL_SYSTEM_WINDOW for uid=10192 => denied (286 us)
+11-21 16:41:39.974   523  3968 W ServiceManagerCppClient: Permission failure: android.permission.ACCESS_SURFACE_FLINGER from uid=10192 pid=0
+11-21 16:41:39.974   523  3968 D PermissionCache: checking android.permission.ACCESS_SURFACE_FLINGER for uid=10192 => denied (288 us)
+11-21 16:41:39.978   523   540 W ziparchive: Unable to open '/data/app/~~tWBEZdwaOp367x3vFEVp8A==/fr.kwigorl.kwindle-PsJwbMdzk8k7Xvmf0TmTpA==/base.dm': No such file or directory
+11-21 16:41:39.978   523   540 I ActivityTaskManager: Displayed fr.kwigorl.kwindle/.MainActivity for user 0: +1s37ms
+11-21 16:41:39.982  1097  1097 I ActivityThread: Schedule relaunch activity: com.google.android.apps.nexuslauncher.NexusLauncherActivity
+11-21 16:41:39.985  1097  2068 D OneSearchSuggestProvider: Shut down the binder channel
+11-21 16:41:39.986  1097  1121 I IPCThreadState: oneway function results for code 2 on binder at 0x7fc2a08c1e30 will be dropped but finished with status UNKNOWN_TRANSACTION
+11-21 16:41:39.991  1097  1128 I ImeTracker: com.google.android.apps.nexuslauncher:932e3919: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+11-21 16:41:39.992   523   908 I ImeTracker: com.google.android.apps.nexuslauncher:932e3919: onCancelled at PHASE_SERVER_SHOULD_HIDE
+11-21 16:41:39.993  1027  1320 D BtGatt.ScanManager: uid 10131 isForeground true scanMode -1
+11-21 16:41:39.993  1027  1320 D BtGatt.ScanManager: uid 10131 isForeground true scanMode -1
+11-21 16:41:39.993   523  2020 I ImeTracker: fr.kwigorl.kwindle:677cc585: onRequestHide at ORIGIN_SERVER_HIDE_INPUT reason HIDE_UNSPECIFIED_WINDOW
+11-21 16:41:39.994   523  2020 I ImeTracker: fr.kwigorl.kwindle:677cc585: onCancelled at PHASE_SERVER_SHOULD_HIDE
+11-21 16:41:39.995   836   836 D StatusBarIconController: ignoring old pipeline callback because the new wifi icon is enabled
+11-21 16:41:39.996  4131  4234 W SurfaceComposerClient: Sync transaction timed out waiting for commit callback.
+11-21 16:41:40.005  1027  1320 D BtGatt.ScanManager: uid 10131 isForeground true scanMode -1
+11-21 16:41:40.005  1027  1320 D BtGatt.ScanManager: uid 10131 isForeground true scanMode -1
+11-21 16:41:40.006  1507  1507 I GoogleInputMethodService: GoogleInputMethodService.onFinishInput():3227
+11-21 16:41:40.007   836   895 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@186d309
+11-21 16:41:40.008  1507  1507 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 0, unlocked = true
+11-21 16:41:40.008  1507  1507 I GoogleInputMethodService: GoogleInputMethodService.onStartInput():1877 onStartInput(EditorInfo{inputType=0x0(NULL) imeOptions=0x0 privateImeOptions=null actionName=UNSPECIFIED actionLabel=null actionId=0 initialSelStart=-1 initialSelEnd=-1 initialCapsMode=0x0 hintText=null label=null packageName=fr.kwigorl.kwindle fieldId=0 fieldName=null extras=null}, false)
+11-21 16:41:40.008  1507  1507 I GoogleInputMethodService: GoogleInputMethodService.shouldHideHeaderOnInitialState():4008 ShouldHideHeaderOnInitialState = false
+11-21 16:41:40.008  1507  1507 I GoogleInputMethodService: GoogleInputMethodService.updateDeviceLockedStatus():2087 repeatCheckTimes = 2, unlocked = true
+11-21 16:41:40.010  1507  1507 I DeviceModeUtil: DeviceModeUtil.getDeviceMode():122 Get device mode phone by ui mode:1 and smallestScreenWidthDp:320
+11-21 16:41:40.010  1507  1507 I KeyboardModeManager: KeyboardModeManager.setInputView():364 setInputView() : supportsOneHandedMode=true
+11-21 16:41:40.010  1507  1507 I NormalModeController: NormalModeController.getKeyboardBodyViewHolderPaddingBottom():116 currentPrimeKeyboardType:SOFT systemPaddingBottom:-1
+11-21 16:41:40.010  1507  1507 I KeyboardModeManager: KeyboardModeManager.setInputView():356 setInputView() : entry=hwn{languageTag=en-US, variant=qwerty, hasLocalizedResources=true, conditionCacheKey=_device=phone_device_size=default_enable_adaptive_text_editing=true_enable_inline_suggestions_on_client_side=false_enable_large_tablet_batch_1=false_enable_large_tablet_batch_2=false_enable_more_candidates_view_for_multilingual=false_enable_nav_redesign=false_enable_number_row=false_enable_preemptive_decode=true_enable_secondary_symbols=false_expressions=normal_four_or_more_letter_rows=false_keyboard_mode=normal_language=en-US_orientation=portrait_physical_keyboard=qwerty_show_secondary_digits=true_show_suggestions=true_split_with_duplicate_keys=true_variant=qwerty, imeDef.stringId=ime_english_united_states, imeDef.className=com.google.android.apps.inputmethod.libs.latin5.LatinIme, imeDef.languageTag=en-US}
+11-21 16:41:40.013  1507  1507 I StyledKeyboardTheme: StyledKeyboardTheme.<init>():87 Pref: [], themeName: [silk:], darkMode: [false], cacheKey: [overlay_builtin_dynamic_color_light_base.binarypb:dynamic-light-fff1f0f7-ffb2c5ff-734dbefe1e6f4840c010420f35e14fb0]
+11-21 16:41:40.013  1507  1507 I DeviceModeUtil: DeviceModeUtil.getDeviceMode():122 Get device mode phone by ui mode:1 and smallestScreenWidthDp:320
+11-21 16:41:40.013  1507  1507 I DeviceModeUtil: DeviceModeUtil.getDeviceMode():122 Get device mode phone by ui mode:1 and smallestScreenWidthDp:320
+11-21 16:41:40.013  1507  1507 I DeviceModeUtil: DeviceModeUtil.getDeviceMode():122 Get device mode phone by ui mode:1 and smallestScreenWidthDp:320
+11-21 16:41:40.013  1507  1507 I DeviceModeUtil: DeviceModeUtil.getDeviceMode():122 Get device mode phone by ui mode:1 and smallestScreenWidthDp:320
+11-21 16:41:40.013  1507  1507 I DeviceModeUtil: DeviceModeUtil.getDeviceMode():122 Get device mode phone by ui mode:1 and smallestScreenWidthDp:320
+11-21 16:41:40.013  1507  1507 I GoogleInputMethodService: GoogleInputMethodService.initializeKeyboardTheme():1343 Apply keyboard theme: theme_border_stylesheet_noshadow_gsans_pillkey_silkpopup_refinedkp_materiallight_phone_300_overlay_builtin_dynamic_color_light_base.binarypb:dynamic-light-fff1f0f7-ffb2c5ff-734dbefe1e6f4840c010420f35e14fb0_port
+11-21 16:41:40.015  1507  1507 I GoogleInputMethodService: GoogleInputMethodService.onCreateInputView():1768 onCreateInputView()
+11-21 16:41:40.015   523  2349 W InputManager-JNI: Input channel object '68879eb Splash Screen fr.kwigorl.kwindle (client)' was disposed without first being removed with the input manager!
+11-21 16:41:40.023  1824  2993 I PBSessionCacheImpl: Deleted sessionId[8023832115443035] from persistence.
+11-21 16:41:40.031  1824  2396 W SearchServiceCore: Abort, client detached.
+11-21 16:41:40.031  1824  2396 W SearchServiceCore: Abort, client detached.
+11-21 16:41:40.031  1824  2396 W SearchServiceCore: Abort, client detached.
+11-21 16:41:40.031  1824  2396 W SearchServiceCore: Abort, client detached.
+11-21 16:41:40.040  1824  2396 W SearchServiceCore: Abort, client detached.
+11-21 16:41:40.040  1824  2396 W SearchServiceCore: Abort, client detached.
+11-21 16:41:40.040  1824  2396 W SearchServiceCore: Abort, client detached.
+11-21 16:41:40.040  1097  1097 D b/254119092: clearActivity
+11-21 16:41:40.040  1097  1097 D b/254119092: mActivity and mContext agree taskbarIsPresent=false
+11-21 16:41:40.041  1507  1507 I DeviceModeUtil: DeviceModeUtil.getDeviceMode():122 Get device mode phone by ui mode:1 and smallestScreenWidthDp:320
+11-21 16:41:40.042  1507  1507 I KeyboardViewUtil: KeyboardViewUtil.getKeyboardHeightRatio():189 systemKeyboardHeightRatio:1.000000; userKeyboardHeightRatio:1.000000.
+11-21 16:41:40.047  4683  5195 I FontLog : Updating from directory version 0 to 25 from disk [CONTEXT service_id=132 ]
+11-21 16:41:40.048  4683  4751 I FontLog : Using directory in FlatBuffer format [CONTEXT service_id=132 ]
+11-21 16:41:40.050  1507  1507 I DeviceModeUtil: DeviceModeUtil.getDeviceMode():122 Get device mode phone by ui mode:1 and smallestScreenWidthDp:320
+11-21 16:41:40.050  1507  1507 I KeyboardModeManager: KeyboardModeManager.setInputView():364 setInputView() : supportsOneHandedMode=true
+11-21 16:41:40.050  1507  1507 I AndroidIME: KeyboardViewManager.updateKeyboardBackgroundFrameVisibility():357 Set background frame visibility. old:8, new:8
+11-21 16:41:40.050  1507  1507 I NormalModeController: NormalModeController.getKeyboardBodyViewHolderPaddingBottom():116 currentPrimeKeyboardType:SOFT systemPaddingBottom:-1
+11-21 16:41:40.050  1507  1507 I NormalModeController: NormalModeController.getKeyboardBodyViewHolderPaddingBottom():116 currentPrimeKeyboardType:SOFT systemPaddingBottom:-1
+11-21 16:41:40.051  1507  1507 I KeyboardModeManager: KeyboardModeManager.setInputView():356 setInputView() : entry=hwn{languageTag=en-US, variant=qwerty, hasLocalizedResources=true, conditionCacheKey=_device=phone_device_size=default_enable_adaptive_text_editing=true_enable_inline_suggestions_on_client_side=false_enable_large_tablet_batch_1=false_enable_large_tablet_batch_2=false_enable_more_candidates_view_for_multilingual=false_enable_nav_redesign=false_enable_number_row=false_enable_preemptive_decode=true_enable_secondary_symbols=false_expressions=normal_four_or_more_letter_rows=false_keyboard_mode=normal_language=en-US_orientation=portrait_physical_keyboard=qwerty_show_secondary_digits=true_show_suggestions=true_split_with_duplicate_keys=true_variant=qwerty, imeDef.stringId=ime_english_united_states, imeDef.className=com.google.android.apps.inputmethod.libs.latin5.LatinIme, imeDef.languageTag=en-US}
+11-21 16:41:40.058  1097  1097 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@e5b7800
+11-21 16:41:40.060  1097  1097 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+11-21 16:41:40.060  1097  1097 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+11-21 16:41:40.060  4683  5195 I FontLog : Received query Noto Color Emoji Compat, URI content://com.google.android.gms.fonts [CONTEXT service_id=132 ]
+11-21 16:41:40.061  4683  5195 I FontLog : Query [emojicompat-emoji-font] resolved to {Noto Color Emoji Compat, wdth 100.0, wght 400, ital 0.0, bestEffort false} [CONTEXT service_id=132 ]
+11-21 16:41:40.063  4683  5195 I FontLog : Fetch {Noto Color Emoji Compat, wdth 100.0, wght 400, ital 0.0, bestEffort false} end status Status{statusCode=SUCCESS, resolution=null} [CONTEXT service_id=132 ]
+11-21 16:41:40.065  4683  4715 I FontLog : Pulling font file for id = 1, cache size = 1 [CONTEXT service_id=132 ]
+11-21 16:41:40.068  4683  5199 I FontLog : Pulling font file for id = 1, cache size = 1 [CONTEXT service_id=132 ]
+11-21 16:41:40.081  1097  1128 I AiAiSuggestUi: Connecting to system intelligence module.
+11-21 16:41:40.090  1097  1097 D AutofillManager: Fill dialog is enabled:false, hints=[password, passwordAuto, creditCardNumber, creditCardSecurityCode, creditCardExpirationDate]
+11-21 16:41:40.094  1097  1097 D DeviceSearchAlg: search timeout = %d200
+11-21 16:41:40.095  1598  1598 I AiAiOverview: Created AiAiContentSuggestionsService.
+11-21 16:41:40.098  1097  1097 W PageIndicator: Total number of pages invalid: 0. Assuming 1 page.
+11-21 16:41:40.098  1097  1097 W BcSmartspaceView: Current card is not present in the Adapter; cannot log.
+11-21 16:41:40.099  1097  2527 I AiAiSuggestUi: Successfully connected to system intelligence:
+11-21 16:41:40.101  1097  1097 I OverviewComponentObserver: updateOverviewTargets: mIsHomeDisabled=false, isDefaultHomeNull=false, mIsDefaultHome=true
+11-21 16:41:40.115  1598  1598 I AiAiEcho: SearchContextManagerImpl::setSearchContext resultTypes=[141151] extras=[Bundle[mParcelledData.dataSize=684]] sessionId=[com.google.android.apps.nexuslauncher:4bfce3c4-e77b-482f-9682-6ad893addf45,0]
+11-21 16:41:40.116  1097  1128 D SearchTargetUtil:  query= size=1
+11-21 16:41:40.116  1097  1128 D SearchTargetUtil: layoutType=icon_row resultType=4096 packageName= extras=Bundle{icon_container_enabled=true,zero_state_all_apps_web_suggest_count=3,rank=1.0,key_ipc_start=144848,hide_subtitle=true,zero_state_qsb_web_suggest_count=10,}ParentID: null targetID: SESSION_INFO:0::zero_state_flags
+11-21 16:41:40.117  1097  1097 D AutofillManager: view is not autofillable - activity denied for autofill
+11-21 16:41:40.131  1097  1097 I ContentCaptureHelper: Setting logging level to DEBUG
+11-21 16:41:40.131  1097  1097 D ContentCaptureManager: setFlushViewTreeAppearingEventDisabled(): setting to false
+11-21 16:41:40.131  1097  1097 D ContentCaptureManager: updateWindowAttributes(): window flags=-2137980672
+11-21 16:41:40.135  1097  1097 D ContentCaptureManager: updateWindowAttributes(): window flags=-2137980672
+11-21 16:41:40.138  1097  1128 I ImeTracker: com.google.android.apps.nexuslauncher:f44a400f: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+11-21 16:41:40.138   523   597 I ImeTracker: com.google.android.apps.nexuslauncher:f44a400f: onCancelled at PHASE_SERVER_CLIENT_FOCUSED
+11-21 16:41:40.143  1097  1128 I ImeTracker: com.google.android.apps.nexuslauncher:3add073f: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+11-21 16:41:40.144  1097  1128 I ImeTracker: com.google.android.apps.nexuslauncher:3add073f: onFailed at PHASE_CLIENT_VIEW_SERVED
+11-21 16:41:40.151  1097  1097 W BcSmartspaceCard: No title view to update
+11-21 16:41:40.151  1097  1097 I BcSmartspaceCard: setFormattedContentDescription: text=null, iconDescription=null, contentDescription=null
+11-21 16:41:40.162  1824  1824 I ImeTracker: com.google.android.googlequicksearchbox:search:88e51cc6: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+11-21 16:41:40.162  1824  1824 I ImeTracker: com.google.android.googlequicksearchbox:search:88e51cc6: onFailed at PHASE_CLIENT_VIEW_SERVED
+11-21 16:41:40.165  1824  1824 W PhoneWindow: Previously focused view reported id 2131435089 during save, but can't be found during restore.
+11-21 16:41:40.178  1824  1824 I ImeTracker: com.google.android.googlequicksearchbox:search:ca2e8271: onRequestHide at ORIGIN_CLIENT_HIDE_SOFT_INPUT reason HIDE_SOFT_INPUT
+11-21 16:41:40.178  1824  1824 I ImeTracker: com.google.android.googlequicksearchbox:search:ca2e8271: onFailed at PHASE_CLIENT_VIEW_SERVED
+11-21 16:41:40.182  1824  1824 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@301d20a
+11-21 16:41:40.183   523  1398 W InputManager-JNI: Input channel object '3efbed9 com.google.android.apps.nexuslauncher/com.google.android.apps.nexuslauncher.NexusLauncherActivity (client)' was disposed without first being removed with the input manager!
+11-21 16:41:40.187  1097  1097 D TISBindHelper: TIS service connected
+11-21 16:41:40.194  1824  1824 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@8fe4d6b
+11-21 16:41:40.195   523   921 W InputManager-JNI: Input channel object '3514cb9 com.google.android.googlequicksearchbox/android.app.ContextImpl (client)' was disposed without first being removed with the input manager!
+11-21 16:41:40.204  1097  1097 D b/254119092: Set mActivity=com.google.android.apps.nexuslauncher.NexusLauncherActivity@37d8758
+11-21 16:41:40.204  1097  1097 D b/254119092: mActivity and mContext agree taskbarIsPresent=false
+11-21 16:41:40.218  1598  2079 I AiAiStatsd: Successfully logged feature usage for VISUAL_CORTEX.
+11-21 16:41:41.511   836   896 D SplashScreenView: Build android.window.SplashScreenView{2fd1cb3 V.E...... ......ID 0,0-0,0}
+11-21 16:41:41.511   836   896 D SplashScreenView: Icon: view: null drawable: null size: 0
+11-21 16:41:41.511   836   896 D SplashScreenView: Branding: view: android.view.View{9f5f270 G.ED..... ......I. 0,0-0,0 #10204ef android:id/splashscreen_branding_view} drawable: null size w: 0 h: 0
+11-21 16:41:41.515  4131  4131 D LifecycleMonitor: Lifecycle status change: fr.kwigorl.kwindle.MainActivity@3618ea4 in: PAUSED
+11-21 16:41:41.515  4131  4131 V ActivityScenario: Update currentActivityStage to PAUSED, currentActivity=fr.kwigorl.kwindle.MainActivity@3618ea4
+11-21 16:41:41.525   335   335 D Zygote  : Forked child process 5356
+11-21 16:41:41.535   399   399 I BpBinder: onLastStrongRef automatically unlinking death recipients:
+11-21 16:41:41.549   399   416 D PermissionCache: checking android.permission.READ_FRAME_BUFFER for uid=1000 => granted (6602 us)
+11-21 16:41:41.566  5356  5356 I rl.kwindle.test: Late-enabling -Xcheck:jni
+11-21 16:41:41.580  5356  5356 I rl.kwindle.test: Using CollectorTypeCC GC.
+11-21 16:41:41.581  5356  5356 W rl.kwindle.test: Unexpected CPU variant for x86: x86_64.
+11-21 16:41:41.581  5356  5356 W rl.kwindle.test: Known variants: atom, sandybridge, silvermont, goldmont, goldmont-plus, tremont, kabylake, default
+11-21 16:41:41.598   420   433 I adbd    : jdwp connection from 5356
+11-21 16:41:41.625   134   134 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device VINTF manifest.
+11-21 16:41:41.625   523   908 I Gralloc4: mapper 4.x is not supported
+11-21 16:41:41.649   523   543 W system_server: Long monitor contention with owner android.anim (544) at android.content.res.Configuration com.android.server.wm.ActivityTaskManagerService.getGlobalConfigurationForPid(int)(ActivityTaskManagerService.java:1133) waiters=0 in void com.android.server.wm.WindowManagerService.reportFocusChanged(android.os.IBinder, android.os.IBinder) for 105ms
+11-21 16:41:41.663  5356  5356 D CompatibilityChangeReporter: Compat change id reported: 171979766; UID 10193; state: ENABLED
+11-21 16:41:41.664  5356  5356 D CompatibilityChangeReporter: Compat change id reported: 242716250; UID 10193; state: ENABLED
+11-21 16:41:41.671  5356  5356 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/android.test.base.jar
+11-21 16:41:41.675  5356  5356 D nativeloader: Configuring clns-6 for other apk /system/framework/android.test.mock.jar. target_sdk_version=35, uses_libraries=ALL, library_path=/data/app/~~yp-lFJ5VSifu6uhBesR4VQ==/fr.kwigorl.kwindle.test-ewl4W4xbS7NrzBbrEXlRtg==/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/fr.kwigorl.kwindle.test
+11-21 16:41:41.676  5356  5356 D ApplicationLoaders: Returning zygote-cached class loader: /system/framework/android.test.base.jar
+11-21 16:41:41.677  5356  5356 D nativeloader: Configuring clns-7 for other apk /system/framework/android.test.runner.jar. target_sdk_version=35, uses_libraries=ALL, library_path=/data/app/~~yp-lFJ5VSifu6uhBesR4VQ==/fr.kwigorl.kwindle.test-ewl4W4xbS7NrzBbrEXlRtg==/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/fr.kwigorl.kwindle.test
+11-21 16:41:41.680   836   907 D EGL_emulation: app_time_stats: avg=617.40ms min=0.94ms max=1625.37ms count=4
+11-21 16:41:41.680  5356  5356 W ziparchive: Unable to open '/data/app/~~yp-lFJ5VSifu6uhBesR4VQ==/fr.kwigorl.kwindle.test-ewl4W4xbS7NrzBbrEXlRtg==/base.dm': No such file or directory
+11-21 16:41:41.680  5356  5356 W ziparchive: Unable to open '/data/app/~~yp-lFJ5VSifu6uhBesR4VQ==/fr.kwigorl.kwindle.test-ewl4W4xbS7NrzBbrEXlRtg==/base.dm': No such file or directory
+11-21 16:41:41.684  5356  5356 D nativeloader: Configuring clns-8 for other apk /data/app/~~yp-lFJ5VSifu6uhBesR4VQ==/fr.kwigorl.kwindle.test-ewl4W4xbS7NrzBbrEXlRtg==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~yp-lFJ5VSifu6uhBesR4VQ==/fr.kwigorl.kwindle.test-ewl4W4xbS7NrzBbrEXlRtg==/lib/x86_64, permitted_path=/data:/mnt/expand:/data/user/0/fr.kwigorl.kwindle.test
+11-21 16:41:41.693  5356  5356 V GraphicsEnvironment: Currently set values for:
+11-21 16:41:41.693  5356  5356 V GraphicsEnvironment:   angle_gl_driver_selection_pkgs=[]
+11-21 16:41:41.693  5356  5356 V GraphicsEnvironment:   angle_gl_driver_selection_values=[]
+11-21 16:41:41.693  5356  5356 V GraphicsEnvironment: ANGLE GameManagerService for fr.kwigorl.kwindle.test: false
+11-21 16:41:41.693  5356  5356 V GraphicsEnvironment: fr.kwigorl.kwindle.test is not listed in per-application setting
+11-21 16:41:41.694  5356  5356 V GraphicsEnvironment: Neither updatable production driver nor prerelease driver is supported.
+11-21 16:41:41.699   523  5374 W OpenGLRenderer: Failed to initialize 101010-2 format, error = EGL_SUCCESS
+11-21 16:41:41.722  5356  5356 D CompatibilityChangeReporter: Compat change id reported: 237531167; UID 10193; state: DISABLED
+11-21 16:41:41.723  1027  1320 D BtGatt.ScanManager: uid 10131 isForeground true scanMode -1
+11-21 16:41:41.723  1027  1320 D BtGatt.ScanManager: uid 10131 isForeground true scanMode -1
+11-21 16:41:41.723  4131  4131 D LifecycleMonitor: Lifecycle status change: fr.kwigorl.kwindle.MainActivity@3618ea4 in: STOPPED
+11-21 16:41:41.723  4131  4131 V ActivityScenario: Update currentActivityStage to STOPPED, currentActivity=fr.kwigorl.kwindle.MainActivity@3618ea4
+11-21 16:41:41.724  5356  5377 D libEGL  : loaded /vendor/lib64/egl/libEGL_emulation.so
+11-21 16:41:41.725  5356  5377 D libEGL  : loaded /vendor/lib64/egl/libGLESv1_CM_emulation.so
+11-21 16:41:41.726  5356  5377 D libEGL  : loaded /vendor/lib64/egl/libGLESv2_emulation.so
+11-21 16:41:41.727  5356  5356 W OpenGLRenderer: Unknown dataspace 0
+11-21 16:41:41.740   399   415 W ServiceManagerCppClient: Permission failure: android.permission.ROTATE_SURFACE_FLINGER from uid=10193 pid=0
+11-21 16:41:41.740   399   415 D PermissionCache: checking android.permission.ROTATE_SURFACE_FLINGER for uid=10193 => denied (118 us)
+11-21 16:41:41.740   399  1081 W ServiceManagerCppClient: Permission failure: android.permission.INTERNAL_SYSTEM_WINDOW from uid=10193 pid=5356
+11-21 16:41:41.740   399  1081 D PermissionCache: checking android.permission.INTERNAL_SYSTEM_WINDOW for uid=10193 => denied (116 us)
+11-21 16:41:41.741   399  1081 W ServiceManagerCppClient: Permission failure: android.permission.ACCESS_SURFACE_FLINGER from uid=10193 pid=5356
+11-21 16:41:41.741   399  1081 D PermissionCache: checking android.permission.ACCESS_SURFACE_FLINGER for uid=10193 => denied (243 us)
+11-21 16:41:41.746   399   415 W ServiceManagerCppClient: Permission failure: android.permission.INTERNAL_SYSTEM_WINDOW from uid=10193 pid=0
+11-21 16:41:41.746   399   415 D PermissionCache: checking android.permission.INTERNAL_SYSTEM_WINDOW for uid=10193 => denied (6292 us)
+11-21 16:41:41.750  4131  4131 D LifecycleMonitor: Lifecycle status change: fr.kwigorl.kwindle.MainActivity@3618ea4 in: DESTROYED
+11-21 16:41:41.750  4131  4131 V ActivityScenario: Update currentActivityStage to DESTROYED, currentActivity=null
+11-21 16:41:41.750  4131  4131 W WindowOnBackDispatcher: sendCancelIfRunning: isInProgress=falsecallback=android.view.ViewRootImpl$$ExternalSyntheticLambda17@5a4ed16
+11-21 16:41:41.808   399   399 I BpBinder: onLastStrongRef automatically unlinking death recipients:
+11-21 16:41:41.808  5356  5375 W OpenGLRenderer: Failed to initialize 101010-2 format, error = EGL_SUCCESS
+11-21 16:41:41.814   523   921 W InputManager-JNI: Input channel object '2fa75a8 fr.kwigorl.kwindle/fr.kwigorl.kwindle.MainActivity (client)' was disposed without first being removed with the input manager!
+11-21 16:41:41.828  4131  4234 I TestRunner: finished: ecranPrincipal(fr.kwigorl.kwindle.FumeeTest)

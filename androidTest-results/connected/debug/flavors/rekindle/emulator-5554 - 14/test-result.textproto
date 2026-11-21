@@ -1,0 +1,581 @@
+# proto-message: google.testing.platform.proto.api.core.TestSuiteResult
+# 2026-11-21T16:41:43.183834741Z:
+test_suite_meta_data {
+  scheduled_test_case_count: 10
+  device {
+    id: "emulator-5554"
+    friendly_name: "primary"
+  }
+}
+test_status: PASSED
+test_result {
+  test_case {
+    test_class: "FumeeTest"
+    test_package: "fr.kwigorl.kwindle"
+    test_method: "telechargementTorrent"
+    start_time {
+      seconds: 1795279211
+      nanos: 591000000
+    }
+    end_time {
+      seconds: 1795279214
+      nanos: 912000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/logcat-fr.kwigorl.kwindle.FumeeTest-telechargementTorrent.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "FumeeTest"
+    test_package: "fr.kwigorl.kwindle"
+    test_method: "modulesPython"
+    start_time {
+      seconds: 1795279214
+      nanos: 934000000
+    }
+    end_time {
+      seconds: 1795279215
+      nanos: 489000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/logcat-fr.kwigorl.kwindle.FumeeTest-modulesPython.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "FumeeTest"
+    test_package: "fr.kwigorl.kwindle"
+    test_method: "lectureTorrent"
+    start_time {
+      seconds: 1795279215
+      nanos: 491000000
+    }
+    end_time {
+      seconds: 1795279215
+      nanos: 567000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/logcat-fr.kwigorl.kwindle.FumeeTest-lectureTorrent.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "FumeeTest"
+    test_package: "fr.kwigorl.kwindle"
+    test_method: "effacementApresEnvoi"
+    start_time {
+      seconds: 1795279215
+      nanos: 572000000
+    }
+    end_time {
+      seconds: 1795279215
+      nanos: 698000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/logcat-fr.kwigorl.kwindle.FumeeTest-effacementApresEnvoi.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "FumeeTest"
+    test_package: "fr.kwigorl.kwindle"
+    test_method: "trackerHttps"
+    start_time {
+      seconds: 1795279215
+      nanos: 705000000
+    }
+    end_time {
+      seconds: 1795279298
+      nanos: 392000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/logcat-fr.kwigorl.kwindle.FumeeTest-trackerHttps.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "FumeeTest"
+    test_package: "fr.kwigorl.kwindle"
+    test_method: "reparationEpub"
+    start_time {
+      seconds: 1795279298
+      nanos: 394000000
+    }
+    end_time {
+      seconds: 1795279298
+      nanos: 445000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/logcat-fr.kwigorl.kwindle.FumeeTest-reparationEpub.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "FumeeTest"
+    test_package: "fr.kwigorl.kwindle"
+    test_method: "conversionKepub"
+    start_time {
+      seconds: 1795279298
+      nanos: 446000000
+    }
+    end_time {
+      seconds: 1795279298
+      nanos: 447000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/logcat-fr.kwigorl.kwindle.FumeeTest-conversionKepub.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "FumeeTest"
+    test_package: "fr.kwigorl.kwindle"
+    test_method: "sessionTorrent"
+    start_time {
+      seconds: 1795279298
+      nanos: 448000000
+    }
+    end_time {
+      seconds: 1795279299
+      nanos: 202000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/logcat-fr.kwigorl.kwindle.FumeeTest-sessionTorrent.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "FumeeTest"
+    test_package: "fr.kwigorl.kwindle"
+    test_method: "ecranPrincipal"
+    start_time {
+      seconds: 1795279299
+      nanos: 204000000
+    }
+    end_time {
+      seconds: 1795279302
+      nanos: 95000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/logcat-fr.kwigorl.kwindle.FumeeTest-ecranPrincipal.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+test_result {
+  test_case {
+    test_class: "FumeeTest"
+    test_package: "fr.kwigorl.kwindle"
+    test_method: "tomeDansTitre"
+    start_time {
+      seconds: 1795279302
+      nanos: 97000000
+    }
+    end_time {
+      seconds: 1795279302
+      nanos: 148000000
+    }
+    device {
+      id: "emulator-5554"
+      friendly_name: "primary"
+    }
+  }
+  test_status: PASSED
+  output_artifact {
+    label {
+      label: "logcat"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/logcat-fr.kwigorl.kwindle.FumeeTest-tomeDansTitre.txt"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/device-info.pb"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.meminfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/meminfo"
+    }
+  }
+  output_artifact {
+    label {
+      label: "device-info.cpuinfo"
+      namespace: "android"
+    }
+    source_path {
+      path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/cpuinfo"
+    }
+  }
+}
+output_artifact {
+  label {
+    label: "test-results.log"
+    namespace: "com.google.testing.platform.runtime.android.driver.AndroidInstrumentationDriver"
+  }
+  source_path {
+    path: "/home/runner/work/Kwindle/Kwindle/android/app/build/outputs/androidTest-results/connected/debug/flavors/rekindle/emulator-5554 - 14/testlog/test-results.log"
+  }
+  type: TEST_DATA
+  mime_type: "text/plain"
+}

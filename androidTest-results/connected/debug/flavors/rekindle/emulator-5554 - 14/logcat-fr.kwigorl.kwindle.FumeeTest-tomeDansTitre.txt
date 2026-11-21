@@ -1,0 +1,4 @@
+11-21 16:41:41.829  4131  4234 I TestRunner: started: tomeDansTitre(fr.kwigorl.kwindle.FumeeTest)
+11-21 16:41:41.832   134   134 I hwservicemanager: getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device VINTF manifest.
+11-21 16:41:41.832  5356  5375 I Gralloc4: mapper 4.x is not supported
+11-21 16:41:41.868  4131  4234 I TestRunner: finished: tomeDansTitre(fr.kwigorl.kwindle.FumeeTest)

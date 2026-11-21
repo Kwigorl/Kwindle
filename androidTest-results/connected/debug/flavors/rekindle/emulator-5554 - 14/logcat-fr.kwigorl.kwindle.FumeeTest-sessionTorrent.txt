@@ -1,0 +1,30 @@
+11-21 16:41:38.174  4131  4234 I TestRunner: started: sessionTorrent(fr.kwigorl.kwindle.FumeeTest)
+11-21 16:41:38.176   334  5308 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10192 0}
+11-21 16:41:38.176   334  5309 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-21 16:41:38.176   334  5309 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x7f106066d530
+11-21 16:41:38.176   334  5309 I resolv  : doQuery: rcode=0, ancount=1, return value=64
+11-21 16:41:38.176   334  5310 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-21 16:41:38.176   334  5310 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x7f1000666350
+11-21 16:41:38.176   334  5310 I resolv  : doQuery: rcode=0, ancount=1, return value=52
+11-21 16:41:38.177   334  5311 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10192 0}
+11-21 16:41:38.177   334  5312 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-21 16:41:38.177   334  5312 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x7f105066b730
+11-21 16:41:38.178   334  5312 I resolv  : doQuery: rcode=0, ancount=0, return value=121
+11-21 16:41:38.178   334  5313 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-21 16:41:38.178   334  5313 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x7f1000664c10
+11-21 16:41:38.178   334  5313 I resolv  : doQuery: rcode=0, ancount=1, return value=55
+11-21 16:41:38.179   334  5314 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10192 0}
+11-21 16:41:38.179   334  5315 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-21 16:41:38.179   334  5315 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x7f10506699f0
+11-21 16:41:38.179   334  5315 I resolv  : doQuery: rcode=0, ancount=0, return value=119
+11-21 16:41:38.179   334  5316 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-21 16:41:38.179   334  5316 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x7f1000664550
+11-21 16:41:38.179   334  5316 I resolv  : doQuery: rcode=0, ancount=1, return value=53
+11-21 16:41:38.180   334  5317 I resolv  : GetAddrInfoHandler::run: {100 100 100 983140 10192 0}
+11-21 16:41:38.180   334  5319 I resolv  : res_nmkquery: (QUERY, IN, A)
+11-21 16:41:38.180   334  5319 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x7f106066d990
+11-21 16:41:38.180   334  5319 I resolv  : doQuery: rcode=0, ancount=2, return value=72
+11-21 16:41:38.180   334  5318 I resolv  : res_nmkquery: (QUERY, IN, AAAA)
+11-21 16:41:38.180   334  5318 I resolv  : resolv_cache_lookup: FOUND IN CACHE entry=0x7f106066add0
+11-21 16:41:38.180   334  5318 I resolv  : doQuery: rcode=0, ancount=1, return value=68
+11-21 16:41:38.927  4131  4234 I TestRunner: finished: sessionTorrent(fr.kwigorl.kwindle.FumeeTest)

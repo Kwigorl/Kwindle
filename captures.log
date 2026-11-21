@@ -1,0 +1,78 @@
+Performing Streamed Install
+Success
+Starting: Intent { cmp=fr.kwigorl.kwindle/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: fr.kwigorl.kwindle/.MainActivity
+TotalTime: 1434
+WaitTime: 1437
+Complete
+app/src/androidTest/assets/test_casse.epub: 1 file pushed, 0 skipped. 6.7 MB/s (1446 bytes in 0.000s)
+app/src/androidTest/assets/pack.torrent: 1 file pushed, 0 skipped. 6.7 MB/s (1200 bytes in 0.000s)
+Starting: Intent { act=android.intent.action.VIEW dat=file:///... typ=application/epub+zip cmp=fr.kwigorl.kwindle/.MainActivity }
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+Status: ok
+LaunchState: UNKNOWN (0)
+Activity: fr.kwigorl.kwindle/.MainActivity
+TotalTime: 0
+WaitTime: 6
+Complete
+Starting: Intent { act=android.intent.action.VIEW dat=file:///... typ=application/x-bittorrent cmp=fr.kwigorl.kwindle/.MainActivity }
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+Status: ok
+LaunchState: UNKNOWN (0)
+Activity: fr.kwigorl.kwindle/.MainActivity
+TotalTime: 0
+WaitTime: 3
+Complete
+toucher checkable="true" -> 274 536
+toucher text="Transformer" -> 213 597
+toucher text="Test Kwindle -> 77 327
+toucher content-desc="Réglages" -> 282 58
+total 232
+drwxr-xr-x 2 runner runner  4096 Nov 21 16:42 .
+drwxr-xr-x 3 runner runner  4096 Nov 21 16:41 ..
+-rw-r--r-- 1 runner runner 41954 Nov 21 16:41 1_accueil.png
+-rw-r--r-- 1 runner runner 44684 Nov 21 16:41 2_liste.png
+-rw-r--r-- 1 runner runner 43966 Nov 21 16:42 3_repare.png
+-rw-r--r-- 1 runner runner 53127 Nov 21 16:42 4_detail.png
+-rw-r--r-- 1 runner runner 37098 Nov 21 16:42 5_reglages.png
+Performing Streamed Install
+Success
+Starting: Intent { cmp=fr.kwigorl.koboa/fr.kwigorl.kwindle.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: fr.kwigorl.koboa/fr.kwigorl.kwindle.MainActivity
+TotalTime: 1528
+WaitTime: 1532
+Complete
+app/src/androidTest/assets/test_casse.epub: 1 file pushed, 0 skipped. 27.1 MB/s (1446 bytes in 0.000s)
+app/src/androidTest/assets/pack.torrent: 1 file pushed, 0 skipped. 25.2 MB/s (1200 bytes in 0.000s)
+Starting: Intent { act=android.intent.action.VIEW dat=file:///... typ=application/epub+zip cmp=fr.kwigorl.koboa/fr.kwigorl.kwindle.MainActivity }
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+Status: ok
+LaunchState: UNKNOWN (0)
+Activity: fr.kwigorl.koboa/fr.kwigorl.kwindle.MainActivity
+TotalTime: 0
+WaitTime: 8
+Complete
+Starting: Intent { act=android.intent.action.VIEW dat=file:///... typ=application/x-bittorrent cmp=fr.kwigorl.koboa/fr.kwigorl.kwindle.MainActivity }
+Warning: Activity not started, intent has been delivered to currently running top-most instance.
+Status: ok
+LaunchState: UNKNOWN (0)
+Activity: fr.kwigorl.koboa/fr.kwigorl.kwindle.MainActivity
+TotalTime: 0
+WaitTime: 5
+Complete
+toucher checkable="true" -> 274 536
+toucher text="Transformer" -> 216 597
+toucher text="Test Kwindle -> 77 327
+toucher content-desc="Réglages" -> 282 58
+total 236
+drwxr-xr-x 2 runner runner  4096 Nov 21 16:43 .
+drwxr-xr-x 4 runner runner  4096 Nov 21 16:42 ..
+-rw-r--r-- 1 runner runner 44888 Nov 21 16:42 1_accueil.png
+-rw-r--r-- 1 runner runner 45357 Nov 21 16:42 2_liste.png
+-rw-r--r-- 1 runner runner 44729 Nov 21 16:42 3_repare.png
+-rw-r--r-- 1 runner runner 52650 Nov 21 16:42 4_detail.png
+-rw-r--r-- 1 runner runner 37078 Nov 21 16:43 5_reglages.png

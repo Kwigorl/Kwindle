@@ -1,0 +1,76 @@
+11-21 16:40:15.220  4131  4234 I TestRunner: started: lectureTorrent(fr.kwigorl.kwindle.FumeeTest)
+11-21 16:40:15.220  1444  3512 I ModuleSetMgr: Download of container feature cameraconnectivity_impl is disabled.
+11-21 16:40:15.226   523   926 D RecoverableKeyStoreMgr: Root of trust for recovery agent + 10131 is assigned for the first time to GoogleCloudKeyVaultServiceV1
+11-21 16:40:15.227  1444  3512 I ModuleSetMgr: Download of container feature dck_management is disabled.
+11-21 16:40:15.234  1444  1451 I gle.android.gms: Background young concurrent copying GC freed 64077(3194KB) AllocSpace objects, 93(8860KB) LOS objects, 43% free, 14MB/25MB, paused 14us,14us total 128.327ms
+11-21 16:40:15.237   523   926 I RecoverableKeyStoreMgr: Updating the certificate with the new serial number 10020
+11-21 16:40:15.237   523   926 D RecoverableKeyStoreMgr: Getting and validating a random endpoint certificate
+11-21 16:40:15.237  1444  3415 W PhenotypeRegOp: Phenotype bulk registration failed [CONTEXT service_id=231 ]
+11-21 16:40:15.237  1444  3415 W PhenotypeRegOp: java.util.concurrent.TimeoutException: Timed out waiting for Task
+11-21 16:40:15.237  1444  3415 W PhenotypeRegOp: 	at cfsz.o(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-21 16:40:15.237  1444  3415 W PhenotypeRegOp: 	at com.google.android.gms.common.config.PhenotypeRegistrationOperation.a(:com.google.android.gms@231818047@23.18.18 (190800-535401451):6)
+11-21 16:40:15.237  1444  3415 W PhenotypeRegOp: 	at com.google.android.gms.common.config.PhenotypeRegistrationOperation.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):19)
+11-21 16:40:15.237  1444  3415 W PhenotypeRegOp: 	at com.google.android.chimera.IntentOperation.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 16:40:15.237  1444  3415 W PhenotypeRegOp: 	at zhv.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):4)
+11-21 16:40:15.237  1444  3415 W PhenotypeRegOp: 	at hjm.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):3)
+11-21 16:40:15.237  1444  3415 W PhenotypeRegOp: 	at hjl.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):11)
+11-21 16:40:15.237  1444  3415 W PhenotypeRegOp: 	at dfhf.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 16:40:15.237  1444  3415 W PhenotypeRegOp: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-21 16:40:15.237  1444  3415 W PhenotypeRegOp: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-21 16:40:15.237  1444  3415 W PhenotypeRegOp: 	at java.lang.Thread.run(Thread.java:1012)
+11-21 16:40:15.241  1444  3415 I Auth    : [WorkAccount] update authenticator enabled for boot or update
+11-21 16:40:15.243  1444  3247 I SystemUpdate: [Installation,ReceiverIntentOperation] Received intent: Intent { act=com.google.android.gms.update.BASE_MODULE_INIT cat=[targeted_intent_op_prefix:.update.control.ReceiverIntentOperation] cmp=com.google.android.gms/.chimera.GmsIntentOperationService }.
+11-21 16:40:15.244   523   926 D RecoverableKeyStoreMgr: Saving the randomly chosen endpoint certificate to database
+11-21 16:40:15.246   523   926 I RecoverableKeyStoreMgr: This is a certificate change. Snapshot didn't exist
+11-21 16:40:15.248  1444  3387 W SystemServiceRegistry: No service published for: persistent_data_block
+11-21 16:40:15.252  1444  3512 I ModuleSetMgr: Download of container feature easyunlock is disabled.
+11-21 16:40:15.259  1444  3512 I ModuleSetMgr: Download of container feature enterprise is disabled.
+11-21 16:40:15.262  1444  1492 I RecoverableKeyStoreGms: [EnrollmentManager] Recovery service is initialized. [CONTEXT service_id=172 ]
+11-21 16:40:15.262  1444  4000 I Auth    : [FRP,FrpUpdateIntentOperation] FRP is not supported for this device / user
+11-21 16:40:15.267  1686  1720 I ocess.gservices: Background concurrent copying GC freed 59379(2063KB) AllocSpace objects, 0(0B) LOS objects, 49% free, 3102KB/6204KB, paused 11us,6us total 132.639ms
+11-21 16:40:15.269  1054  1054 D BatteryUsageBroadcastReceiver: onReceive:android.intent.action.BATTERY_LEVEL_CHANGED
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: Error reading snapshot for 10131 from disk
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: java.io.FileNotFoundException: /data/system/recoverablekeystore/snapshots/10131.xml: open failed: ENOENT (No such file or directory)
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: 	at libcore.io.IoBridge.open(IoBridge.java:574)
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: 	at java.io.FileInputStream.<init>(FileInputStream.java:160)
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: 	at com.android.server.locksettings.recoverablekeystore.storage.RecoverySnapshotStorage.readFromDisk(RecoverySnapshotStorage.java:152)
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: 	at com.android.server.locksettings.recoverablekeystore.storage.RecoverySnapshotStorage.get(RecoverySnapshotStorage.java:104)
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: 	at com.android.server.locksettings.recoverablekeystore.RecoverableKeyStoreManager.getKeyChainSnapshot(RecoverableKeyStoreManager.java:369)
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: 	at com.android.server.locksettings.LockSettingsService.getKeyChainSnapshot(LockSettingsService.java:2494)
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: 	at com.android.internal.widget.ILockSettings$Stub.onTransact(ILockSettings.java:838)
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: 	at android.os.Binder.execTransactInternal(Binder.java:1339)
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: 	at android.os.Binder.execTransact(Binder.java:1275)
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: Caused by: android.system.ErrnoException: open failed: ENOENT (No such file or directory)
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: 	at libcore.io.Linux.open(Native Method)
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: 	at libcore.io.ForwardingOs.open(ForwardingOs.java:563)
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: 	at libcore.io.BlockGuardOs.open(BlockGuardOs.java:274)
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: 	at libcore.io.IoBridge.open(IoBridge.java:560)
+11-21 16:40:15.274   523   595 E RecoverySnapshotStorage: 	... 8 more
+11-21 16:40:15.275   523   595 W PlatformKeyManager: Platform generation ID was 0 but no entry was present in AndroidKeyStore. Generating fresh key.
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: [WrappingKeyManager] InternalRecoveryServiceException during wrapping key generation [CONTEXT service_id=172 ]
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: android.security.keystore.recovery.InternalRecoveryServiceException: Failed to import secret key.
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at android.security.keystore.recovery.RecoveryController.wrapUnexpectedServiceSpecificException(RecoveryController.java:783)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at android.security.keystore.recovery.RecoveryController.generateKey(RecoveryController.java:569)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at qiw.f(:com.google.android.gms@231818047@23.18.18 (190800-535401451):3)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at qiw.e(:com.google.android.gms@231818047@23.18.18 (190800-535401451):15)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at qfw.f(:com.google.android.gms@231818047@23.18.18 (190800-535401451):68)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at com.google.android.gms.auth.folsom.operation.GserviceChangeIntentOperation.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):8)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at com.google.android.chimera.IntentOperation.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at zhv.onHandleIntent(:com.google.android.gms@231818047@23.18.18 (190800-535401451):4)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at hjm.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):3)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at hjl.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):11)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at dfhf.run(:com.google.android.gms@231818047@23.18.18 (190800-535401451):2)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1145)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:644)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at java.lang.Thread.run(Thread.java:1012)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: Caused by: android.os.ServiceSpecificException: Failed to import secret key. (code 22)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at android.os.Parcel.createExceptionOrNull(Parcel.java:3071)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at android.os.Parcel.createException(Parcel.java:3041)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at android.os.Parcel.readException(Parcel.java:3024)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at android.os.Parcel.readException(Parcel.java:2966)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at com.android.internal.widget.ILockSettings$Stub$Proxy.generateKey(ILockSettings.java:1679)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	at android.security.keystore.recovery.RecoveryController.generateKey(RecoveryController.java:556)
+11-21 16:40:15.276  1444  1492 W RecoverableKeyStoreGms: 	... 12 more
+11-21 16:40:15.280  1396  3079 I Auth    : [WorkAccountServiceImpl] init work authenticator
+11-21 16:40:15.301  1444  4391 I Ads     : Initialized AdMob in container 23.18.18 (190800-535401451)
+11-21 16:40:15.302  4131  4234 I TestRunner: finished: lectureTorrent(fr.kwigorl.kwindle.FumeeTest)

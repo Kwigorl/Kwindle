@@ -1,0 +1,221 @@
+Starting a Gradle Daemon (subsequent builds will be faster)
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preRekindleDebugBuild UP-TO-DATE
+> Task :app:mergeRekindleDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:findRekindleDebugPythonCommand
+> Task :app:extractRekindleDebugPythonBuildPackages
+
+> Task :app:installRekindleDebugPythonRequirements
+Chaquopy: Installing for x86_64
+Looking in indexes: https://pypi.org/simple, https://chaquo.com/pypi-13.1
+Collecting lxml
+  Downloading lxml-5.3.0-0-cp313-cp313-android_24_x86_64.whl (1.5 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.5/1.5 MB 2.7 MB/s  0:00:01
+Collecting pillow
+  Downloading pillow-11.0.0-0-cp313-cp313-android_24_x86_64.whl (603 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 603.3/603.3 kB 133.1 MB/s  0:00:00
+Collecting mobi
+  Downloading mobi-0.4.1-py3-none-any.whl.metadata (4.6 kB)
+Collecting certifi
+  Downloading certifi-2026.11.20-py3-none-any.whl.metadata (2.5 kB)
+Collecting chaquopy-libxslt>=1.1.32 (from lxml)
+  Downloading chaquopy_libxslt-1.1.32-2-py3-none-android_21_x86_64.whl (186 kB)
+Collecting chaquopy-libxml2>=2.9.8 (from lxml)
+  Downloading chaquopy_libxml2-2.9.8-2-py3-none-android_21_x86_64.whl (801 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 801.8/801.8 kB 191.9 MB/s  0:00:00
+Collecting chaquopy-libjpeg>=1.5.3 (from pillow)
+  Downloading chaquopy_libjpeg-1.5.3-1-py3-none-android_21_x86_64.whl (147 kB)
+Collecting chaquopy-freetype>=2.9.1 (from pillow)
+  Downloading chaquopy_freetype-2.9.1-2-py3-none-android_21_x86_64.whl (567 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 567.8/567.8 kB 125.3 MB/s  0:00:00
+Collecting loguru>=0.6 (from mobi)
+  Downloading loguru-0.8.0-py3-none-any.whl.metadata (23 kB)
+Collecting standard-imghdr>=3.13.0 (from mobi)
+  Downloading standard_imghdr-3.13.0-py3-none-any.whl.metadata (862 bytes)
+Downloading mobi-0.4.1-py3-none-any.whl (99 kB)
+Downloading certifi-2026.11.20-py3-none-any.whl (127 kB)
+Downloading loguru-0.8.0-py3-none-any.whl (69 kB)
+Downloading standard_imghdr-3.13.0-py3-none-any.whl (4.6 kB)
+Installing collected packages: standard-imghdr, chaquopy-libxml2, chaquopy-libjpeg, chaquopy-freetype, pillow, loguru, chaquopy-libxslt, certifi, mobi, lxml
+
+Successfully installed certifi-2026.11.20 chaquopy-freetype-2.9.1 chaquopy-libjpeg-1.5.3 chaquopy-libxml2-2.9.8 chaquopy-libxslt-1.1.32 loguru-0.8.0 lxml-5.3.0 mobi-0.4.1 pillow-11.0.0 standard-imghdr-3.13.0
+
+> Task :app:mergeRekindleDebugPythonSources
+> Task :app:generateRekindleDebugPythonProxies
+> Task :app:checkRekindleDebugAarMetadata
+> Task :app:processRekindleDebugNavigationResources
+> Task :app:generateRekindleDebugResValues
+> Task :app:compileRekindleDebugNavigationResources
+> Task :app:mapRekindleDebugSourceSetPaths
+> Task :app:generateRekindleDebugResources
+> Task :app:packageRekindleDebugResources
+> Task :app:createRekindleDebugCompatibleScreenManifests
+> Task :app:mergeRekindleDebugResources
+> Task :app:extractDeepLinksRekindleDebug
+> Task :app:parseRekindleDebugLocalResources
+> Task :app:processRekindleDebugMainManifest
+> Task :app:processRekindleDebugManifest
+> Task :app:javaPreCompileRekindleDebug
+> Task :app:mergeRekindleDebugShaders
+> Task :app:compileRekindleDebugShaders NO-SOURCE
+> Task :app:generateRekindleDebugAssets UP-TO-DATE
+> Task :app:generateRekindleDebugPythonMiscAssets
+> Task :app:generateRekindleDebugPythonRequirementsAssets
+> Task :app:generateRekindleDebugPythonSourceAssets
+> Task :app:generateRekindleDebugPythonBuildAssets
+> Task :app:mergeRekindleDebugAssets
+> Task :app:compressRekindleDebugAssets
+> Task :app:processRekindleDebugManifestForPackage
+> Task :app:checkRekindleDebugDuplicateClasses
+> Task :app:mergeLibDexRekindleDebug
+> Task :app:generateRekindleDebugPythonJniLibs
+> Task :app:mergeRekindleDebugJniLibFolders
+> Task :app:validateSigningRekindleDebug
+> Task :app:writeRekindleDebugAppMetadata
+> Task :app:processRekindleDebugResources
+> Task :app:mergeRekindleDebugNativeLibs
+> Task :app:writeRekindleDebugSigningConfigVersions
+> Task :app:preRekindleDebugAndroidTestBuild SKIPPED
+> Task :app:checkRekindleDebugAndroidTestAarMetadata
+> Task :app:processRekindleDebugAndroidTestNavigationResources
+> Task :app:compileRekindleDebugAndroidTestNavigationResources
+> Task :app:generateRekindleDebugAndroidTestResValues
+> Task :app:mapRekindleDebugAndroidTestSourceSetPaths
+> Task :app:generateRekindleDebugAndroidTestResources
+
+> Task :app:stripRekindleDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libchaquopy_java.so, libcrypto_chaquopy.so, libcrypto_python.so, libpython3.13.so, libpython3.so, libsqlite3_chaquopy.so, libsqlite3_python.so, libssl_chaquopy.so, libssl_python.so, libtorrent4j.so. Run with --info option to learn more.
+
+> Task :app:mergeRekindleDebugAndroidTestResources
+> Task :app:processRekindleDebugAndroidTestManifest
+> Task :app:javaPreCompileRekindleDebugAndroidTest
+> Task :app:mergeRekindleDebugAndroidTestShaders
+> Task :app:compileRekindleDebugAndroidTestShaders NO-SOURCE
+> Task :app:generateRekindleDebugAndroidTestAssets UP-TO-DATE
+> Task :app:mergeRekindleDebugAndroidTestAssets
+> Task :app:compressRekindleDebugAndroidTestAssets
+> Task :app:checkRekindleDebugAndroidTestDuplicateClasses
+> Task :app:desugarRekindleDebugAndroidTestFileDependencies
+> Task :app:processRekindleDebugAndroidTestResources
+> Task :app:mergeLibDexRekindleDebugAndroidTest
+> Task :app:mergeRekindleDebugAndroidTestJniLibFolders
+> Task :app:mergeRekindleDebugAndroidTestNativeLibs NO-SOURCE
+> Task :app:stripRekindleDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :app:validateSigningRekindleDebugAndroidTest
+> Task :app:writeRekindleDebugAndroidTestSigningConfigVersions
+> Task :app:preKoboaDebugBuild UP-TO-DATE
+> Task :app:mergeKoboaDebugNativeDebugMetadata NO-SOURCE
+> Task :app:desugarRekindleDebugFileDependencies
+> Task :app:findKoboaDebugPythonCommand
+> Task :app:mergeExtDexRekindleDebugAndroidTest
+> Task :app:extractKoboaDebugPythonBuildPackages
+
+> Task :app:installKoboaDebugPythonRequirements
+Chaquopy: Installing for x86_64
+Looking in indexes: https://pypi.org/simple, https://chaquo.com/pypi-13.1
+Collecting lxml
+  Using cached lxml-5.3.0-0-cp313-cp313-android_24_x86_64.whl (1.5 MB)
+Collecting pillow
+  Using cached pillow-11.0.0-0-cp313-cp313-android_24_x86_64.whl (603 kB)
+Collecting mobi
+  Using cached mobi-0.4.1-py3-none-any.whl.metadata (4.6 kB)
+Collecting certifi
+  Using cached certifi-2026.11.20-py3-none-any.whl.metadata (2.5 kB)
+Collecting chaquopy-libxslt>=1.1.32 (from lxml)
+  Using cached chaquopy_libxslt-1.1.32-2-py3-none-android_21_x86_64.whl (186 kB)
+Collecting chaquopy-libxml2>=2.9.8 (from lxml)
+  Using cached chaquopy_libxml2-2.9.8-2-py3-none-android_21_x86_64.whl (801 kB)
+Collecting chaquopy-libjpeg>=1.5.3 (from pillow)
+  Using cached chaquopy_libjpeg-1.5.3-1-py3-none-android_21_x86_64.whl (147 kB)
+Collecting chaquopy-freetype>=2.9.1 (from pillow)
+  Using cached chaquopy_freetype-2.9.1-2-py3-none-android_21_x86_64.whl (567 kB)
+Collecting loguru>=0.6 (from mobi)
+  Using cached loguru-0.8.0-py3-none-any.whl.metadata (23 kB)
+Collecting standard-imghdr>=3.13.0 (from mobi)
+  Using cached standard_imghdr-3.13.0-py3-none-any.whl.metadata (862 bytes)
+Using cached mobi-0.4.1-py3-none-any.whl (99 kB)
+Using cached certifi-2026.11.20-py3-none-any.whl (127 kB)
+Using cached loguru-0.8.0-py3-none-any.whl (69 kB)
+Using cached standard_imghdr-3.13.0-py3-none-any.whl (4.6 kB)
+Installing collected packages: standard-imghdr, chaquopy-libxml2, chaquopy-libjpeg, chaquopy-freetype, pillow, loguru, chaquopy-libxslt, certifi, mobi, lxml
+
+Successfully installed certifi-2026.11.20 chaquopy-freetype-2.9.1 chaquopy-libjpeg-1.5.3 chaquopy-libxml2-2.9.8 chaquopy-libxslt-1.1.32 loguru-0.8.0 lxml-5.3.0 mobi-0.4.1 pillow-11.0.0 standard-imghdr-3.13.0
+
+> Task :app:mergeExtDexRekindleDebug
+> Task :app:mergeKoboaDebugPythonSources
+> Task :app:generateKoboaDebugPythonProxies
+> Task :app:checkKoboaDebugAarMetadata
+> Task :app:processKoboaDebugNavigationResources
+> Task :app:generateKoboaDebugResValues
+> Task :app:compileKoboaDebugNavigationResources
+> Task :app:mapKoboaDebugSourceSetPaths
+> Task :app:generateKoboaDebugResources
+> Task :app:packageKoboaDebugResources
+> Task :app:createKoboaDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksKoboaDebug
+> Task :app:parseKoboaDebugLocalResources
+> Task :app:processKoboaDebugMainManifest
+> Task :app:mergeKoboaDebugResources
+> Task :app:processKoboaDebugManifest
+> Task :app:javaPreCompileKoboaDebug
+> Task :app:processKoboaDebugManifestForPackage
+> Task :app:mergeKoboaDebugShaders
+> Task :app:compileKoboaDebugShaders NO-SOURCE
+> Task :app:generateKoboaDebugAssets UP-TO-DATE
+> Task :app:processKoboaDebugResources
+> Task :app:generateKoboaDebugPythonMiscAssets
+> Task :app:generateKoboaDebugPythonRequirementsAssets
+> Task :app:generateKoboaDebugPythonSourceAssets
+> Task :app:generateKoboaDebugPythonBuildAssets
+> Task :app:mergeKoboaDebugAssets
+> Task :app:checkKoboaDebugDuplicateClasses
+> Task :app:compressKoboaDebugAssets
+> Task :app:mergeLibDexKoboaDebug
+> Task :app:generateKoboaDebugPythonJniLibs
+> Task :app:mergeKoboaDebugJniLibFolders
+> Task :app:mergeKoboaDebugNativeLibs
+
+> Task :app:stripKoboaDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libchaquopy_java.so, libcrypto_chaquopy.so, libcrypto_python.so, libpython3.13.so, libpython3.so, libsqlite3_chaquopy.so, libsqlite3_python.so, libssl_chaquopy.so, libssl_python.so, libtorrent4j.so. Run with --info option to learn more.
+
+> Task :app:validateSigningKoboaDebug
+> Task :app:writeKoboaDebugAppMetadata
+> Task :app:writeKoboaDebugSigningConfigVersions
+> Task :app:desugarKoboaDebugFileDependencies
+> Task :app:mergeExtDexKoboaDebug
+> Task :app:compileRekindleDebugKotlin
+> Task :app:compileKoboaDebugKotlin
+> Task :app:compileRekindleDebugJavaWithJavac NO-SOURCE
+> Task :app:dexBuilderRekindleDebug
+> Task :app:mergeRekindleDebugGlobalSynthetics
+> Task :app:processRekindleDebugJavaRes
+> Task :app:mergeProjectDexRekindleDebug
+> Task :app:compileKoboaDebugJavaWithJavac NO-SOURCE
+> Task :app:bundleRekindleDebugClassesToCompileJar
+> Task :app:mergeRekindleDebugJavaResource
+> Task :app:dexBuilderKoboaDebug
+> Task :app:mergeKoboaDebugGlobalSynthetics
+> Task :app:processKoboaDebugJavaRes
+> Task :app:mergeProjectDexKoboaDebug
+> Task :app:mergeKoboaDebugJavaResource
+> Task :app:packageRekindleDebug
+> Task :app:createRekindleDebugApkListingFileRedirect
+> Task :app:assembleRekindleDebug
+> Task :app:packageKoboaDebug
+> Task :app:createKoboaDebugApkListingFileRedirect
+> Task :app:assembleKoboaDebug
+> Task :app:compileRekindleDebugAndroidTestKotlin
+> Task :app:compileRekindleDebugAndroidTestJavaWithJavac NO-SOURCE
+> Task :app:dexBuilderRekindleDebugAndroidTest
+> Task :app:mergeProjectDexRekindleDebugAndroidTest
+> Task :app:mergeRekindleDebugAndroidTestGlobalSynthetics
+> Task :app:processRekindleDebugAndroidTestJavaRes
+> Task :app:mergeRekindleDebugAndroidTestJavaResource
+> Task :app:packageRekindleDebugAndroidTest
+> Task :app:createRekindleDebugAndroidTestApkListingFileRedirect
+> Task :app:assembleRekindleDebugAndroidTest
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1795279056507.json
+
+BUILD SUCCESSFUL in 55s
+123 actionable tasks: 123 executed
