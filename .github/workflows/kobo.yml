@@ -38,9 +38,12 @@ jobs:
 
       - name: Tests sur processeur ARM (émulé, comme sur la Kobo)
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq qemu-user-static
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq qemu-user || sudo apt-get install -y -qq qemu-user-static
+          QEMU=$(command -v qemu-arm || command -v qemu-arm-static)
+          echo "émulateur : $QEMU"
           CGO_ENABLED=0 GOOS=linux GOARCH=arm GOARM=7 go test -c -o rekobo-arm.test .
-          qemu-arm-static ./rekobo-arm.test -test.v -test.count=1
+          "$QEMU" ./rekobo-arm.test -test.v -test.count=1
 
       - name: Fabriquer Rekobo.zip
         run: |
