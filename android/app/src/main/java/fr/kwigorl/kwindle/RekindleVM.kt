@@ -1,6 +1,7 @@
 package fr.kwigorl.kwindle
 
 import android.app.Application
+import android.content.IntentSender
 import android.net.Uri
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -38,6 +39,9 @@ data class Element(
     val titre: String? = null,
     val auteur: String? = null,
     val lignes: List<Pair<String, String>> = emptyList(),
+    val origine: String? = null,     // adresse du fichier ouvert dans Rekindle
+    val copie: String? = null,       // copie rangée dans Téléchargements/Rekindle
+    val nettoye: Boolean = false,    // fichiers déjà effacés après l'envoi
 )
 
 private val FORMATS = mapOf("zip" to "EPUB", "mobi" to "MOBI / AZW", "pdf" to "PDF", "topaz" to "Topaz", "kfx" to "KFX")
@@ -53,6 +57,9 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
     var envoyer by mutableStateOf(reglages.envoyer)
         private set
     var annonce by mutableStateOf<String?>(null)
+    /** Fichiers d'origine qu'Android doit faire confirmer avant de les effacer. */
+    var demandeSuppression by mutableStateOf<IntentSender?>(null)
+    private var attenteConfirmation = emptyList<Long>()
     var alerte by mutableStateOf<String?>(null)
     var permissionDemandee = false
 
@@ -67,8 +74,14 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
     private val dossierTorrents = File(app.filesDir, "torrents")
 
     init {
-        // démarre Python en avance pour que le premier livre aille vite
-        viewModelScope.launch(Dispatchers.IO) { runCatching { Moteur.init(app) } }
+        viewModelScope.launch(Dispatchers.IO) {
+            // la liste repart à zéro à chaque lancement : les copies internes d'avant ne servent plus
+            for (d in listOf(File(app.cacheDir, "entrees"), dossierTorrents, dossierSortie)) {
+                runCatching { d.deleteRecursively() }
+            }
+            // démarre Python en avance pour que le premier livre aille vite
+            runCatching { Moteur.init(app) }
+        }
     }
 
     private val ctx get() = getApplication<Application>()
@@ -84,6 +97,7 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch(Dispatchers.IO) {
             for (uri in uris) {
                 try {
+                    Fichiers.garderAcces(ctx, uri)
                     val f = Fichiers.copier(ctx, uri)
                     val el = if (Fichiers.estTorrent(f)) {
                         val info = runCatching { Moteur.lireTorrent(ctx, f) }.getOrNull()
@@ -91,9 +105,9 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
                             val n = info.optInt("livres")
                             "${info.optString("nom")}  ($n livre${if (n > 1) "s" else ""})"
                         } else f.name
-                        Element(compteur.getAndIncrement(), Type.TORRENT, f, nom, format = "Torrent")
+                        Element(compteur.getAndIncrement(), Type.TORRENT, f, nom, format = "Torrent", origine = uri.toString())
                     } else {
-                        Element(compteur.getAndIncrement(), Type.LIVRE, f, f.name)
+                        Element(compteur.getAndIncrement(), Type.LIVRE, f, f.name, origine = uri.toString())
                     }
                     withContext(Dispatchers.Main) {
                         elements.add(el)
@@ -237,6 +251,7 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
                     val r = envoyerGroupes(aEnvoyer)
                     bloque = r.first
                     nbMails = r.second
+                    if (nbMails > 0 && reglages.supprimerApresEnvoi) nettoyer(reglages.supprimerOrigine)
                 }
             } finally {
                 val arrete = arret.get()
@@ -334,10 +349,10 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
             return Phase.ERREUR
         }
         val sortie = r.optString("sortie")
-        Fichiers.enregistrer(ctx, File(sortie))
+        val copie = Fichiers.enregistrer(ctx, File(sortie))?.toString()
         maj(el.id) {
             it.copy(
-                phase = Phase.PRET, statut = "✓ Réparé", ton = Ton.OK, format = format, sortie = sortie,
+                phase = Phase.PRET, statut = "✓ Réparé", ton = Ton.OK, format = format, sortie = sortie, copie = copie,
                 titre = r.optString("titre").ifBlank { null }, auteur = r.optString("auteur").ifBlank { null },
                 lignes = lignes,
             )
@@ -414,6 +429,75 @@ class RekindleVM(app: Application) : AndroidViewModel(app) {
             }
         }
         return bloque to nbMails
+    }
+
+    // ------------------------------------------------- ménage après l'envoi
+    /**
+     * Efface ce qui ne sert plus une fois les livres envoyés : copies internes, livre réparé rangé
+     * dans Téléchargements/Rekindle, fichiers téléchargés par torrent et, si demandé, le fichier
+     * d'origine. Un torrent n'est nettoyé que quand tous ses livres sont partis.
+     */
+    private suspend fun nettoyer(origineAussi: Boolean) {
+        val tous = withContext(Dispatchers.Main) { elements.toList() }
+        val aConfirmer = mutableListOf<Pair<Long, Uri>>()
+        fun effacerOrigine(el: Element): String? {
+            if (!origineAussi) return null
+            val uri = el.origine?.let(Uri::parse) ?: return null
+            return when (Fichiers.supprimerOrigine(ctx, uri)) {
+                Fichiers.Suppression.FAITE -> "Fichier d'origine supprimé"
+                Fichiers.Suppression.A_CONFIRMER -> {
+                    Fichiers.uriMediatheque(ctx, uri)?.let { aConfirmer += el.id to it }
+                    null
+                }
+                Fichiers.Suppression.IMPOSSIBLE ->
+                    "Fichier d'origine gardé : l'appli d'où il vient ne permet pas de l'effacer " +
+                        "(il sera effaçable s'il est ajouté avec le bouton +)"
+            }
+        }
+        for (el in tous) {
+            if (el.nettoye) continue
+            val notes = mutableListOf<String>()
+            when {
+                el.type == Type.LIVRE && el.phase == Phase.ENVOYE -> {
+                    el.copie?.let { Fichiers.supprimerCopie(ctx, it) }
+                    el.sortie?.let { runCatching { File(it).delete() } }
+                    runCatching { el.fichier.delete() }    // copie reçue, ou fichier venu du torrent
+                    notes += "Copies effacées du téléphone (y compris dans Téléchargements › Rekindle)"
+                    if (el.parent == null) effacerOrigine(el)?.let { notes += it }
+                }
+                el.type == Type.TORRENT && el.phase == Phase.TELECHARGE && el.id !in telechargements -> {
+                    val livres = tous.filter { it.parent == el.id }
+                    if (livres.isEmpty() || livres.any { it.phase != Phase.ENVOYE }) continue
+                    runCatching { File(dossierTorrents, el.id.toString()).deleteRecursively() }
+                    runCatching { el.fichier.delete() }
+                    notes += "Fichiers du torrent effacés du téléphone"
+                    effacerOrigine(el)?.let { notes += it }
+                }
+                else -> continue
+            }
+            maj(el.id) {
+                it.copy(nettoye = true, sortie = null, copie = null, lignes = it.lignes + notes.map { n -> "info" to n })
+            }
+        }
+        if (aConfirmer.isNotEmpty()) {
+            val demande = Fichiers.demandeSuppression(ctx, aConfirmer.map { it.second })
+            withContext(Dispatchers.Main) {
+                if (demande != null) {
+                    attenteConfirmation = aConfirmer.map { it.first }
+                    demandeSuppression = demande
+                }
+            }
+        }
+    }
+
+    /** Réponse de la fenêtre d'Android « Autoriser Rekindle à supprimer… ». */
+    fun suppressionConfirmee(ok: Boolean) {
+        val note = if (ok) "Fichier d'origine supprimé" else "Fichier d'origine gardé (suppression refusée)"
+        for (id in attenteConfirmation) {
+            val i = elements.indexOfFirst { it.id == id }
+            if (i >= 0) elements[i] = elements[i].copy(lignes = elements[i].lignes + ("info" to note))
+        }
+        attenteConfirmation = emptyList()
     }
 
     // ------------------------------------------------------------- réglages

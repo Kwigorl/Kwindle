@@ -1,10 +1,14 @@
 package fr.kwigorl.kwindle
 
+import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.content.IntentSender
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
+import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.provider.OpenableColumns
 import androidx.core.content.FileProvider
@@ -62,8 +66,8 @@ object Fichiers {
         else -> "application/octet-stream"
     }
 
-    /** Range une copie dans Téléchargements/Rekindle (visible dans l'appli Fichiers). */
-    fun enregistrer(context: Context, f: File): Boolean {
+    /** Range une copie dans Téléchargements/Rekindle (visible dans l'appli Fichiers) ; renvoie son adresse. */
+    fun enregistrer(context: Context, f: File): Uri? {
         return try {
             val valeurs = ContentValues().apply {
                 put(MediaStore.Downloads.DISPLAY_NAME, f.name)
@@ -71,11 +75,77 @@ object Fichiers {
                 put(MediaStore.Downloads.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS + "/Rekindle")
             }
             val uri = context.contentResolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, valeurs)
-                ?: return false
+                ?: return null
             context.contentResolver.openOutputStream(uri)?.use { o -> f.inputStream().use { it.copyTo(o) } }
-            true
+            uri
         } catch (e: Exception) {
-            false
+            null
+        }
+    }
+
+    /** Efface une copie rangée par Rekindle dans Téléchargements (elle lui appartient). */
+    fun supprimerCopie(context: Context, uri: String) {
+        runCatching { context.contentResolver.delete(Uri.parse(uri), null, null) }
+    }
+
+    enum class Suppression { FAITE, A_CONFIRMER, IMPOSSIBLE }
+
+    /** Garde, si possible, le droit de modifier le fichier choisi (pour pouvoir l'effacer plus tard). */
+    fun garderAcces(context: Context, uri: Uri) {
+        runCatching {
+            context.contentResolver.takePersistableUriPermission(
+                uri, Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION,
+            )
+        }
+    }
+
+    /**
+     * Efface le fichier d'origine (celui qu'on a ouvert dans Rekindle). Ça marche quand Android
+     * nous en donne le droit (fichier choisi avec le bouton +) ; un fichier d'une autre appli
+     * rangé dans la médiathèque d'Android peut être effacé après confirmation (A_CONFIRMER).
+     */
+    fun supprimerOrigine(context: Context, uri: Uri): Suppression {
+        if (uri.scheme == "file") {
+            return if (uri.path?.let { File(it).delete() } == true) Suppression.FAITE else Suppression.IMPOSSIBLE
+        }
+        val cr = context.contentResolver
+        try {
+            if (DocumentsContract.isDocumentUri(context, uri) && DocumentsContract.deleteDocument(cr, uri)) {
+                return Suppression.FAITE
+            }
+        } catch (e: Exception) {
+            // pas le droit, ou fichier déjà parti
+        }
+        try {
+            if (cr.delete(uri, null, null) > 0) return Suppression.FAITE
+        } catch (e: Exception) {
+            // idem
+        }
+        return if (Build.VERSION.SDK_INT >= 30 && uriMediatheque(context, uri) != null) Suppression.A_CONFIRMER
+        else Suppression.IMPOSSIBLE
+    }
+
+    /** Adresse du fichier dans la médiathèque d'Android, pour une demande de suppression. */
+    fun uriMediatheque(context: Context, uri: Uri): Uri? {
+        if (uri.authority == MediaStore.AUTHORITY) return uri
+        if (uri.authority == "com.android.providers.downloads.documents" && DocumentsContract.isDocumentUri(context, uri)) {
+            val id = DocumentsContract.getDocumentId(uri)
+            if (id.startsWith("msf:")) {
+                id.removePrefix("msf:").toLongOrNull()?.let {
+                    return ContentUris.withAppendedId(MediaStore.Files.getContentUri("external"), it)
+                }
+            }
+        }
+        return null
+    }
+
+    /** Demande à Android (une seule fenêtre de confirmation) d'effacer ces fichiers. */
+    fun demandeSuppression(context: Context, uris: List<Uri>): IntentSender? {
+        if (Build.VERSION.SDK_INT < 30 || uris.isEmpty()) return null
+        return try {
+            MediaStore.createDeleteRequest(context.contentResolver, uris).intentSender
+        } catch (e: Exception) {
+            null
         }
     }
 

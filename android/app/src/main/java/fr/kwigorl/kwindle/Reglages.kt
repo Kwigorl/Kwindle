@@ -89,6 +89,16 @@ class Reglages(context: Context) {
         get() = p.getBoolean("envoyer", true)
         set(v) = p.edit { putBoolean("envoyer", v) }
 
+    /** Après un envoi réussi : effacer les copies faites par Rekindle (livre réparé, téléchargements). */
+    var supprimerApresEnvoi: Boolean
+        get() = p.getBoolean("supprimer_apres_envoi", false)
+        set(v) = p.edit { putBoolean("supprimer_apres_envoi", v) }
+
+    /** … et aussi le fichier d'origine (le .torrent ou le livre ouvert dans Rekindle). */
+    var supprimerOrigine: Boolean
+        get() = p.getBoolean("supprimer_origine", false)
+        set(v) = p.edit { putBoolean("supprimer_origine", v) }
+
     var motDePasse: String
         get() = dechiffrer(p.getString("mdp", null))
         set(v) = ecrire("mdp", chiffrer(v))

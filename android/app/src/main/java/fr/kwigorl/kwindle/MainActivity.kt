@@ -1,6 +1,7 @@
 package fr.kwigorl.kwindle
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,6 +14,7 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.Canvas
@@ -249,6 +251,17 @@ fun ThemeRekindle(contenu: @Composable () -> Unit) {
 @Composable
 fun Racine(vm: RekindleVM) {
     var reglagesOuverts by rememberSaveable { mutableStateOf(false) }
+    val confirmer = rememberLauncherForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) {
+        vm.suppressionConfirmee(it.resultCode == Activity.RESULT_OK)
+    }
+    val demande = vm.demandeSuppression
+    LaunchedEffect(demande) {
+        if (demande != null) {
+            vm.demandeSuppression = null
+            runCatching { confirmer.launch(IntentSenderRequest.Builder(demande).build()) }
+                .onFailure { vm.suppressionConfirmee(false) }
+        }
+    }
     if (reglagesOuverts) {
         BackHandler { reglagesOuverts = false }
         EcranReglages(vm) { reglagesOuverts = false }
@@ -732,6 +745,34 @@ private fun Section(titre: String) {
 }
 
 @Composable
+private fun LigneInterrupteur(
+    titre: String,
+    aide: String,
+    coche: Boolean,
+    actif: Boolean = true,
+    onChange: (Boolean) -> Unit,
+) {
+    val pal = LocalPalette.current
+    Row(
+        Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp))
+            .clickable(enabled = actif) { onChange(!coche) }.padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(Modifier.weight(1f).padding(end = 12.dp)) {
+            Text(
+                titre, fontWeight = FontWeight.Bold, fontSize = 15.sp,
+                color = if (actif) pal.texte else pal.texteDoux,
+            )
+            Text(aide, style = MaterialTheme.typography.bodySmall, color = pal.texteDoux)
+        }
+        Switch(
+            checked = coche, onCheckedChange = onChange, enabled = actif,
+            colors = SwitchDefaults.colors(checkedTrackColor = Ocean, checkedThumbColor = Color.White),
+        )
+    }
+}
+
+@Composable
 private fun Aide(texte: String, alerte: Boolean = false) {
     Text(
         texte,
@@ -776,6 +817,8 @@ fun EcranReglages(vm: RekindleVM, retour: () -> Unit) {
     var securite by rememberSaveable { mutableStateOf(r.securite) }
     var identifiant by rememberSaveable { mutableStateOf(r.identifiant) }
     var langue by rememberSaveable { mutableStateOf(r.langue) }
+    var supprimer by rememberSaveable { mutableStateOf(r.supprimerApresEnvoi) }
+    var supprimerOrigine by rememberSaveable { mutableStateOf(r.supprimerOrigine) }
     var avance by rememberSaveable { mutableStateOf(false) }
     var resultatTest by remember { mutableStateOf<String?>(null) }
     var testEnCours by remember { mutableStateOf(false) }
@@ -802,6 +845,8 @@ fun EcranReglages(vm: RekindleVM, retour: () -> Unit) {
         r.securite = securite
         r.identifiant = identifiant.trim()
         r.langue = langue.trim().ifBlank { "fr" }
+        r.supprimerApresEnvoi = supprimer
+        r.supprimerOrigine = supprimer && supprimerOrigine
         retour()
     }
     val tester: () -> Unit = {
@@ -904,6 +949,22 @@ fun EcranReglages(vm: RekindleVM, retour: () -> Unit) {
             if (f.lien.isNotEmpty()) {
                 OutlinedButton(onClick = { ouvrirLien(ctx, f.lien) }) { Text("Créer le mot de passe d'application") }
             }
+
+            Section("Après l'envoi")
+            LigneInterrupteur(
+                "Supprimer les fichiers une fois envoyés",
+                "Rekindle efface le livre réparé (y compris sa copie dans Téléchargements › Rekindle) et " +
+                    "les fichiers téléchargés par torrent, dès que l'envoi à ta Kindle a réussi.",
+                supprimer,
+            ) { supprimer = it }
+            LigneInterrupteur(
+                "Supprimer aussi le fichier d'origine",
+                "Le .torrent ou le livre que tu as ouvert (par exemple dans Téléchargements). Ça marche à " +
+                    "coup sûr pour un fichier ajouté avec le bouton + ; pour un fichier venu d'une autre appli, " +
+                    "Android peut te demander de confirmer, ou refuser.",
+                supprimer && supprimerOrigine,
+                actif = supprimer,
+            ) { supprimerOrigine = it }
 
             TextButton(onClick = { avance = !avance }) {
                 Text(if (avance) "Réglages avancés ▾" else "Réglages avancés ▸")
