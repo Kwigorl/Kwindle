@@ -24,7 +24,7 @@ import (
 	"time"
 )
 
-const version = "1.1"
+const version = "1.2"
 
 //go:embed autorites.pem
 var autoritesPEM []byte
@@ -186,7 +186,13 @@ func (k vraieKobo) ActualiserBibliotheque(mode string) {
 			return
 		}
 	}
-	// méthode classique : on simule le branchement puis le débranchement d'un câble USB
+	if mode != "usb" {
+		// sans NickelDBus, le faux câble USB n'importe rien tant qu'on ne touche pas
+		// « Se connecter » (risqué) : on laisse l'import au bouton NickelMenu
+		k.journal.Printf("livres prêts : « Plus » › « KoboaExpress - importer les livres » (NickelMenu)")
+		return
+	}
+	// à la demande seulement (actualisation = usb) : faux branchement d'un câble USB
 	etat := "/tmp/nickel-hardware-status"
 	if _, err := os.Stat(etat); err != nil {
 		k.journal.Printf("impossible d'actualiser la bibliothèque : %s absent", etat)

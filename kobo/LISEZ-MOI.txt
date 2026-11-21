@@ -44,12 +44,14 @@ bibliothèque. L'e-mail est ensuite marqué comme lu.
 
 La première fois, KoboaExpress ne prend que les e-mails des 30 derniers jours.
 
-En option (recommandé) :
-  - NickelMenu (https://pgaskin.net/NickelMenu/) ajoute deux boutons :
-    « KoboaExpress - relever les livres » et « KoboaExpress - journal ».
-  - NickelDBus (https://github.com/shermp/NickelDBus) affiche un message
-    « 2 nouveaux livres reçus » et ajoute les livres sans faire comme si
-    un câble USB était branché.
+Pour que les livres reçus apparaissent dans la bibliothèque :
+  - NickelMenu (https://pgaskin.net/NickelMenu/), conseillé : dans le menu
+    « Plus », touche « KoboaExpress - importer les livres » une trentaine de
+    secondes après la synchro. (Autres boutons : « relever les livres »,
+    « journal ».)
+  - ou NickelDBus (https://github.com/shermp/NickelDBus) : import automatique
+    avec un message « 2 nouveaux livres reçus ».
+  - sans l'un ni l'autre, les livres apparaissent au redémarrage de la Kobo.
 
 
 4. EN CAS DE SOUCI
